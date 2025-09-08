@@ -1,0 +1,209 @@
+\documentclass[a4paper]{article}
+\usepackage{student}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, decorations.pathreplacing}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\pagestyle{plain}
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% Definindo o estilo de destaque com linhas pontilhadas
+\tikzstyle{highlight} = [draw, dashed, thick, rectangle, rounded corners, inner sep=0.2cm, orange]
+
+
+\tikzstyle{startstop} = [
+    rectangle, rounded corners, minimum width=0.5cm,
+    text centered, draw=black, fill=blue!10, font=\small
+]
+\tikzstyle{startstop_S} = [
+    rectangle, rounded corners, minimum width=0.5cm, minimum height=0.8cm,
+    text centered, draw=black, fill=green!30, font=\small
+]
+\tikzstyle{decision} = [
+    diamond, aspect=2, draw=black, fill=orange!15, align=center,
+    text centered, inner sep=0pt, font=\small
+]
+\tikzstyle{decision_S} = [
+    diamond, aspect=2, draw=black, fill=orange!30, align=center,
+    text centered, inner sep=0pt, font=\small
+]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+
+% Metadata
+\date{\today}
+\setmodule{MAC5911/IME: Fundamentos de Estatística e Machine Learning. \\ Prof.: Alexandre Galvão Patriota} 
+\setterm{2o. semestre, 2025}
+
+%-------------------------------%
+% Other details
+% TODO: Fill these
+%-------------------------------%
+\title{Exercício 01 - 08/09}
+\setmembername{Nara Avila Moraes}  % Fill group member names
+\setmemberuid{5716734}  % Fill group member uids (same order)
+
+%-------------------------------%
+% Add / Delete commands and packages
+% TODO: Add / Delete here as you need
+%-------------------------------%
+\usepackage{amsmath,amssymb,bm}
+
+\newcommand{\KL}{\mathrm{KL}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\T}{\top}
+
+\newcommand{\expdist}[2]{%
+        \normalfont{\textsc{Exp}}(#1, #2)%
+    }
+\newcommand{\expparam}{\bm \lambda}
+\newcommand{\Expparam}{\bm \Lambda}
+\newcommand{\natparam}{\bm \eta}
+\newcommand{\Natparam}{\bm H}
+\newcommand{\sufstat}{\bm u}
+
+% Main document
+\begin{document}
+    % Add header
+    \header{}
+
+\textbf{Questão 01:} Apresente um texto de no máximo duas páginas que introduza uma medida de possibilidade condicional, incluindo pelo menos um exemplo numérico e um teorema. Sugiro que leia o paper do Friedman e Halpern (1995) e busque referências adicionais sobre o assunto que estejam publicadas em revistas internacionais. Por exemplo, os autores Didier Dubois e Henry Prade estudaram o assunto em vários artigos. \\[0.5cm]
+\textbf{Questão 02:} Na discussão sobre 'The Dutch Book Argument', considere um jogador que não utiliza probabilidades e a banca escolhe uma configuração para explorar a perda certa que o jogador terá. Apresente:
+\begin{center}
+\begin{itemize}
+  \item[(2.1)] Os valores numéricos de P(H,E) diferentes dos discutidos em sala para cada "H1", "H2", e "H1 U H2";
+  \item[(2.2)] As apostas escolhidas pela banca para explorar a perda certa do jogador;
+  \item[(2.3)] A tabela demonstrando que, em todas as possibilidades, o jogador perde para a banca;
+  \item[(2.4)] Comentários sobre os resultados.
+\end{itemize}
+\end{center}
+
+    \begin{answer}[Questão 01]
+
+
+\textbf{Introdução à Medida de Possibilidade Condicional}
+
+\section*{1. Para Além da Probabilidade: A Teoria da Possibilidade}
+
+No campo da modelagem da incerteza, a Teoria da Probabilidade é a ferramenta predominante, baseada numa axiomática aditiva que descreve a frequência de eventos. Contudo, em muitas situações do mundo real, especialmente em sistemas de inteligência artificial e raciocínio humano, a incerteza não provém da aleatoriedade, mas sim da incompletude ou da imprecisão da informação. Para lidar com este tipo de incerteza, a Teoria da Possibilidade, introduzida por L.~A.~Zadeh e extensivamente desenvolvida por Didier Dubois e Henri Prade, oferece um arcabouço matemático alternativo e complementar.
+
+A teoria baseia-se em uma distribuição de possibilidade, 
+\(
+\pi : \Omega \to [0,1],
+\)
+que atribui a cada elemento $\omega$ do universo de discurso $\Omega$ um grau de possibilidade, onde $\pi(\omega) = 1$ significa que $\omega$ é totalmente possível e $\pi(\omega) = 0$ significa que é impossível. A partir de $\pi$, duas medidas duais são definidas para qualquer evento $A \subseteq \Omega$:
+
+\begin{itemize}
+  \item \textbf{Medida de Possibilidade ($\Pi$)}: Avalia o grau em que o evento $A$ é consistente com a informação disponível. É definida como
+  \(
+  \Pi(A) = \sup_{\omega \in A} \pi(\omega).
+  \)
+  Esta medida satisfaz a propriedade axiomática:
+  \(
+  \Pi(A \cup B) = \max(\Pi(A), \Pi(B)).
+  \)
+
+  \item \textbf{Medida de Necessidade ($N$)}: Avalia o grau em que o evento $A$ é certamente implicado pela informação. É definida como
+  \(
+  N(A) = 1 - \Pi(A^c),
+  \)
+  onde $A^c$ é o complementar de $A$.
+\end{itemize}
+
+A grande vantagem deste formalismo é a sua capacidade de distinguir entre a falta de crença e a descrença. Se $N(A)=0$, não significa que $A$ é falso, mas apenas que não há evidência que o torne necessário.
+
+\section*{2. Condicionamento Possibilístico: Atualizando Crenças}
+
+Assim como a probabilidade condicional é essencial para a atualização de crenças no modelo probabilístico, a possibilidade condicional é crucial para a revisão de crenças possibilísticas quando uma nova informação, um evento $B$, é observada. O objetivo é definir $\Pi(A|B)$, o grau de possibilidade de um evento $A$ dado que $B$ ocorreu.
+
+A relação fundamental é:
+\[
+\Pi(A \cap B) = \min(\Pi(A|B), \Pi(B)).
+\]
+
+\textbf{Definição:} A medida de possibilidade condicional de um evento $A$ dado um evento $B$, com $\Pi(B) > 0$, é definida como:
+\[
+\Pi(A|B) =
+\begin{cases}
+1 & \text{se } \Pi(A \cap B) = \Pi(B), \\
+\Pi(A \cap B) & \text{se } \Pi(A \cap B) < \Pi(B).
+\end{cases}
+\]
+
+\section*{3. Um Teorema Fundamental: A Lei da Possibilidade Total}
+
+De forma análoga à Lei da Probabilidade Total, existe um teorema correspondente na Teoria da Possibilidade:
+
+\textbf{Teorema (Lei da Possibilidade Total):} Seja $\{B_1, B_2, \ldots, B_n\}$ uma partição do universo $\Omega$. Então, para qualquer evento $A \subseteq \Omega$, sua possibilidade incondicional pode ser calculada a partir das possibilidades condicionais:
+\[
+\Pi(A) = \max_{i=1,\ldots,n} \Pi(A \cap B_i) 
+= \max_{i=1,\ldots,n} \min(\Pi(A|B_i), \Pi(B_i)).
+\]
+
+\section*{4. Exemplo Numérico: Diagnóstico Médico}
+
+Suponha que um paciente pode ter uma de três doenças mutuamente exclusivas: $D_1$ (Gripe), $D_2$ (Virose Comum) ou $D_3$ (Alergia). A distribuição inicial é:
+\[
+\pi(D_1)=1.0, \quad \pi(D_2)=0.8, \quad \pi(D_3)=0.4.
+\]
+
+Um sintoma $S$ (febre alta) é observado, com possibilidades condicionais:
+\[
+\Pi(S|D_1)=0.9, \quad \Pi(S|D_2)=0.5, \quad \Pi(S|D_3)=0.1.
+\]
+
+\textbf{Passo 1:} Calcular a possibilidade do sintoma $S$:
+\[
+\Pi(S) = \max \{\min(0.9,1.0), \min(0.5,0.8), \min(0.1,0.4)\} 
+= \max\{0.9,0.5,0.1\} = 0.9.
+\]
+
+\textbf{Passo 2:} Calcular as possibilidades atualizadas (posteriores):
+\begin{itemize}
+  \item Para $D_1$: $\Pi(D_1|S)=1.0$.
+  \item Para $D_2$: $\Pi(D_2|S)=0.5$.
+  \item Para $D_3$: $\Pi(D_3|S)=0.1$.
+\end{itemize}
+
+\textbf{Resultado:} Após observar febre alta, a nova distribuição é:
+\[
+\pi(D_1|S)=1.0, \quad \pi(D_2|S)=0.5, \quad \pi(D_3|S)=0.1.
+\]
+
+    \end{answer}
+
+    \begin{answer}[Ítem 2.1]
+    \end{answer}
+
+    \begin{answer}[Ítem 2.2]
+    \end{answer}
+
+    \begin{answer}[Ítem 2.3]
+    \end{answer}
+
+    \begin{answer}[Ítem 2.4]
+    \end{answer}
+
+
+\nocite{*}
+
+% Define o estilo da bibliografia. Alguns exemplos:
+% plain:      Numérico, por ordem alfabética de autor.
+% unsrt:      Numérico, por ordem de citação (não relevante com \nocite).
+% alpha:      Alfanumérico, ex: [DP91].
+% abnt-alf:   Padrão ABNT (pode exigir o pacote abntex2).
+\bibliographystyle{plain}
+
+% Aponta para o seu arquivo .bib (sem a extensão .bib)
+% e gera a lista de referências neste ponto do documento.
+\bibliography{minhas_referencias}
+
+
+\end{document}
