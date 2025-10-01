@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1758207741.745 "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" "main.pdf" "main" 1758207742.34364 0
-  "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" 1758207741.7329 14831 87ff1b9146286ccab79994b6484c4ef2 ""
+["pdflatex"] 1757385934.06947 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" "main.pdf" "main" 1757385934.91167 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" 1757385933.80083 14827 cae1c964eeb50ba1cb888d665c96305e ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -181,11 +181,11 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/zref/zref-abspage.sty" 1694723124 2269 4fe6fb3396214c91f164d45faf9bec45 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/zref/zref-base.sty" 1694723124 20785 f7d1133a287929598a897c93f8f4c44b ""
   "/usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf" 1739380943 42148 61becc7c670cd061bb319c643c27fdd4 ""
-  "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1757338246 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
-  "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1757338223 3345729 3e7c9e66ea124c72a9dd9435045b7d29 ""
+  "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
+  "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1758207742.29284 263 095446e8be92140af668fba54d71a0e0 "pdflatex"
-  "main.tex" 1758207741.7329 14831 87ff1b9146286ccab79994b6484c4ef2 ""
+  "main.aux" 1757385934.83539 263 095446e8be92140af668fba54d71a0e0 "pdflatex"
+  "main.tex" 1757385933.80083 14827 cae1c964eeb50ba1cb888d665c96305e ""
   "student.sty" 1757337287.77477 2396 f7da7f427cf32ded8b685ce2de8a8a16 ""
   (generated)
   "main.aux"

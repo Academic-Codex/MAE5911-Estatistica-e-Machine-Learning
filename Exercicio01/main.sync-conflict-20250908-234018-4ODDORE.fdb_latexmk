@@ -1,6 +1,15 @@
 # Fdb version 4
-["pdflatex"] 1758207741.745 "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" "main.pdf" "main" 1758207742.34364 0
-  "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" 1758207741.7329 14831 87ff1b9146286ccab79994b6484c4ef2 ""
+["bibtex main"] 0 "main.aux" "main.bbl" "main" 1757385606.30467 0
+  "/usr/local/texlive/2025/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
+  "/usr/local/texlive/2025/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
+  "main.aux" 0 -1 0 "pdflatex"
+  "main.bib" 0 -1 0 ""
+  (generated)
+  "main.bbl"
+  "main.blg"
+  (rewritten before read)
+["pdflatex"] 1757385605.30998 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" "main.pdf" "main" 1757385606.30481 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio01/main.tex" 1757385603.98364 14148 6607071c71e0e411396a0decfd59c094 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -9,6 +18,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm0500.tfm" 1136768653 3584 178baad7ffca7f5d3428a83bd7cc64c3 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm0700.tfm" 1136768653 3584 cf973739aac7ab6247f9150296af7954 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm1000.tfm" 1136768653 3584 adb004a0c8e7c46ee66cad73671f37b4 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm1440.tfm" 1136768653 3584 3169d30142b88a27d4ab0e3468e963a2 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecti1000.tfm" 1136768653 3072 3bce340d4c075dffe6d4ec732b4c32fe ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -181,11 +191,12 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/zref/zref-abspage.sty" 1694723124 2269 4fe6fb3396214c91f164d45faf9bec45 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/zref/zref-base.sty" 1694723124 20785 f7d1133a287929598a897c93f8f4c44b ""
   "/usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf" 1739380943 42148 61becc7c670cd061bb319c643c27fdd4 ""
-  "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1757338246 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
-  "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1757338223 3345729 3e7c9e66ea124c72a9dd9435045b7d29 ""
+  "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
+  "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1758207742.29284 263 095446e8be92140af668fba54d71a0e0 "pdflatex"
-  "main.tex" 1758207741.7329 14831 87ff1b9146286ccab79994b6484c4ef2 ""
+  "main.aux" 1757385605.99891 290 e1d79d6eab81d09078ea0a2b49f1f582 "pdflatex"
+  "main.bbl" 1757385292.45575 49 0eba253fc001332e731e8aba3f23127b "bibtex main"
+  "main.tex" 1757385603.98364 14148 6607071c71e0e411396a0decfd59c094 ""
   "student.sty" 1757337287.77477 2396 f7da7f427cf32ded8b685ce2de8a8a16 ""
   (generated)
   "main.aux"

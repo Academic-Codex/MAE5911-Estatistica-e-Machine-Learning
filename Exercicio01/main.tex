@@ -8,6 +8,13 @@
 \usepackage{enumitem}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[numbers,sort&compress]{natbib} % ou [authoryear]
+\usepackage[alf]{abntex2cite} % citação ABNT autor-data
 \pagestyle{plain}
 
 \tikzstyle{arrow} = [thick,->,>=stealth]
@@ -38,7 +45,7 @@
 
 % Metadata
 \date{\today}
-\setmodule{MAC5911/IME: Fundamentos de Estatística e Machine Learning. \\ Prof.: Alexandre Galvão Patriota} 
+\setmodule{MAE5911/IME: Fundamentos de Estatística e Machine Learning. \\ Prof.: Alexandre Galvão Patriota} 
 \setterm{2o. semestre, 2025}
 
 %-------------------------------%
@@ -90,11 +97,41 @@
 
 \textbf{Introdução à Medida de Possibilidade Condicional}
 
-\section*{1. Para Além da Probabilidade: A Teoria da Possibilidade}
+Embora a probabilidade seja a medida clássica da incerteza sobre a realidade física, ela não é suficiente para caracterizar a forma de raciocínio epistêmico humano, também chamado de raciocínio não monotônico. Desde Aristóteles, passando por economistas do século XIX, filósofos e engenheiros modernos, observou-se que muitos sistemas — especialmente sistemas de inteligência artificial e o raciocínio humano — não estão contidos no arcabouço probabilístico. Entre as diferenças fundamentais, destacam-se a assimetria, a não monotonicidade e a não associatividade como regra, presentes na racionalização.
+Nesses casos, a incerteza não provém da aleatoriedade, mas sim da incompletude ou da imprecisão da informação. Friedman foi o primeiro a buscar uma caracterização axiomática para o que ele cunhou de o termo mais geral possível, dentre todos já definidos anteriormente: a \textbf{medida de plausibilidade}. Trata-se de um conceito mais abrangente, do qual a probabilidade e a possibilidade emergem como casos particulares. 
 
-No campo da modelagem da incerteza, a Teoria da Probabilidade é a ferramenta predominante, baseada numa axiomática aditiva que descreve a frequência de eventos. Contudo, em muitas situações do mundo real, especialmente em sistemas de inteligência artificial e raciocínio humano, a incerteza não provém da aleatoriedade, mas sim da incompletude ou da imprecisão da informação. Para lidar com este tipo de incerteza, a Teoria da Possibilidade, introduzida por L.~A.~Zadeh e extensivamente desenvolvida por Didier Dubois e Henri Prade, oferece um arcabouço matemático alternativo e complementar.
+Algebricamente, Friedman define uma medida de plausibilidade como a tupla
 
-A teoria baseia-se em uma distribuição de possibilidade, 
+\[
+(\mathcal{W}, \mathcal{F}, \mathcal{D}, \mathcal{P}l),
+\]
+em que:
+\begin{itemize}
+    \item $\mathcal{W}$ é o conjunto de mundos possíveis;
+    \item $\mathcal{F} = 2^{\mathcal{W}}$ é a família de subconjuntos de $\mathcal{W}$ (o conjunto dos eventos);
+    \item $\mathcal{D}$ é um conjunto parcialmente ordenado, que permite definir extensão, transitividade e comparação ordinal entre graus de plausibilidade;
+    \item $\mathcal{P}l: \mathcal{F} \to \mathcal{D}$ é a função que atribui a cada evento um grau de plausibilidade.
+\end{itemize}
+
+A diferença central para a probabilidade é o tipo de decomposição permitido:
+\begin{itemize}
+    \item Para a probabilidade, a decomposição de eventos mutuamente exclusivos se dá pela soma:
+    \[
+        P(A \cup B) = P(A) + P(B), \quad \text{se } A \cap B = \emptyset.
+    \]
+    \item Para a possibilidade, a decomposição ocorre pela máxima:
+    \[
+        \Pi(A \cup B) = \max\{\Pi(A), \Pi(B)\}.
+    \]
+\end{itemize}
+
+Essa diferença gera uma \textbf{assimetria estrutural}: a medida de possibilidade é decomposta pela união, mas sua dual --- a medida de necessidade --- só se decompõe pela interseção:
+\[
+    N(A \cap B) = \min\{N(A), N(B)\}.
+\]
+
+Já a probabilidade é simétrica: é ao mesmo tempo sua própria dual e se decompõe tanto pela união quanto pela interseção, obedecendo às regras clássicas de aditividade.
+Assim surgiu a Teoria da Possibilidade, introduzida por L.~A.~Zadeh, para lidar com a incerteza epistêmica. A teoria baseia-se em uma distribuição de possibilidade, 
 \(
 \pi : \Omega \to [0,1],
 \)
@@ -117,9 +154,13 @@ que atribui a cada elemento $\omega$ do universo de discurso $\Omega$ um grau de
   onde $A^c$ é o complementar de $A$.
 \end{itemize}
 
+
 A grande vantagem deste formalismo é a sua capacidade de distinguir entre a falta de crença e a descrença. Se $N(A)=0$, não significa que $A$ é falso, mas apenas que não há evidência que o torne necessário.
 
-\section*{2. Condicionamento Possibilístico: Atualizando Crenças}
+
+
+
+\subsubsection*{Condicionamento Possibilístico: Atualizando Crenças}
 
 Assim como a probabilidade condicional é essencial para a atualização de crenças no modelo probabilístico, a possibilidade condicional é crucial para a revisão de crenças possibilísticas quando uma nova informação, um evento $B$, é observada. O objetivo é definir $\Pi(A|B)$, o grau de possibilidade de um evento $A$ dado que $B$ ocorreu.
 
@@ -128,7 +169,7 @@ A relação fundamental é:
 \Pi(A \cap B) = \min(\Pi(A|B), \Pi(B)).
 \]
 
-\textbf{Definição:} A medida de possibilidade condicional de um evento $A$ dado um evento $B$, com $\Pi(B) > 0$, é definida como:
+\textbf{Definição:} A medida de possibilidade condicional de um evento $A$ dado um evento $B$, com $\Pi(B) > 0$, é definida por:
 \[
 \Pi(A|B) =
 \begin{cases}
@@ -137,9 +178,7 @@ A relação fundamental é:
 \end{cases}
 \]
 
-\section*{3. Um Teorema Fundamental: A Lei da Possibilidade Total}
-
-De forma análoga à Lei da Probabilidade Total, existe um teorema correspondente na Teoria da Possibilidade:
+Como principal teorema podemos citar a Lei da Possibilidade Total. De forma análoga à Lei da Probabilidade Total, existe um teorema correspondente na Teoria da Possibilidade:
 
 \textbf{Teorema (Lei da Possibilidade Total):} Seja $\{B_1, B_2, \ldots, B_n\}$ uma partição do universo $\Omega$. Então, para qualquer evento $A \subseteq \Omega$, sua possibilidade incondicional pode ser calculada a partir das possibilidades condicionais:
 \[
@@ -147,9 +186,9 @@ De forma análoga à Lei da Probabilidade Total, existe um teorema correspondent
 = \max_{i=1,\ldots,n} \min(\Pi(A|B_i), \Pi(B_i)).
 \]
 
-\section*{4. Exemplo Numérico: Diagnóstico Médico}
+\subsubsection*{Diagnóstico Médico}
 
-Suponha que um paciente pode ter uma de três doenças mutuamente exclusivas: $D_1$ (Gripe), $D_2$ (Virose Comum) ou $D_3$ (Alergia). A distribuição inicial é:
+Para exemplificar, suponha que um paciente pode ter uma de três doenças mutuamente exclusivas: $D_1$ (Gripe), $D_2$ (Virose Comum) ou $D_3$ (Alergia). A distribuição inicial é:
 \[
 \pi(D_1)=1.0, \quad \pi(D_2)=0.8, \quad \pi(D_3)=0.4.
 \]
@@ -159,20 +198,20 @@ Um sintoma $S$ (febre alta) é observado, com possibilidades condicionais:
 \Pi(S|D_1)=0.9, \quad \Pi(S|D_2)=0.5, \quad \Pi(S|D_3)=0.1.
 \]
 
-\textbf{Passo 1:} Calcular a possibilidade do sintoma $S$:
+A possibilidade do sintoma $S$:
 \[
 \Pi(S) = \max \{\min(0.9,1.0), \min(0.5,0.8), \min(0.1,0.4)\} 
 = \max\{0.9,0.5,0.1\} = 0.9.
 \]
 
-\textbf{Passo 2:} Calcular as possibilidades atualizadas (posteriores):
+As possibilidades atualizadas (posteriores):
 \begin{itemize}
   \item Para $D_1$: $\Pi(D_1|S)=1.0$.
   \item Para $D_2$: $\Pi(D_2|S)=0.5$.
   \item Para $D_3$: $\Pi(D_3|S)=0.1$.
 \end{itemize}
 
-\textbf{Resultado:} Após observar febre alta, a nova distribuição é:
+Após observar febre alta, a nova distribuição é:
 \[
 \pi(D_1|S)=1.0, \quad \pi(D_2|S)=0.5, \quad \pi(D_3|S)=0.1.
 \]
@@ -180,30 +219,123 @@ Um sintoma $S$ (febre alta) é observado, com possibilidades condicionais:
     \end{answer}
 
     \begin{answer}[Ítem 2.1]
+        Consideremos dois eventos mutuamente exclusivos, $H_1$ e $H_2$. 
+Um jogador, cujas atribuições de probabilidade não são coerentes, 
+define os seguintes valores, diferentes de uma atribuição clássica 
+que usaria a frequência:
+
+\begin{itemize}
+    \item $P(H_1) = 0.4$
+    \item $P(H_2) = 0.5$
+    \item $P(H_1 \cup H_2) = 0.8$
+\end{itemize}
+
+A incoerência aqui reside no fato de que, para eventos mutuamente exclusivos, 
+a soma das probabilidades deve ser
+\[
+P(H_1 \cup H_2) = P(H_1) + P(H_2).
+\]
+No nosso caso,
+\[
+0.4 + 0.5 = 0.9,
+\]
+que é diferente de $0.8$.
     \end{answer}
 
     \begin{answer}[Ítem 2.2]
+        Para explorar a incoerência do jogador, a banca oferece as seguintes apostas, 
+assumindo que cada aposta tem valor nominal de R\$ 1,00:
+
+\begin{enumerate}
+    \item \textbf{Aposta 1:} A banca compra do jogador uma aposta sobre o evento $H_1$, 
+    ao preço (probabilidade) de $P(H_1) = 0.4$. 
+    A aposta paga R\$ 1,00 se $H_1$ não ocorrer e o jogador perde R\$ 1,00 se $H_1$ ocorrer.
+
+    \item \textbf{Aposta 2:} A banca compra do jogador uma aposta sobre o evento $H_2$, 
+    ao preço (probabilidade) de $P(H_2) = 0.5$. 
+    A aposta paga R\$ 1,00 se $H_2$ não ocorrer e o jogador perde R\$ 1,00 se $H_2$ ocorrer.
+
+    \item \textbf{Aposta 3:} A banca vende ao jogador uma aposta sobre o evento $H_1 \cup H_2$, 
+    ao preço (probabilidade) de $P(H_1 \cup H_2) = 0.8$. 
+    A aposta paga R\$ 1,00 se $H_1 \cup H_2$ ocorrer e o jogador perde R\$ 1,00 se não ocorrer.
+\end{enumerate}
+
+Em outras palavras, o jogador está disposto a:
+\begin{itemize}
+    \item Pagar R\$ 0,40 para ter a chance de ganhar R\$ 1,00 se $H_1$ ocorrer.
+    \item Pagar R\$ 0,50 para ter a chance de ganhar R\$ 1,00 se $H_2$ ocorrer.
+    \item Vender uma aposta em $H_1 \cup H_2$ por R\$ 0,80.
+\end{itemize}
+
+O lucro inicial do jogador ao aceitar todas as apostas é:
+\[
+\text{Lucro Inicial} = (\text{Pagamento pela Aposta 3}) 
+- (\text{Custo da Aposta 1}) - (\text{Custo da Aposta 2})
+\]
+\[
+\text{Lucro Inicial} = 0.80 - 0.40 - 0.50 = -0.10
+\]
+
+\noindent O jogador já começa a transação com um prejuízo de R\$ 0,10.
     \end{answer}
 
     \begin{answer}[Ítem 2.3]
+        A tabela a seguir demonstra o resultado final do lucro ou prejuízo do jogador, 
+considerando todos os cenários possíveis para os eventos $H_1$ e $H_2$, 
+que são mutuamente exclusivos:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Resultado} & \textbf{Lucro (Aposta 1)} & \textbf{Lucro (Aposta 2)} & \textbf{Lucro (Aposta 3)} & \textbf{Lucro Total} \\
+\midrule
+$H_1$ ocorre      & $+0.60$ & $-0.50$ & $-0.20$ & $-0.10$ \\
+$H_2$ ocorre      & $-0.40$ & $+0.50$ & $-0.20$ & $-0.10$ \\
+Nenhum ocorre     & $-0.40$ & $-0.50$ & $+0.80$ & $-0.10$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A tabela confirma que, independentemente do resultado dos eventos, 
+o jogador sempre terá um prejuízo líquido de R\$ 0,10.
     \end{answer}
 
     \begin{answer}[Ítem 2.4]
+        O \emph{``Dutch Book Argument''} evidencia a importância da 
+\textbf{coerência formal} na atribuição de probabilidades. 
+Do ponto de vista de um estatístico clássico, o jogador não perde por causa de uma crença subjetiva, 
+mas porque os valores que ele escolheu para suas ``probabilidades'' não formam uma medida de probabilidade válida.
+
+A teoria da probabilidade, construída sobre axiomas como a aditividade finita, 
+é uma estrutura matemática rigorosa. 
+Qualquer sistema de atribuição de valores que viole esses axiomas é, por definição, internamente inconsistente. 
+A perda certa, neste caso, não é uma punição, mas a consequência lógica e inevitável de operar fora das regras da lógica probabilística. 
+O argumento reforça o princípio de que a probabilidade, para ser útil e não levar a contradições, 
+deve ser tratada como uma medida objetiva e não como uma simples manifestação de crença pessoal.
+
+Esse resultado se articula com a discussão da \textbf{Questão 01}. 
+Enquanto a probabilidade se mostra insuficiente para capturar diagnósticos epistêmicos e formas de raciocínio não monotônico --- 
+campo em que a medida de possibilidade condicional se apresenta como formalismo mais adequado ---, 
+no contexto do \emph{Dutch Book Argument} a situação se inverte: 
+a probabilidade é indispensável, pois apenas ela garante a coerência formal contra perdas certas. 
+Evidencia-se, portanto, que probabilidade e possibilidade não competem no mesmo terreno, 
+mas constituem formalismos distintos, cada qual apropriado ao tipo de problema que se propõe a modelar.
+
     \end{answer}
 
 
-\nocite{*}
+% \nocite{*}
 
-% Define o estilo da bibliografia. Alguns exemplos:
-% plain:      Numérico, por ordem alfabética de autor.
-% unsrt:      Numérico, por ordem de citação (não relevante com \nocite).
-% alpha:      Alfanumérico, ex: [DP91].
-% abnt-alf:   Padrão ABNT (pode exigir o pacote abntex2).
-\bibliographystyle{plain}
-
-% Aponta para o seu arquivo .bib (sem a extensão .bib)
-% e gera a lista de referências neste ponto do documento.
-\bibliography{minhas_referencias}
-
+% % Define o estilo da bibliografia. Alguns exemplos:
+% % plain:      Numérico, por ordem alfabética de autor.
+% % unsrt:      Numérico, por ordem de citação (não relevante com \nocite).
+% % alpha:      Alfanumérico, ex: [DP91].
+% % % abnt-alf:   Padrão ABNT (pode exigir o pacote abntex2).
+% \bibliographystyle{apalike}       % outras opções: plainnat, abntex2-alf, abntex2-num
+% \bibliography{main}
+% % Aponta para o seu arquivo .bib (sem a extensão .bib)
+% % e gera a lista de referências neste ponto do documento.
+% \bibliography{minhas_referencias}
 
 \end{document}
