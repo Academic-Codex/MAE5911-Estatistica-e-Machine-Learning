@@ -91,7 +91,146 @@ Seja $(Z_1, \ldots, Z_n)$ uma amostra aleatória de $Z \sim \text{Ber}(\theta)$,
 \end{itemize}
 
     \begin{answer}[]
-O estimador de máxima verossimilhança encontra o valor do parâmetro \theta que torna os dados observador mais provável.
+O estimador via função de máxima verossimilhança foi proposto por Fisher e comprovadado ser superior a outros métodos estimadores, como o método de momentos. 
+Este estimador é utilizado sobretudo quando a informação da distribuição de probabilidade do modelo é conhecida. 
+Ela tem propriedades como eficiência assintótica, consistência, distribuição normal e invariancia [Notas de aula pg. 60]. 
+O estimador de máxima verossimilhança representa o valor do parâmetro $\theta$ que torna os dados observados o mais plausível possível. 
+\\[0.5em]
+Devido a propriedade de invariancia do EMV, basta encontrarmos EMV para a letra (a) e depois calcular a letra (b) utilizando este estimador como parâmetro.
+
+
+Seja \( (Z_1, \dots, Z_n) \) a amostra aleatória de 
+\[
+Z_i \sim \mathrm{Bernoulli}(\theta), \quad \theta \in (0,1).
+\]
+
+A função de verossimilhança, que é a função de probabilidade do modelo, reinter é dada por
+\[
+L(\theta; z_1, \dots, z_n)
+= \prod_{i=1}^n \theta^{z_i}(1-\theta)^{1-z_i}.
+\]
+
+Para encontrar o estimador de máxima verossimilhança, precisamos maximizar \( L(\theta) \) em relação a \( \theta \). Mas como esta função se trata de um produtório,
+é mais fácil maximizar a função log-verossimilhança, que por ser monotonicamente crescente, preserva o valor de theta do ponto máximo \( L(\theta) \).
+A log-verossimilhança correspondente é
+\[
+\ell(\theta) 
+= \sum_{i=1}^n \big[z_i \log\theta + (1-z_i)\log(1-\theta)\big].
+\]
+Derivando em relação a \(\theta\) e igualando a zero:
+\[
+\frac{\partial \ell(\theta)}{\partial \theta}
+= \frac{\sum z_i}{\theta} - \frac{n-\sum z_i}{1-\theta} = 0,
+\]
+obtemos o estimador de máxima verossimilhança para a probabilidade de sucesso \(\theta\):
+\[
+\boxed{\hat{\theta}_{MV} = \bar{Z} = \frac{1}{n}\sum_{i=1}^n Z_i.}
+\]
+
+O teste de hipótese, mede o quão improvável seria observar $\hat{\theta}_{MV}$ se a hipótese nula fosse verdadeira. O valor-p é esta medida de improbabilidade.
+\\[1em]
+Em condições de regularidade, o valor-$p$ segue uma distribuição uniforme em $(0,1)$.
+Isso significa que, se o seu valor é muito pequeno, por exemplo $p \leq 0{,}01$,
+então o resultado observado é um evento raro sob a hipótese nula $H_0$,
+ou, alternativamente, que a hipótese nula está incorreta.
+Nessa situação, existem evidências para rejeitar $H_0$.
+
+
+---
+
+### (a) \( g(\theta) = P_\theta(Z=0) \)
+
+Pela \textbf{propriedade de invariância do EMV}, temos:
+\[
+\boxed{\hat{g}_{MV} = g(\hat{\theta}_{MV}) = 1 - \bar{Z}.}
+\]
+
+---
+
+### (b) \( g(\theta) = \mathrm{Var}_\theta(Z) \)
+
+Sabemos que \( \mathrm{Var}_\theta(Z) = \theta(1 - \theta) \).  
+Logo, aplicando novamente a invariância:
+\[
+\boxed{\hat{g}_{MV} = g(\hat{\theta}_{MV}) = \bar{Z}(1 - \bar{Z}).}
+\]
+
+---
+
+### (c) Sejam os dados observados: \( (0, 0, 1, 0, 0, 1) \)
+
+Temos \( n = 6 \) e \( \sum z_i = 2 \), portanto
+\[
+\hat{\theta}_{MV} = \bar{Z} = \frac{2}{6} = \frac{1}{3} \approx 0.3333.
+\]
+Assim:
+\[
+\widehat{P(Z=0)} = 1 - \hat{\theta}_{MV} = \frac{2}{3} \approx 0.6667,
+\]
+\[
+\widehat{\mathrm{Var}}(Z) = \hat{\theta}_{MV}(1 - \hat{\theta}_{MV})
+= \frac{1}{3} \cdot \frac{2}{3} = \frac{2}{9} \approx 0.2222.
+\]
+
+---
+
+### (d) Teste de hipótese \( H_0: \theta = 0.1 \)
+
+Queremos verificar se temos evidência a partir dos dados observados para rejeitar a hipótese nula 
+de que a probabilidade de sucesso é $\theta = 0.1$.
+
+Sabemos que, sob $H_0$, a estatística
+\[
+X = \sum_{i=1}^{n} Z_i
+\]
+segue uma distribuição $\text{Binomial}(n, \theta)$.
+
+Com $n = 6$ e $x_{\text{obs}} = 2$ sucessos observados, temos:
+\[
+X \sim \text{Binomial}(6, 0.1).
+\]
+
+---
+ 
+O valor-p é a probabilidade de observar um valor da estatística $T(Z_n)$ 
+\textit{tão ou mais extremo quanto o observado}, assumindo que $H_0$ é verdadeira:
+\[
+p = P_{H_0}\big(T(Z_n) \ge T(z_n)\big).
+\]
+
+No contexto binomial, a estatística de teste natural é o número de sucessos $X$,
+e portanto:
+\[
+p = P_{H_0}(X \ge 2).
+\]
+
+---
+\\
+Calculando o valor-p:
+\[
+P(X=0) = (0.9)^6 = 0.531441, \qquad 
+P(X=1) = \binom{6}{1}(0.1)(0.9)^5 = 0.354294.
+\]
+
+Logo:
+\[
+valor-p = 1 - [P(X=0) + P(X=1)] = 1 - (0.531441 + 0.354294) = 0.114265.
+\]
+
+\[
+\boxed{valor-p = 0.114265
+\]
+
+---
+
+Este resultado \textbf{não é improvável} sob $H_0$ (<0.05).  
+Portanto, não há evidência para rejeitar  $H_0$, isto é, não evidências de que $\theta = 0.1$ seja incompatível com os dados.
+
+\[
+\boxed{\text{Conclusão: Não há evidências suficientes para rejeitar } H_0 : \theta = 0.1.}
+\]
+
+\end{mdframed}
 
     \end{answer}
 

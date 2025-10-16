@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.9.8)  15 OCT 2025 16:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.9.8)  15 OCT 2025 22:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -696,56 +696,127 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 85.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:94: Missing $ inserted.
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:141: You can't use `macro parameter character #' in internal vertical mode.
+l.141 #
+       ## (a) \( g(\theta) = P_\theta(Z=0) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:141: You can't use `macro parameter character #' in internal vertical mode.
+l.141 ##
+        # (a) \( g(\theta) = P_\theta(Z=0) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:141: You can't use `macro parameter character #' in internal vertical mode.
+l.141 ###
+          (a) \( g(\theta) = P_\theta(Z=0) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:150: You can't use `macro parameter character #' in internal vertical mode.
+l.150 #
+       ## (b) \( g(\theta) = \mathrm{Var}_\theta(Z) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:150: You can't use `macro parameter character #' in internal vertical mode.
+l.150 ##
+        # (b) \( g(\theta) = \mathrm{Var}_\theta(Z) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:150: You can't use `macro parameter character #' in internal vertical mode.
+l.150 ###
+          (b) \( g(\theta) = \mathrm{Var}_\theta(Z) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:160: You can't use `macro parameter character #' in internal vertical mode.
+l.160 #
+       ## (c) Sejam os dados observados: \( (0, 0, 1, 0, 0, 1) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:160: You can't use `macro parameter character #' in internal vertical mode.
+l.160 ##
+        # (c) Sejam os dados observados: \( (0, 0, 1, 0, 0, 1) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:160: You can't use `macro parameter character #' in internal vertical mode.
+l.160 ###
+          (c) Sejam os dados observados: \( (0, 0, 1, 0, 0, 1) \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:177: You can't use `macro parameter character #' in internal vertical mode.
+l.177 #
+       ## (d) Teste de hip√≥tese \( H_0: \theta = 0.1 \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:177: You can't use `macro parameter character #' in internal vertical mode.
+l.177 ##
+        # (d) Teste de hip√≥tese \( H_0: \theta = 0.1 \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:177: You can't use `macro parameter character #' in internal vertical mode.
+l.177 ###
+          (d) Teste de hip√≥tese \( H_0: \theta = 0.1 \)
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+)
+Runaway argument?
+{valor-p = 0.114265 \] \par --- \par Este resultado \textbf {n√£o √© \ETC.
+! File ended while scanning use of \boxed .
 <inserted text> 
-                $
-l.94 ...n√ßa encontra o valor do par√¢metro \theta
-                                                   que torna os dados observ...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+                \par 
+<*> ...ica-e-Machine-Learning/Exercicio02/main.tex
+                                                  
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
 
+! Emergency stop.
+<*> ...ica-e-Machine-Learning/Exercicio02/main.tex
+                                                  
+*** (job aborted, no legal \end found)
 
-LaTeX Warning: Command \' invalid in math mode on input line 94.
-
-/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex:95: Missing $ inserted.
-<inserted text> 
-                $
-l.95 
-     
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-Missing character: There is no · in font cmr10!
-
-Underfull \hbox (badness 10000) in paragraph at lines 94--95
-[]\T1/cmr/m/n/10 O es-ti-ma-dor de m·-xima ve-ros-si-mi-lhanÁa en-con-tra o va-lor do pa-r‚-me-tro
- []
-
-
-
-[1
-
-{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
-
-[2] (./main.aux)
- ***********
-LaTeX2e <2024-11-01> patch level 2
-L3 programming layer <2025-01-18>
- ***********
- ) 
+ 
 Here is how much of TeX's memory you used:
- 23316 strings out of 473190
- 482586 string characters out of 5715801
- 890839 words of memory out of 5000000
- 46157 multiletter control sequences out of 15000+600000
- 567141 words of font info for 58 fonts, out of 8000000 for 9000
+ 23306 strings out of 473190
+ 482361 string characters out of 5715801
+ 886839 words of memory out of 5000000
+ 46151 multiletter control sequences out of 15000+600000
+ 567827 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 131i,5n,135p,588b,279s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (2 pages, 125602 bytes).
-PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 37 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 131i,7n,135p,588b,256s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!
