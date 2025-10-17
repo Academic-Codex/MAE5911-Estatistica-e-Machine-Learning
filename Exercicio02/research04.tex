@@ -1,0 +1,27 @@
+\paragraph{Distribuição Beta.}
+A distribuição Beta é contínua no intervalo $(0,1)$, com densidade
+\[
+f(x;\alpha,\beta)
+= \frac{1}{B(\alpha,\beta)}\, x^{\alpha-1}(1-x)^{\beta-1},
+\quad
+0<x<1,
+\]
+onde $B(\alpha,\beta)=\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$ é a função Beta.
+No caso particular $\mathrm{Beta}(\theta,1)$,
+\[
+f_\theta(x)=\theta\,x^{\theta-1},\quad 0<x<1,
+\]
+e a normalização é verificada por
+\[
+\int_0^1 \theta x^{\theta-1}\,dx = 1.
+\]
+Seu valor esperado e variância são
+\[
+E[X]=\frac{\theta}{\theta+1},
+\qquad
+\mathrm{Var}(X)=\frac{\theta}{(\theta+1)^2(\theta+2)}.
+\]
+O parâmetro $\theta$ controla a concentração:
+valores $\theta<1$ favorecem $x$ próximos de $0$,
+$\theta>1$ favorecem $x$ próximos de $1$,
+e $\theta=1$ dá a distribuição uniforme.

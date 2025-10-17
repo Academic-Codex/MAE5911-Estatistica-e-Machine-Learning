@@ -1,135 +1,3 @@
-Seja $Z_1,\ldots,Z_n \stackrel{\text{iid}}{\sim}\mathrm{Exp}(\theta)$, com $\theta>0$.
-A função densidade de probabilidade é
-\[
-f(z\mid\theta)=\theta\,e^{-\theta z}\,\mathbf 1_{\{z\ge 0\}},
-\]
-onde $\mathbf 1_{\{z\ge 0\}}$ é a função indicadora (vale 1 se $z\ge 0$ e 0 caso contrário).
-
-Como as observações são independentes e identicamente distribuídas,
-a \textbf{função de verossimilhança}, que é a função de densidade de probabilidade conjunta, é o produto das densidades individuais:
-\[
-L(\theta;z_1,\ldots,z_n)
-=\prod_{i=1}^n f(z_i\mid\theta)
-=\prod_{i=1}^n \theta\,e^{-\theta z_i}\,\mathbf 1_{\{z_i\ge 0\}}.
-\]
-
-Aplicando a propriedade distributiva do produto, separamos os fatores:
-\[
-L(\theta;z)
-=\Big(\prod_{i=1}^n \mathbf 1_{\{z_i\ge 0\}}\Big)
-\Big(\prod_{i=1}^n \theta e^{-\theta z_i}\Big).
-\]
-
-Como o termo indicador $\prod \mathbf 1_{\{z_i\ge 0\}}$ não depende de $\theta$,
-ele não influencia a maximização e pode ser ignorado. Assim:
-\[
-L(\theta;z)
-=\prod_{i=1}^n (\theta e^{-\theta z_i}).
-\]
-
-Usando a propriedade $\prod(ab)=\prod a \cdot \prod b$, obtemos:
-\[
-L(\theta;z)
-=\Big(\prod_{i=1}^n \theta\Big)
-\Big(\prod_{i=1}^n e^{-\theta z_i}\Big).
-\]
-
-Aplicando:
-1. $\prod_{i=1}^n \theta = \theta^n$ (produto de n fatores iguais),  
-2. $\prod e^{a_i} = e^{\sum a_i}$ (exponencial do somatório),  segue que a função de verossimilhança é da forma:
-\[
-\boxed{
-L(\theta;z)
-=\theta^n \exp\!\left(-\theta \sum_{i=1}^n z_i\right).}
-\]
-
----
-
-Para encontrar a função \textbf{Log-verossimilhança}, aplicamos $\log$ em ambos os lados, e usamos as propriedades do logaritmo:
-
-1. $\log(ab)=\log a+\log b$  
-2. $\log(a^b)=b\log a$  
-3. $\log(e^x)=x$  
-4. $\log(\prod a_i)=\sum \log a_i$
-
-\[
-\ell(\theta)=\log L(\theta;z)
-=\log(\theta^n)+\log\!\left(\exp\!\left[-\theta\sum_{i=1}^n z_i\right]\right).
-\]
-
-Aplicando $\log(a^b)=b\log a$ no primeiro termo
-e $\log(e^x)=x$ no segundo termo, obtemos:
-\[
-\ell(\theta)=n\log\theta-\theta\sum_{i=1}^n z_i.
-\]
-
-Para maximizar, derivamos em relação a $\theta$, aplicando as regras de derivação:
-\[
-\frac{d}{d\theta}\log\theta=\frac{1}{\theta}, \qquad
-\frac{d}{d\theta}(a\theta)=a.
-\]
-
-\[
-\ell'(\theta)
-=\frac{d}{d\theta}[n\log\theta-\theta\sum_{i=1}^n z_i]
-=n\frac{1}{\theta}-\sum_{i=1}^n z_i
-=\frac{n}{\theta}-\sum_{i=1}^n z_i.
-\]
-
-Logo:
-\[
-\boxed{
-\ell'(\theta)
-=\frac{n}{\theta}-\sum_{i=1}^n z_i.}
-\]
-
-Igualamos a zero para encontrar o \textbf{ponto crítico} que maximiza a função. 
-\[
-\ell'(\theta)=0
-\;\Longleftrightarrow\;
-\frac{n}{\theta}-\sum_{i=1}^n z_i=0
-\;\Longleftrightarrow\;
-\frac{n}{\theta}=\sum_{i=1}^n z_i
-\;\Longleftrightarrow\;
-\widehat\theta_{MV}=\frac{n}{\sum_{i=1}^n z_i}
-=\frac{1}{\overline Z}.
-\]
-
----
-
-Para assegurar que se trata de um ponto de máximo, derivamos novamente:
-
-\[
-\ell''(\theta)
-=\frac{d}{d\theta}\!\left(\frac{n}{\theta}-\sum_{i=1}^n z_i\right)
-=-\frac{n}{\theta^2}.
-\]
-
-Como $\ell''(\theta)<0$ para $\theta>0$,
-o ponto crítico corresponde a um máximo.
-
----
-
-O \textbf{estimador de máxima verossimilhança} (EMV) é, portanto:
-\[
-\boxed{\widehat\theta_{MV}=\frac{n}{\sum_{i=1}^n z_i}
-=\frac{1}{\overline Z}},
-\]
-
-\medskip
-É válido a propriedade da \textbf{Invariância do EMV}: para $g(\theta)$, o EMV é $\widehat g=g(\widehat\theta_{MV})$.
-
-\paragraph{Composição da distribuição Exponencial contínua acumulada.} \newline
-\vspace{1em}
-Separando a distribuição exponencial em função de distribuição acumulada até a observação de interesse e 
-o restante da distribuição acumulada denominada a cauda da distribuição, temos:
- \\[1em]
-Expressão para densidade total: \[f(z\mid\theta)=\theta e^{-\theta z}\mathbf 1_{\{z\ge0\}}\]. \\
-Função de distribuição acumulada: \[F(z)=P_\theta(Z\le z)=\int_0^z \theta e^{-\theta t}\,dt
-      =\big[-e^{-\theta t}\big]_0^z=1-e^{-\theta z}\]. \\
-Cauda: \[P_\theta(Z>z)=1-F(z)=e^{-\theta z}\].
-
-\bigskip
 \paragraph{(a) \(g(\theta)=P_\theta(Z>1)\).}
 
 \begin{enumerate}
@@ -152,7 +20,7 @@ Cauda: \[P_\theta(Z>z)=1-F(z)=e^{-\theta z}\].
 \paragraph{(b) \(g(\theta)=P_\theta(0.1<Z<1)\).}
 
 \begin{enumerate}
-  \item Para \(0<a<b\), utilizando a expressão para função de distribuiçãoa já calculada,
+  \item Para \(0<a<b\), utilizando a expressão para função de distribuição acumulada já calculada,
   \[
   P_\theta(a<Z<b)=F(b)-F(a)=(1-e^{-\theta b})-(1-e^{-\theta a})
                  =e^{-\theta a}-e^{-\theta b}.
@@ -163,8 +31,12 @@ Cauda: \[P_\theta(Z>z)=1-F(z)=e^{-\theta z}\].
   \]
   \item Pela invariância,
   \[
-  \boxed{\;\widehat g_{(b)}=e^{-0.1\,\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}
-        =\exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;}
+  \;\widehat g_{(b)}=e^{-0.1\,\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}
+        =\exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;
+  \]
+  \[
+  \boxed{\;\widehat g_{(b)}=
+        \exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;}
   \]
 \end{enumerate}
 
@@ -190,28 +62,6 @@ Cauda: \[P_\theta(Z>z)=1-F(z)=e^{-\theta z}\].
         \]
 \end{enumerate}
 
---------------------------------------------------------------------------------------
-
-\bigskip
-\textbf{(a) } $g(\theta)=P_\theta(Z>1)$.
-Como $P_\theta(Z>1)=e^{-\theta}$, então
-\[
-\widehat g_{(a)}=e^{-\widehat\theta_{MV}}.
-\]
-
-\medskip
-\textbf{(b) } $g(\theta)=P_\theta(0.1<Z<1)$.
-Como $P_\theta(a<Z<b)=e^{-\theta a}-e^{-\theta b}$,
-\[
-\widehat g_{(b)}=e^{-0.1\,\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}.
-\]
-
-\medskip
-\textbf{(c) } $g(\theta)=\mathrm{Var}_\theta(Z)$.
-Para Exponencial($\theta$) com taxa, $\mathrm{Var}(Z)=1/\theta^2$; logo
-\[
-\widehat g_{(c)}=\frac{1}{\widehat\theta_{MV}^2}=\overline Z^{\,2}.
-\]
 
 \bigskip
 \textbf{(d) ICs aproximados de 95\% para $g(\theta)$ (usando o método delta).}

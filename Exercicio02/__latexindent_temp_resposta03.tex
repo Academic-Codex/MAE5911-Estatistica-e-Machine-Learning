@@ -1,3 +1,304 @@
+%=========================================
+% Derivação detalhada da densidade Normal
+%=========================================
+
+\paragraph{Origem da densidade Normal.}
+
+A distribuição Normal surge quando uma variável aleatória $Z$ é resultado da soma de um grande número de pequenas variações independentes. 
+Pelo \textbf{Teorema Central do Limite}, a distribuição de tais somas tende a uma forma particular, simétrica e contínua, conhecida como \textit{distribuição normal}. 
+A expressão matemática que descreve essa forma é obtida impondo duas condições fundamentais:
+
+\begin{enumerate}
+    \item A função de densidade $f(z)$ deve ser simétrica em torno da média $\mu$.
+    \item A área total sob a curva deve ser igual a $1$, pois representa uma probabilidade total.
+\end{enumerate}
+
+Buscamos, portanto, uma função contínua da forma
+\[
+f(z) = A \, e^{-k(z-\mu)^2},
+\]
+onde $A>0$ e $k>0$ são constantes a determinar.  
+Essa escolha se justifica porque o termo $e^{-k(z-\mu)^2}$ é simétrico e decai rapidamente conforme $|z-\mu|$ aumenta, 
+representando a concentração de probabilidade em torno de $\mu$.
+
+\paragraph{Normalização.}
+Impondo que a área total sob a curva seja $1$, temos
+\[
+\int_{-\infty}^{+\infty} f(z)\,dz = 1 
+\quad \Longrightarrow \quad 
+A \int_{-\infty}^{+\infty} e^{-k(z-\mu)^2}\,dz = 1.
+\]
+Usamos a mudança de variável $x = \sqrt{k}\,(z-\mu)$, de modo que $dz = dx/\sqrt{k}$:
+\[
+A \int_{-\infty}^{+\infty} e^{-x^2}\frac{dx}{\sqrt{k}} = 1
+\quad \Longrightarrow \quad
+A = \sqrt{\frac{k}{\pi}},
+\]
+pois $\displaystyle \int_{-\infty}^{+\infty} e^{-x^2}\,dx = \sqrt{\pi}$.
+
+\paragraph{Identificação com parâmetros estatísticos.}
+Chamamos $\mu$ de \textbf{média} (ou valor esperado) e associamos $k$ à \textbf{variância} $\sigma^2$ por meio da relação
+\[
+k = \frac{1}{2\sigma^2},
+\]
+que garante que $\mathrm{Var}(Z)=\sigma^2$.
+
+Substituindo $k$ e $A$ na expressão de $f(z)$, obtemos:
+\[
+f(z\mid\mu,\sigma^2)
+= \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left\{-\frac{(z-\mu)^2}{2\sigma^2}\right\}.
+\]
+
+\paragraph{Propriedades.}
+\begin{itemize}
+    \item $f(z\mid\mu,\sigma^2)$ é simétrica em torno de $\mu$.
+    \item A variância $\sigma^2$ controla a largura da curva: quanto maior $\sigma$, mais espalhada a distribuição.
+    \item A integral sobre todo o eixo real é igual a $1$, garantindo que representa uma densidade de probabilidade.
+\end{itemize}
+
+\paragraph{Conclusão.}
+A função acima é chamada \textbf{função densidade de probabilidade da distribuição Normal} com média $\mu$ e variância $\sigma^2$, denotada por
+\[
+Z \sim \mathcal N(\mu,\sigma^2).
+\]
+
+Assim, quando escrevemos
+\[
+f(z\mid \mu,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left\{-\frac{(z-\mu)^2}{2\sigma^2}\right\},
+\]
+não é uma definição arbitrária — trata-se da única função da forma $Ae^{-k(z-\mu)^2}$ que satisfaz as propriedades de uma densidade simétrica e normalizada.
+
+%------------------------------------------------------------
+% Funções g(θ) para Z ~ N(μ, σ^2)  (θ = (μ, σ^2))
+%------------------------------------------------------------
+
+\paragraph{Invariância do EMV.}
+Se $\widehat\theta_{MV}=(\widehat\mu_{MV},\widehat\sigma^2_{MV})$ é o EMV de $\theta=(\mu,\sigma^2)$,
+então, para qualquer função $g(\theta)$, o estimador por máxima verossimilhança de $g(\theta)$ é
+\[
+\widehat g_{MV}=g\!\big(\widehat\theta_{MV}\big).
+\]
+Ao longo do que segue, denotaremos por $\Phi$ a CDF da Normal padrão $N(0,1)$.
+
+%---------------- (a) ----------------
+\subsubsection*{(a) \; $g(\theta)=E_\theta(Z)$}
+
+\textbf{Fato conhecido da Normal:} se $Z \sim N(\mu,\sigma^2)$ então $E(Z)=\mu$.
+\begin{itemize}
+  \item[\(\triangleright\)] \textbf{Como justificar rapidamente:} pela \emph{linearidade da esperança} e pela
+  \emph{padronização} $Z=\mu+\sigma T$ com $T\sim N(0,1)$,
+  \[
+  E(Z)=E(\mu+\sigma T)=\mu+\sigma E(T)=\mu+ \sigma\cdot 0=\mu .
+  \]
+\end{itemize}
+Logo, $g(\theta)=\mu$ e, pela \textbf{invariância do EMV},
+\[
+\boxed{\;\widehat g_{(a)}=\widehat\mu_{MV}=\overline Z\;}
+\]
+
+%---------------- (b) ----------------
+\subsubsection*{(b) \; $g(\theta)=P_\theta(Z<2)$}
+
+\textbf{Passo 1 — Padronização (transformação linear):}
+Se $Z\sim N(\mu,\sigma^2)$ então
+\[
+T=\frac{Z-\mu}{\sigma}\sim N(0,1).
+\]
+
+\textbf{Passo 2 — Troca de variável na probabilidade (monotonicidade):}
+\[
+P_\theta(Z<2)=P\!\left(\frac{Z-\mu}{\sigma}<\frac{2-\mu}{\sigma}\right)
+=\Phi\!\left(\frac{2-\mu}{\sigma}\right).
+\]
+\emph{(Usamos que a função $z\mapsto (z-\mu)/\sigma$ é estritamente crescente quando $\sigma>0$.)}
+
+\textbf{Passo 3 — Invariância do EMV (plug-in):}
+\[
+\boxed{\;\widehat g_{(b)}=\Phi\!\left(\frac{2-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)\;}
+\]
+
+%---------------- (c) ----------------
+\subsubsection*{(c) \; $g(\theta)=P_\theta(2.6<Z<4)$}
+
+\textbf{Passo 1 — Padronização:}
+\[
+T=\frac{Z-\mu}{\sigma}\sim N(0,1).
+\]
+
+\textbf{Passo 2 — Regra da janela + CDF da Normal padrão:}
+\[
+P_\theta(2.6<Z<4)=P\!\left(\frac{2.6-\mu}{\sigma}<T<\frac{4-\mu}{\sigma}\right)
+=\Phi\!\left(\frac{4-\mu}{\sigma}\right)-\Phi\!\left(\frac{2.6-\mu}{\sigma}\right).
+\]
+
+\textbf{Passo 3 — Invariância do EMV (plug-in):}
+\[
+\boxed{\;\widehat g_{(c)}=\Phi\!\left(\frac{4-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)
+-\Phi\!\left(\frac{2.6-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)\;}
+\]
+
+%---------------- (d) ----------------
+\subsubsection*{(d) \; $g(\theta)=\mathrm{Var}_\theta(Z)$}
+
+\textbf{Fato conhecido da Normal:} se $Z\sim N(\mu,\sigma^2)$, então $\mathrm{Var}(Z)=\sigma^2$.
+\begin{itemize}
+  \item[\(\triangleright\)] \textbf{Justificativa curta:} pela padronização $Z=\mu+\sigma T$ com $T\sim N(0,1)$,
+  usando \emph{homogeneidade da variância} para fatores constantes,
+  \[
+  \mathrm{Var}(Z)=\mathrm{Var}(\mu+\sigma T)=\sigma^2\,\mathrm{Var}(T)=\sigma^2\cdot 1=\sigma^2 .
+  \]
+\end{itemize}
+Logo, $g(\theta)=\sigma^2$ e, pela \textbf{invariância do EMV}, com o EMV já obtido para $\sigma^2$,
+\[
+\boxed{\;\widehat g_{(d)}=\widehat\sigma^2_{MV}=\frac{1}{n}\sum_{i=1}^n (Z_i-\overline Z)^2\;}
+\]
+\emph{(Recordando: para a Normal com $\mu$ desconhecido, o EMV de $\sigma^2$ usa divisor $n$, não $n-1$.)}
+
+
+%===========================
+% Questão 03 – Normal(μ,σ²)
+%===========================
+
+\paragraph{Modelo.}
+Seja $Z_1,\ldots,Z_n \stackrel{\mathrm{iid}}{\sim}\mathcal N(\mu,\sigma^2)$, 
+$\theta=(\mu,\sigma^2)\in\mathbb R\times(0,\infty)$, com densidade
+\[
+f(z\mid\mu,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}\,
+\exp\!\Big\{-\tfrac{(z-\mu)^2}{2\sigma^2}\Big\}.
+\]
+
+\paragraph{Verossimilhança.}
+\emph{(i) Independência $\Rightarrow$ densidade conjunta é produto das individuais.}
+\[
+L(\mu,\sigma^2;z_1,\ldots,z_n)=\prod_{i=1}^n f(z_i\mid\mu,\sigma^2)
+=(2\pi\sigma^2)^{-n/2}\,
+\exp\!\Big\{-\tfrac{1}{2\sigma^2}\sum_{i=1}^n (z_i-\mu)^2\Big\}.
+\]
+
+\paragraph{Log-verossimilhança.}
+\emph{(ii) $\log(\prod a_i)=\sum\log a_i$, (iii) $\log(ab)=\log a+\log b$,
+(iv) $\log(\alpha^c)=c\log\alpha$, (v) $\log(e^x)=x$.}
+\[
+\ell(\mu,\sigma^2)=\log L
+=-\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\sigma^2)
+-\frac{1}{2\sigma^2}\sum_{i=1}^n (z_i-\mu)^2 .
+\]
+
+\paragraph{Derivada em relação a $\mu$.}
+\emph{(vi) Regra da cadeia: $\partial_\mu(z_i-\mu)^2=-2(z_i-\mu)$; 
+(vii) linearidade de soma e derivada.}
+\[
+\frac{\partial\ell}{\partial\mu}
+=-\frac{1}{2\sigma^2}\sum_{i=1}^n\big[-2(z_i-\mu)\big]
+=\frac{1}{\sigma^2}\sum_{i=1}^n (z_i-\mu).
+\]
+\emph{(viii) Ponto crítico: igualar a zero.}
+\[
+\frac{\partial\ell}{\partial\mu}=0
+\iff \sum_{i=1}^n (z_i-\mu)=0
+\iff n\mu=\sum_{i=1}^n z_i
+\iff \boxed{\ \widehat\mu_{MV}=\bar Z=\frac{1}{n}\sum_{i=1}^n z_i\ }.
+\]
+
+\paragraph{Derivada em relação a $\sigma^2$.}
+\emph{(ix) $\partial_{\sigma^2}\log(\sigma^2)=\frac{1}{\sigma^2}$; 
+(x) $\partial_{\sigma^2}\big[(2\sigma^2)^{-1}\big]=-\frac{1}{2(\sigma^2)^2}$; 
+(xi) constantes saem da derivada.}
+\[
+\frac{\partial\ell}{\partial\sigma^2}
+=-\frac{n}{2}\cdot\frac{1}{\sigma^2}
++\frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (z_i-\mu)^2 .
+\]
+\emph{(xii) Ponto crítico: igualar a zero e usar $\mu\leftarrow\widehat\mu_{MV}$.}
+\[
+0=-\frac{n}{2}\cdot\frac{1}{\sigma^2}
++\frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (z_i-\widehat\mu_{MV})^2
+\iff
+\boxed{\ \widehat{\sigma^2}_{MV}=\frac{1}{n}\sum_{i=1}^n (z_i-\widehat\mu_{MV})^2\ }.
+\]
+
+\paragraph{Segundas derivadas (verificando máximo).}
+\emph{(xiii) Novas derivadas:}
+\[
+\frac{\partial^2\ell}{\partial\mu^2}=-\frac{n}{\sigma^2}<0,\qquad
+\frac{\partial^2\ell}{\partial(\sigma^2)^2}
+=\frac{n}{2(\sigma^2)^2}-\frac{1}{(\sigma^2)^3}\sum_{i=1}^n (z_i-\mu)^2.
+\]
+No ponto crítico, $\sum (z_i-\widehat\mu_{MV})^2=n\widehat{\sigma^2}_{MV}$,
+o que torna a Hessiana negativa definida: os pontos críticos são de \emph{máximo}.
+
+\paragraph{Resumo (EMVs).}
+\[
+\boxed{\ \widehat\mu_{MV}=\bar Z,\qquad
+\widehat{\sigma^2}_{MV}=\frac{1}{n}\sum_{i=1}^n (Z_i-\bar Z)^2\ }.
+\]
+
+%----------------------------------------
+% Invariância e itens (a)-(d)
+%----------------------------------------
+\paragraph{Invariância do EMV.}
+\emph{(xiv) Propriedade de invariância: para qualquer $g(\mu,\sigma^2)$, 
+$\widehat g_{MV}=g(\widehat\mu_{MV},\widehat{\sigma^2}_{MV})$.}
+Seja $\Phi$ a CDF da Normal padrão.
+
+\medskip
+\textbf{(a)} $g(\theta)=E_\theta(Z)=\mu$.
+\[
+\boxed{\ \widehat g_{(a)}=\widehat\mu_{MV}=\bar Z\ }.
+\]
+
+\textbf{(b)} $g(\theta)=P_\theta(Z<2)=\Phi\!\big(\frac{2-\mu}{\sigma}\big)$ 
+\emph{(xv) Padronização: $P(Z<2)=P\big(\tfrac{Z-\mu}{\sigma}<\tfrac{2-\mu}{\sigma}\big)=\Phi(\cdot)$.}
+\[
+\boxed{\ \widehat g_{(b)}=\Phi\!\Big(\frac{2-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\Big)\ },\qquad
+\widehat\sigma_{MV}=\sqrt{\widehat{\sigma^2}_{MV}}.
+\]
+
+\textbf{(c)} $g(\theta)=P_\theta(2.6<Z<4)=
+\Phi\!\big(\tfrac{4-\mu}{\sigma}\big)-\Phi\!\big(\tfrac{2.6-\mu}{\sigma}\big)$ 
+\emph{(xvi) Probabilidade em intervalo = CDF em $b$ menos CDF em $a$.}
+\[
+\boxed{\ \widehat g_{(c)}=\Phi\!\Big(\frac{4-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\Big)
+-\Phi\!\Big(\frac{2.6-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\Big)\ }.
+\]
+
+\textbf{(d)} $g(\theta)=\mathrm{Var}_\theta(Z)=\sigma^2$.
+\[
+\boxed{\ \widehat g_{(d)}=\widehat{\sigma^2}_{MV}=\frac{1}{n}\sum_{i=1}^n (Z_i-\bar Z)^2\ }.
+\]
+
+%----------------------------------------
+% Aplicação numérica
+%----------------------------------------
+\paragraph{Aplicação aos dados $(2.4,\,2.7,\,2.3,\,2.0,\,2.5,\,2.6)$.}
+\emph{(xvii) Média amostral; (xviii) variância de MV com denominador $n$.}
+\[
+n=6,\qquad \sum z_i=14.5,\qquad 
+\widehat\mu_{MV}=\bar z=\frac{14.5}{6}\approx 2.4167.
+\]
+\[
+\sum (z_i-\bar z)^2\approx 0.30833,\qquad
+\widehat{\sigma^2}_{MV}=\frac{0.30833}{6}\approx 0.05139,\quad
+\widehat\sigma_{MV}\approx 0.2267.
+\]
+
+\noindent
+\textbf{(a)} $\widehat g_{(a)}=\bar z\approx 2.4167$.
+
+\noindent
+\textbf{(b)} $\widehat g_{(b)}=\Phi\!\big(\tfrac{2-2.4167}{0.2267}\big)
+=\Phi(-1.84)\approx 0.033$.
+
+\noindent
+\textbf{(c)} $\widehat g_{(c)}=\Phi\!\big(\tfrac{4-2.4167}{0.2267}\big)
+-\Phi\!\big(\tfrac{2.6-2.4167}{0.2267}\big)
+\approx 1-0.790\approx 0.210$.
+
+\noindent
+\textbf{(d)} $\widehat g_{(d)}=\widehat{\sigma^2}_{MV}\approx 0.0514$.
+============================================================================ \\
 \textbf{Questão 03.} Seja $(Z_1,\ldots,Z_n)$ uma amostra aleatória de
 $Z\sim\mathcal N(\mu,\sigma^2)$, com parâmetro vetorial
 $\theta=(\mu,\sigma^2)\in\mathbb R\times(0,\infty)$.
@@ -96,7 +397,7 @@ Os desvios ao quadrado:
 =0.00278+0.08028+0.01389+0.17361+0.00694+0.03361
 =0.31111\;(\text{aprox.})
 \]
-(usar mais casas se desejar). Assim,
+Assim,
 \[
 \widehat\sigma^2_{MV}=\frac{0.31111}{6}=0.05185,\qquad
 \widehat\sigma_{MV}=\sqrt{0.05185}\approx 0.2278.
