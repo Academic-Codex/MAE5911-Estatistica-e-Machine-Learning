@@ -127,22 +127,68 @@ Nessa situação, existem evidências para rejeitar $H_0$.
 
 ---
 
-(a) \( g(\theta) = P_\theta(Z=0) \)
+\paragraph{(a) \(g(\theta)=P_\theta(Z=0)\)}
 
-Pela \textbf{propriedade de invariância do EMV}, temos:
-\[
-\boxed{\hat{g}_{MV} = g(\hat{\theta}_{MV}) = 1 - \bar{Z}.}
-\]
+\begin{enumerate}
+  \item Seja \(Z \sim \mathrm{Bernoulli}(\theta)\), temos:
+  \[
+  P_\theta(Z=z)=\theta^z(1-\theta)^{1-z}, \quad z \in \{0,1\}.
+  \]
+
+  \item Substituindo \(z=0\):
+  \[
+  P_\theta(Z=0)=\theta^0(1-\theta)^{1-0}=1-\theta.
+  \]
+
+  \item Portanto,
+  \[
+  g(\theta)=1-\theta.
+  \]
+
+  \item Pela \textbf{invariância do EMV}, temos:
+  \[
+  \widehat g_{MV}=g(\widehat\theta_{MV})=1-\widehat\theta_{MV}.
+  \]
+
+  \item E como \(\widehat\theta_{MV}=\overline Z\), obtemos:
+  \[
+  \boxed{\widehat g_{MV}=1-\overline Z.}
+  \]
+\end{enumerate}
+
 
 ---
 
-(b) \( g(\theta) = \mathrm{Var}_\theta(Z) \)
+\paragraph{(b) \(g(\theta)=\mathrm{Var}_\theta(Z)\)}
 
-Sabemos que \( \mathrm{Var}_\theta(Z) = \theta(1 - \theta) \).  
-Logo, aplicando novamente a invariância:
-\[
-\boxed{\hat{g}_{MV} = g(\hat{\theta}_{MV}) = \bar{Z}(1 - \bar{Z}).}
-\]
+\begin{enumerate}
+  \item Para uma Bernoulli, a variância é dada por:
+  \[
+  \mathrm{Var}(Z)=E(Z^2)-E(Z)^2.
+  \]
+
+  \item Como \(E(Z)=\theta\) e \(Z^2=Z\) (pois \(Z\in\{0,1\}\)), então:
+  \[
+  \mathrm{Var}_\theta(Z)=\theta-\theta^2=\theta(1-\theta).
+  \]
+
+  \item Portanto,
+  \[
+  g(\theta)=\theta(1-\theta).
+  \]
+
+  \item Pela \textbf{invariância do EMV}:
+  \[
+  \widehat g_{MV}=g(\widehat\theta_{MV})
+  =\widehat\theta_{MV}(1-\widehat\theta_{MV}).
+  \]
+
+  \item Como \(\widehat\theta_{MV}=\overline Z\), segue:
+  \[
+  \boxed{\widehat g_{MV}=\overline Z(1-\overline Z).}
+  \]
+\end{enumerate}
+
 
 ---
 
