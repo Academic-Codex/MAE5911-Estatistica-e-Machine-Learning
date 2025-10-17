@@ -1,0 +1,227 @@
+Seja $Z_1,\ldots,Z_n \stackrel{\text{iid}}{\sim}\mathrm{Exp}(\theta)$, com $\theta>0$.
+A função densidade de probabilidade é
+\[
+f(z\mid\theta)=\theta\,e^{-\theta z}\,\mathbf 1_{\{z\ge 0\}},
+\]
+onde $\mathbf 1_{\{z\ge 0\}}$ é a função indicadora (vale 1 se $z\ge 0$ e 0 caso contrário).
+
+Como as observações são independentes e identicamente distribuídas,
+a \textbf{função de verossimilhança}, que é a função de densidade de probabilidade conjunta é o produto das densidades individuais:
+\[
+L(\theta;z_1,\ldots,z_n)
+=\prod_{i=1}^n f(z_i\mid\theta)
+=\prod_{i=1}^n \theta\,e^{-\theta z_i}\,\mathbf 1_{\{z_i\ge 0\}}.
+\]
+
+Aplicando a propriedade distributiva do produto, separamos os fatores:
+\[
+L(\theta;z)
+=\Big(\prod_{i=1}^n \mathbf 1_{\{z_i\ge 0\}}\Big)
+\Big(\prod_{i=1}^n \theta e^{-\theta z_i}\Big).
+\]
+
+Como o termo indicador $\prod \mathbf 1_{\{z_i\ge 0\}}$ não depende de $\theta$,
+ele não influencia a maximização e pode ser ignorado. Assim:
+\[
+L(\theta;z)
+=\prod_{i=1}^n (\theta e^{-\theta z_i}).
+\]
+
+Usando a propriedade $\prod(ab)=\prod a \cdot \prod b$, obtemos:
+\[
+L(\theta;z)
+=\Big(\prod_{i=1}^n \theta\Big)
+\Big(\prod_{i=1}^n e^{-\theta z_i}\Big).
+\]
+
+Aplicando:
+1. $\prod_{i=1}^n \theta = \theta^n$ (produto de n fatores iguais),  
+2. $\prod e^{a_i} = e^{\sum a_i}$ (exponencial do somatório),  
+
+segue que:
+\[
+L(\theta;z)
+=\theta^n \exp\!\left(-\theta \sum_{i=1}^n z_i\right).
+\]
+
+---
+
+Para encontrar a função \textbf{Log-verossimilhança}, aplicamos $\log$ em ambos os lados, e usamos as propriedades do logaritmo:
+
+1. $\log(ab)=\log a+\log b$  
+2. $\log(a^b)=b\log a$  
+3. $\log(e^x)=x$  
+4. $\log(\prod a_i)=\sum \log a_i$
+
+\[
+\ell(\theta)=\log L(\theta;z)
+=\log(\theta^n)+\log\!\left(\exp\!\left[-\theta\sum_{i=1}^n z_i\right]\right).
+\]
+
+Aplicando $\log(a^b)=b\log a$ no primeiro termo
+e $\log(e^x)=x$ no segundo termo, obtemos:
+\[
+\ell(\theta)=n\log\theta-\theta\sum_{i=1}^n z_i.
+\]
+
+Para maximizar, derivamos em relação a $\theta$, aplicando as regras de derivação:
+\[
+\frac{d}{d\theta}\log\theta=\frac{1}{\theta}, \qquad
+\frac{d}{d\theta}(a\theta)=a.
+\]
+
+Logo:
+\[
+\ell'(\theta)
+=\frac{d}{d\theta}[n\log\theta-\theta\sum_{i=1}^n z_i]
+=n\frac{1}{\theta}-\sum_{i=1}^n z_i
+=\frac{n}{\theta}-\sum_{i=1}^n z_i.
+\]
+
+---
+
+Igualamos a zero para encontrar os pontos críticos.
+Para encontrar o máximo:
+\[
+\ell'(\theta)=0
+\;\Longleftrightarrow\;
+\frac{n}{\theta}-\sum_{i=1}^n z_i=0
+\;\Longleftrightarrow\;
+\frac{n}{\theta}=\sum_{i=1}^n z_i
+\;\Longleftrightarrow\;
+\widehat\theta_{MV}=\frac{n}{\sum_{i=1}^n z_i}
+=\frac{1}{\overline Z}.
+\]
+
+---
+
+\paragraph{Derivada segunda (verificando máximo).}
+Derivando novamente:
+\[
+\ell''(\theta)
+=\frac{d}{d\theta}\!\left(\frac{n}{\theta}-\sum_{i=1}^n z_i\right)
+=-\frac{n}{\theta^2}.
+\]
+
+Como $\ell''(\theta)<0$ para $\theta>0$,
+o ponto crítico corresponde a um máximo.
+
+---
+
+\paragraph{Resumo.}
+O estimador de máxima verossimilhança é:
+\[
+\boxed{\widehat\theta_{MV}=\frac{n}{\sum_{i=1}^n z_i}
+=\frac{1}{\overline Z}},
+\]
+com concavidade confirmada por $\ell''(\theta)=-n/\theta^2<0$.
+
+\medskip
+\textbf{Invariância do MLE.} Para $g(\theta)$, o EMV é $\widehat g=g(\widehat\theta_{MV})$.
+
+\bigskip
+\textbf{(a) } $g(\theta)=P_\theta(Z>1)$.
+Como $P_\theta(Z>1)=e^{-\theta}$, então
+\[
+\widehat g_{(a)}=e^{-\widehat\theta_{MV}}.
+\]
+
+\medskip
+\textbf{(b) } $g(\theta)=P_\theta(0.1<Z<1)$.
+Como $P_\theta(a<Z<b)=e^{-\theta a}-e^{-\theta b}$,
+\[
+\widehat g_{(b)}=e^{-0.1\,\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}.
+\]
+
+\medskip
+\textbf{(c) } $g(\theta)=\mathrm{Var}_\theta(Z)$.
+Para Exponencial($\theta$) com taxa, $\mathrm{Var}(Z)=1/\theta^2$; logo
+\[
+\widehat g_{(c)}=\frac{1}{\widehat\theta_{MV}^2}=\overline Z^{\,2}.
+\]
+
+\bigskip
+\textbf{(d) ICs aproximados de 95\% para $g(\theta)$ (método delta).}
+Para a Exponencial, a informação de Fisher é $I(\theta)=\tfrac{n}{\theta^2}$,
+de modo que
+\[
+\widehat\theta_{MV}\ \dot\sim\ N\!\left(\theta,\ \frac{\theta^2}{n}\right).
+\]
+Pelo método delta, para $g$ diferenciável:
+\[
+\widehat g\ \dot\sim\ N\!\left(g(\theta),\ \frac{\theta^2}{n}\,[g'(\theta)]^2\right),
+\quad\text{e usamos } \theta\leftarrow\widehat\theta_{MV}.
+\]
+Assim:
+
+\smallskip
+\begin{itemize}
+\item[(a)] $g(\theta)=e^{-\theta}$, $g'(\theta)=-e^{-\theta}$. Então
+\[
+\widehat{\mathrm{Var}}(\widehat g_{(a)})
+=\frac{\widehat\theta_{MV}^2}{n}\,e^{-2\widehat\theta_{MV}},
+\qquad
+\text{IC}_{95\%}:\ \widehat g_{(a)}\ \pm\ 1.96\,
+\sqrt{\frac{\widehat\theta_{MV}^2}{n}\,e^{-2\widehat\theta_{MV}}}.
+\]
+\item[(b)] $g(\theta)=e^{-0.1\theta}-e^{-\theta}$,
+\(
+g'(\theta)=-0.1\,e^{-0.1\theta}+e^{-\theta}.
+\)
+Então
+\[
+\widehat{\mathrm{Var}}(\widehat g_{(b)})
+=\frac{\widehat\theta_{MV}^2}{n}\,\bigl[-0.1\,e^{-0.1\widehat\theta_{MV}}+e^{-\widehat\theta_{MV}}\bigr]^2,
+\]
+\[
+\text{IC}_{95\%}:\ \widehat g_{(b)}\ \pm\ 1.96\,
+\sqrt{\frac{\widehat\theta_{MV}^2}{n}\,\bigl[-0.1\,e^{-0.1\widehat\theta_{MV}}+e^{-\widehat\theta_{MV}}\bigr]^2}.
+\]
+\item[(c)] $g(\theta)=1/\theta^2$, $g'(\theta)=-2/\theta^3$. Então
+\[
+\widehat{\mathrm{Var}}(\widehat g_{(c)})
+=\frac{4}{n\,\widehat\theta_{MV}^{\,4}},
+\qquad
+\text{IC}_{95\%}:\ \widehat g_{(c)}\ \pm\ 1.96\,\sqrt{\frac{4}{n\,\widehat\theta_{MV}^{\,4}}}.
+\]
+\end{itemize}
+
+\medskip
+\textbf{Aplicando aos dados} $(0.2,0.6,0.3,0.2,0.8,0.12)$:
+\[
+n=6,\quad \textstyle\sum z_i=2.22,\quad \overline Z=0.37,\quad
+\widehat\theta_{MV}=\frac{n}{\sum z_i}=\frac{6}{2.22}\approx 2.7027.
+\]
+\emph{Estimativas plug-in:}
+\[
+\widehat g_{(a)}=e^{-\widehat\theta_{MV}}\approx 0.0668,\qquad
+\widehat g_{(b)}=e^{-0.1\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}\approx 0.6963,\qquad
+\widehat g_{(c)}=\overline Z^{\,2}=0.1369.
+\]
+\emph{ICs (delta, 95\%):}
+\[
+\text{(a)}\ \ [0,\ 0.211]\ \ (\text{truncado a }[0,1]),
+\qquad
+\text{(b)}\ \ [0.676,\ 0.717],
+\qquad
+\text{(c)}\ \ [0,\ 0.356]\ \ (\text{truncado a }[0,\infty)).
+\]
+\textit{Obs.:} Com $n=6$ o delta pode produzir limites fora do espaço paramétrico; é
+padrão truncar aos limites naturais.
+
+\bigskip
+\textbf{(e) Cobertura por Monte Carlo (plano de simulação).}
+Para verificar a cobertura empírica dos ICs acima:
+\begin{enumerate}
+\item Fixe um valor de $\theta$ (por ex., $\theta=\widehat\theta_{MV}=2.7027$) e tamanhos $n\in\{6,10,20,30,50\}$.
+\item Para cada par $(\theta,n)$, repita $B$ vezes (ex.: $B=10{,}000$):
+\begin{enumerate}
+\item Gere $Z_1,\ldots,Z_n\overset{iid}\sim \mathrm{Exp}(\theta)$.
+\item Calcule $\widehat\theta_{MV}$, as estimativas $\widehat g$ e os ICs (delta) de (a)--(c).
+\item Registre se o verdadeiro $g(\theta)$ caiu dentro do IC.
+\end{enumerate}
+\item Estime a cobertura como a frequência relativa de acertos. Compare com 95\%.
+\item Se a cobertura ficar abaixo de 95\%, aumente $n$ até estabilizar próximo de 95\%.
+\end{enumerate}
+\textit{Expectativa:} Para $n=6$, (a) e (c) tendem a cobertura abaixo de 95\% (assimetria/limites fora do espaço).
+Cobertura melhora sensivelmente para $n\gtrsim 30$. 

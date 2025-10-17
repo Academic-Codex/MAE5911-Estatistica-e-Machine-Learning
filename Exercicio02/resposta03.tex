@@ -1,0 +1,128 @@
+\textbf{Questão 03.} Seja $(Z_1,\ldots,Z_n)$ uma amostra aleatória de
+$Z\sim\mathcal N(\mu,\sigma^2)$, com parâmetro vetorial
+$\theta=(\mu,\sigma^2)\in\mathbb R\times(0,\infty)$.
+
+\medskip
+\textbf{EMV de $(\mu,\sigma^2)$.}
+A densidade conjunta é
+\[
+L(\mu,\sigma^2;\mathbf z)=
+\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left\{-\frac{(z_i-\mu)^2}{2\sigma^2}\right\}.
+\]
+A log-verossimilhança (ignorando constantes que não dependem de $\mu,\sigma^2$) é
+\[
+\ell(\mu,\sigma^2)
+= -\frac{n}{2}\log\sigma^2
+  -\frac{1}{2\sigma^2}\sum_{i=1}^n (z_i-\mu)^2 .
+\]
+Derivando e igualando a zero:
+\[
+\frac{\partial \ell}{\partial \mu}
+= -\frac{1}{\sigma^2}\sum_{i=1}^n (z_i-\mu)
+= -\frac{n}{\sigma^2}\,(\bar z-\mu)=0
+\;\Longrightarrow\;
+\widehat\mu_{MV}=\bar Z=\frac{1}{n}\sum_{i=1}^n Z_i.
+\]
+Para $\sigma^2$,
+\[
+\frac{\partial \ell}{\partial \sigma^2}
+= -\frac{n}{2}\,\frac{1}{\sigma^2}
+  +\frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (z_i-\mu)^2
+  =0
+\;\Longrightarrow\;
+\widehat\sigma^2_{MV}
+=\frac{1}{n}\sum_{i=1}^n (Z_i-\bar Z)^2.
+\]
+A matriz Hessiana é negativa definida em $(\bar z,\widehat\sigma^2)$, de modo que os pontos críticos são máximos globais.
+
+\medskip
+\textbf{Princípio de invariância do EMV.}
+Para qualquer função $g(\mu,\sigma^2)$, o EMV é o \emph{plug-in}
+\[
+\widehat g \;=\; g\big(\widehat\mu_{MV},\widehat\sigma^2_{MV}\big).
+\]
+
+\bigskip
+\textbf{(a) } $g(\theta)=\mathbb E_\theta(Z)=\mu$.
+Pela invariância,
+\[
+\boxed{\;\widehat g_{(a)}=\widehat\mu_{MV}=\bar Z\; }.
+\]
+
+\bigskip
+\textbf{(b) } $g(\theta)=P_\theta(Z<2)$.
+Como $Z\sim\mathcal N(\mu,\sigma^2)$,
+\[
+P_\theta(Z<2)=\Phi\!\left(\frac{2-\mu}{\sigma}\right),
+\]
+onde $\Phi$ é a cdf da Normal padrão. Logo,
+\[
+\boxed{\;\widehat g_{(b)}
+=\Phi\!\left(\dfrac{2-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)\; }.
+\]
+
+\bigskip
+\textbf{(c) } $g(\theta)=P_\theta(2.6<Z<4)$.
+\[
+P_\theta(2.6<Z<4)=
+\Phi\!\left(\frac{4-\mu}{\sigma}\right)-
+\Phi\!\left(\frac{2.6-\mu}{\sigma}\right),
+\]
+portanto
+\[
+\boxed{\;\widehat g_{(c)}
+=\Phi\!\left(\dfrac{4-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)-
+ \Phi\!\left(\dfrac{2.6-\widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)\; }.
+\]
+
+\bigskip
+\textbf{(d) } $g(\theta)=\mathrm{Var}_\theta(Z)=\sigma^2$.
+Pela invariância,
+\[
+\boxed{\;\widehat g_{(d)}=\widehat\sigma^2_{MV}
+=\dfrac{1}{n}\sum_{i=1}^n (Z_i-\bar Z)^2\; }.
+\]
+
+\bigskip
+\textbf{(e) } Dados observados: $(2.4, 2.7, 2.3, 2.0, 2.5, 2.6)$.
+Temos $n=6$, $\sum z_i=14.5$, logo
+\[
+\bar Z=\frac{14.5}{6}=2.416\overline{6}.
+\]
+Os desvios ao quadrado:
+\[
+\sum_{i=1}^n (z_i-\bar Z)^2
+=0.00278+0.08028+0.01389+0.17361+0.00694+0.03361
+=0.31111\;(\text{aprox.})
+\]
+Assim,
+\[
+\widehat\sigma^2_{MV}=\frac{0.31111}{6}=0.05185,\qquad
+\widehat\sigma_{MV}=\sqrt{0.05185}\approx 0.2278.
+\]
+
+Portanto:
+\[
+\widehat g_{(a)}=\bar Z\approx 2.4167.
+\]
+\[
+\widehat g_{(b)}=
+\Phi\!\left(\frac{2-2.4167}{0.2278}\right)
+=\Phi(-1.83)\approx 0.033.
+\]
+\[
+\widehat g_{(c)}=
+\Phi\!\left(\frac{4-2.4167}{0.2278}\right)-
+\Phi\!\left(\frac{2.6-2.4167}{0.2278}\right)
+\approx \Phi(6.95)-\Phi(0.80)
+\approx 1-0.2119
+\approx 0.788.
+\]
+\[
+\widehat g_{(d)}=\widehat\sigma^2_{MV}\approx 0.0519.
+\]
+
+\medskip
+\textit{Observação:} $\widehat\sigma^2_{MV}$ usa $1/n$ (EMV). O estimador não-viesado
+usa $1/(n-1)$ e não deve ser usado aqui.
