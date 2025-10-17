@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1760725506.71694 "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1760725507.37649 0
+["pdflatex"] 1760726841.2677 "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1760726841.96687 0
   "/Users/nara/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1760720925.29451 5533 90275157a75f0b3ca6730e09e4b65c88 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
@@ -191,12 +191,12 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1757338246 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1757338223 3345729 3e7c9e66ea124c72a9dd9435045b7d29 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1760725507.31199 2765 8f1a617b7e61a0cc92769012e14f4440 "pdflatex"
+  "main.aux" 1760726841.89416 2765 ed84fccd2f66d1001bdb8cf3d3774bf3 "pdflatex"
   "main.tex" 1760720925.29451 5533 90275157a75f0b3ca6730e09e4b65c88 ""
   "research01.tex" 1760723957.16437 4218 05cf37d25c3b8da67824f5e1695a17df ""
   "research02.tex" 1760723043.84393 3859 3bef11bd99c0106c79d65feec9230e70 ""
-  "research03.tex" 1760725506.52705 6437 3996e2ce5dbab847fe569aa4b765d5e8 ""
-  "research04.tex" 1760719657.45894 800 d57e0d753fd84f0738534e46a714e13e ""
+  "research03.tex" 1760725710.52153 6422 9785e8c2477e9bb0ff167834fa8fd142 ""
+  "research04.tex" 1760726841.05105 8620 69f6a43ff661ccd32b37040d12d9dc5c ""
   "resposta01.tex" 1760719254.87915 3419 b69ce08d8654e459ba426cad37488d1a ""
   "resposta02.tex" 1760720986.1139 5182 020827f3bcae62b0e1011cd938af0da7 ""
   "resposta03.tex" 1760719444.90118 5888 9f869a9565a601f4934bb88111fbef7d ""
