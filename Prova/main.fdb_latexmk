@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1762286495.06022 "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" "main.pdf" "main" 1762286495.89996 0
-  "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" 1762286495.49897 10486 35ccc13950db503898b29f708cc698a1 ""
+["pdflatex"] 1762297780.33167 "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" "main.pdf" "main" 1762297781.22503 0
+  "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" 1762297780.14348 14202 0d8939d5e93c11c681a6a71842d79b61 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -18,6 +18,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmbx10.tfm" 1254269338 12076 b54175e02101bea1addf6b2d0197ed12 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm" 1254269338 12088 d750ac78274fa7c9f73ba09914c04f8a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr10.tfm" 1254269338 12056 7e13df7fe4cbce21b072ba7c4f4deb6e ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr12.tfm" 1254269338 12092 7b1546e2d096cfd5dcbd4049b0b1ec2e ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr5.tfm" 1254269338 12020 46464c854bf317de2a7a0bbe4a1160ca ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr7.tfm" 1254269338 12064 09aa3eeac96bf141d673bb1b0385ce55 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr9.tfm" 1254269338 12084 b7f5e4c003de6f57f07c7e9fee73a37c ""
@@ -218,8 +219,9 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1762286495.77306 488 cd55a2da6dd9400efeca17b05bbe572b "pdflatex"
-  "main.tex" 1762286495.49897 10486 35ccc13950db503898b29f708cc698a1 ""
+  "figuras/qrcode.png" 1762287050.03975 16268 5ce51a1cf6e9a817b91c24229dd21a3b ""
+  "main.aux" 1762297781.13413 813 79635a1fe13fa2396618663661ee0203 "pdflatex"
+  "main.tex" 1762297780.14348 14202 0d8939d5e93c11c681a6a71842d79b61 ""
   "student.sty" 1761855038.52336 2396 f7da7f427cf32ded8b685ce2de8a8a16 ""
   (generated)
   "main.aux"

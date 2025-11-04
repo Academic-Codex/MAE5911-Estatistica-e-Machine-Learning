@@ -17,6 +17,7 @@
 \usepackage[alf]{abntex2cite} % citação ABNT autor-data
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{url}
 \lstset{
   basicstyle=\ttfamily\small,
   commentstyle=\color{gray}\itshape,
@@ -193,9 +194,54 @@ como uma probabilidade sobre o mundo real ou sobre a veracidade de $H_0$.
 Tratá-lo dessa forma constitui um erro de violação da $\sigma$-álgebra — 
 um deslize epistemológico em que se tenta extrair informação empírica de uma construção em sua definição epistêmica condicional e autoreferente.
 
+\subsection*{Implementações}
 
-O exemplo numérico apresentado na Listing~\ref{lst:poisson}, baseado em um modelo de regressão Poisson, 
-ilustra precisamente como o valor-p assintótico se comporta sob diferentes regimes de validade do modelo. \\[1em]
+O exemplo numérico apresentado na Listing~\ref{lst:regressao-poisson} tem o objetivo de ilustrar o comportamento do valor-$p$ sob diferentes hipóteses nulas, mantendo fixos os dados observados. 
+O experimento baseia-se em um modelo de regressão de Poisson definido por
+\[
+Y_i \sim \text{Poisson}(\lambda_i), \quad \text{com} \quad \log(\lambda_i) = \theta_0 + \theta x_i,
+\]
+onde $\theta_0 = 1$ e o valor verdadeiro do parâmetro é $\theta = 0{,}20$. 
+Uma única amostra de tamanho $n = 200$ foi gerada segundo esse modelo, representando o conjunto de dados ``observados'' em um mundo empírico fixo.
+
+A partir dessa amostra, foram testadas três hipóteses nulas distintas sobre o mesmo conjunto de dados:
+\[
+H_{0}^{(A)} : \theta = 0{,}20, \qquad
+H_{0}^{(B)} : \theta = 0{,}10, \qquad
+H_{0}^{(C)} : \theta = 0{,}60.
+\]
+Cada hipótese foi avaliada por meio da estatística de Wald,
+\[
+Z = \frac{\hat{\theta} - \theta_{H_0}}{\operatorname{se}(\hat{\theta})},
+\]
+e o valor-$p$ correspondente foi calculado de forma unicaudal:
+\[
+p = P(Z \ge z_{\text{obs}}),
+\]
+dado que o interesse é avaliar se o parâmetro estimado apresenta um desvio positivo em relação à hipótese nula.
+
+Os resultados obtidos encontram-se na Tabela~\ref{tab:resultado_simulacao}. 
+Observa-se que, quando a hipótese nula coincide com o valor real do parâmetro ($H_{0}^{(A)}$), o valor-$p$ é elevado e a hipótese não é rejeitada. 
+À medida que o valor hipotético se afasta de $\theta$, o valor-$p$ decresce rapidamente, levando à rejeição de $H_0$ nos casos de maior discrepância ($H_{0}^{(C)}$). 
+Essa simulação evidencia o papel do valor-$p$ como medida de compatibilidade entre modelo e dado: ele quantifica o grau de discrepância entre a hipótese estatística e a estrutura empírica observada.
+
+\begin{table}[H]
+\centering
+\caption{Resultados do cálculo do valor-$p$ para diferentes hipóteses nulas sob o modelo de Poisson.}
+\label{tab:resultado_simulacao}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Cenário} & \textbf{Hipótese nula} & \textbf{Valor-$p$} & \textbf{Decisão} & \textbf{$\hat{\theta}$} & \textbf{$\theta$} \\
+\midrule
+Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 2{,}00$ & 0{,}8928 & Não rejeita $H_0$ & 1{,}994 & 2{,}00 \\
+Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 2{,}06$ & 0{,}1096 & Não rejeita $H_0$ & 1{,}989 & 2{,}00 \\
+Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 2{,}30$ & 0{,}0000 & Rejeita $H_0$ & 1{,}991 & 2{,}00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{answer}
+
+
 Nas simulações de Monte Carlo realizadas sob $H_0$, os p-valores mostraram-se aproximadamente uniformes, 
 reproduzindo o comportamento esperado quando as condições assintóticas são satisfeitas. 
 No entanto, ao introduzir pequenas violações, como superdispersão ou dependência entre observações, 
@@ -203,35 +249,60 @@ a distribuição dos p-valores tornou-se assimetricamente inclinada, evidenciand
 Esse resultado empírico confirma que a discrepância entre o valor-p exato e o assintótico não é meramente numérica, 
 mas reflete o descompasso lógico entre o universo ideal de $H_0$ e o comportamento real dos dados. 
 
-\end{answer}
+\begin{lstlisting}[language=R, caption={Exemplo numérico e simulação de Monte Carlo — Regressão Poisson}, label={lst:poisson-analitico}]
+# ====================================================================
+# Regressão Poisson (GLM)
+# ====================================================================
 
-\begin{lstlisting}[language=R, caption={Exemplo numérico e simulação de Monte Carlo — Regressão Poisson}, label={lst:poisson}]
+set.seed(123)
+
 # Parâmetros
-n      = 200
-beta0  = 1
-beta1  = 0.3     # valor verdadeiro
-alpha  = 0.05
-M      = 10000
+n = 200
+beta0 = 1.0
+beta1_real = 0.20   # efeito verdadeiro fixo
+alpha = 0.05
 
-# Covariável x
+# Covariável e única amostra gerada do mundo real
 x = runif(n, 0, 2)
+lambda = exp(beta0 + beta1_real * x)
+y = rpois(n, lambda)
 
-# Função auxiliar: ajuste GLM Poisson e teste H0: beta1 = 0
-teste_poisson = function(y, x) {
-  
-  m_full = glm(y ~ x, family = poisson)
-  m_red  = glm(y ~ 1, family = poisson)
-  
-  # Estatísticas de teste
-  LR = 2 * (logLik(m_full)[1] - logLik(m_red)[1])
-  W  = (coef(m_full)[2] / sqrt(vcov(m_full)[2,2]))^2
-  S  = NA   # (score não implementado neste exemplo simples)
-  
-  p_lr = 1 - pchisq(LR, 1)
-  p_w  = 1 - pchisq(W,  1)
-  
-  return(c(p_lr = p_lr, p_w = p_w))
+# Ajuste único nos mesmos dados
+modelo = glm(y ~ x, family = poisson)
+
+# ---------------------------------------------------------------
+# Função: testa H0: beta1 = b0 (teste de Wald)
+# ---------------------------------------------------------------
+testa_glm_1amostra = function(mod, b0) {
+  b1_hat = coef(mod)[2]
+  se_b1  = sqrt(vcov(mod)[2, 2])
+  Z = (b1_hat - b0) / se_b1
+  p_valor = 2 * (1 - pnorm(abs(Z)))   # bicaudal
+  decisao = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
+  data.frame(
+    hipotese_nula = paste0("H0: beta1 = ", format(b0, nsmall = 2)),
+    valor_p = p_valor,
+    decisao = decisao,
+    beta1_estimado = b1_hat,
+    beta1_real = beta1_real
+  )
 }
+
+# Hipóteses a testar sobre o mesmo conjunto (exato, pouco e muito desvio)
+B0s = c(0.20, 0.10, 0.60)
+
+resA = testa_glm_1amostra(modelo, B0s[1])  # exato 
+resB = testa_glm_1amostra(modelo, B0s[2])  # pouco desvio
+resC = testa_glm_1amostra(modelo, B0s[3])  # desvio forte
+
+resumo_glm = rbind(
+  "Cenário A (H0 exato)"              = resA,
+  "Cenário B (H0 com pouco desvio)"   = resB,
+  "Cenário C (H0 com muito desvio)"   = resC
+)
+
+# Saída formatada (sem <dbl>)
+noquote(resumo_glm)
 \end{lstlisting}
 
 
@@ -242,4 +313,13 @@ teste_poisson = function(y, x) {
     \begin{answer}[Questão 03]
     \end{answer}
 
+     \begin{minipage}[c]{0.84\textwidth}
+        \hspace{2em}%
+        Os códigos desde estudo estão disponibilizados em \url{http://academic-codex.github.io/MAE5911-Estatistica-e-Machine-Learning}.
+      \end{minipage}
+      \hfill
+      \begin{minipage}[c]{0.13\textwidth}
+    \centering
+        \includegraphics[width=0.7\linewidth]{figuras/qrcode.png}
+      \end{minipage}
 \end{document}
