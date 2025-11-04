@@ -196,7 +196,7 @@ um deslize epistemológico em que se tenta extrair informação empírica de uma
 
 \subsection*{Implementações}
 
-O exemplo numérico apresentado na Listing~\ref{lst:regressao-poisson} tem o objetivo de ilustrar o comportamento do valor-$p$ sob diferentes hipóteses nulas, mantendo fixos os dados observados. 
+O exemplo numérico apresentado na Listing~\ref{lst:poisson-numerico} tem o objetivo de ilustrar o comportamento do valor-$p$ sob diferentes hipóteses nulas, mantendo fixos os dados observados. 
 O experimento baseia-se em um modelo de regressão de Poisson definido por
 \[
 Y_i \sim \text{Poisson}(\lambda_i), \quad \text{com} \quad \log(\lambda_i) = \theta_0 + \theta x_i,
@@ -232,12 +232,34 @@ Essa simulação evidencia o papel do valor-$p$ como medida de compatibilidade e
 \toprule
 \textbf{Cenário} & \textbf{Hipótese nula} & \textbf{Valor-$p$} & \textbf{Decisão} & \textbf{$\hat{\theta}$} & \textbf{$\theta$} \\
 \midrule
-Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 2{,}00$ & 0{,}8928 & Não rejeita $H_0$ & 1{,}994 & 2{,}00 \\
-Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 2{,}06$ & 0{,}1096 & Não rejeita $H_0$ & 1{,}989 & 2{,}00 \\
-Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 2{,}30$ & 0{,}0000 & Rejeita $H_0$ & 1{,}991 & 2{,}00 \\
+Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 0{,}20$ & 0{,}212614 & Não rejeita $H_0$ & 0{,}254359 & 0{,}2 \\
+Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 0{,}10$ & 0{,}011779 & Rejeita $H_0$ & 0{,}254359 & 0{,}2 \\
+Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 1{,}000000 & Não rejeita $H_0$ & 0{,}254359 & 0{,}2 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\paragraph{Simulação de Monte Carlo (regressão de Poisson).}
+Fixamos um desenho \(x_i \sim \text{Unif}(0,2)\) e geramos, em cada replicação,
+um conjunto de dados \(Y_i \sim \text{Poisson}(\lambda_i)\) com
+\(\log \lambda_i = \beta_0 + \theta x_i\), onde \(\beta_0 = 1\) e \(\theta = 0{,}20\).
+Em cada amostra, ajustamos um GLM de Poisson e testamos, com o \emph{mesmo} conjunto de dados,
+três hipóteses nulas sobre o coeficiente de \(x\): \(H0_A:\theta = 0{,}20\),
+\(H0_B:\theta = 0{,}10\) e \(H0_C:\theta = 0{,}60\).
+O valor-$p$ utilizado é o assintótico (Wald) \emph{unicaudal à direita},
+\(p = \Pr(Z \ge z_{\text{obs}})\), com
+\(Z = (\hat\theta - \theta_{H_0})/\mathrm{se}(\hat\theta)\).
+A partir de \(M\) replicações, reportamos (para cada cenário) a proporção de rejeições
+(\emph{erro tipo~I} quando \(H0_A\) é verdadeiro, \emph{potência} quando \(H0_B\) e \(H0_C\) são falsos),
+bem como estatísticas resumidas da distribuição dos valores-$p$ e a média de \(\hat\theta\).
+
+Quando \(H0_A\) coincide com o parâmetro verdadeiro, a proporção de rejeição aproxima-se de \(\alpha\),
+e os valores-$p$ apresentam distribuição aproximadamente uniforme (com pequenas distorções finitas).
+Para \(H0_B\) (desvio pequeno), a potência cresce moderadamente; para \(H0_C\) (desvio grande),
+a potência aproxima-se de 1 e os valores-$p$ concentram-se próximos de 0.
+Esses resultados ilustram o papel do valor-$p$ como medida de \emph{compatibilidade}
+entre hipótese e dado: quanto maior a discrepância \(\theta_{H_0}-\theta\) na direção do teste,
+menor tende a ser o valor-$p$ e maior a taxa de rejeição.
 \end{answer}
 
 
@@ -248,9 +270,9 @@ a distribuição dos p-valores tornou-se assimetricamente inclinada, evidenciand
 Esse resultado empírico confirma que a discrepância entre o valor-p exato e o assintótico não é meramente numérica, 
 mas reflete o descompasso lógico entre o universo ideal de $H_0$ e o comportamento real dos dados. 
 
-\begin{lstlisting}[language=R, caption={Exemplo numérico e simulação de Monte Carlo — Regressão Poisson}, label={lst:poisson-analitico}]
+\begin{lstlisting}[language=R, caption={Exemplo numérico - Regressão Poisson}, label={lst:poisson-numerico}]
 # ====================================================================
-# Regressão Poisson (GLM)
+# Regressão Poisson
 # ====================================================================
 
 set.seed(123)
