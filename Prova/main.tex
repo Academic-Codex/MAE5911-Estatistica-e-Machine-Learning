@@ -1,0 +1,157 @@
+\documentclass[a4paper]{article}
+\usepackage{student}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, decorations.pathreplacing}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[numbers,sort&compress]{natbib} % ou [authoryear]
+\usepackage[alf]{abntex2cite} % citação ABNT autor-data
+\pagestyle{plain}
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% Definindo o estilo de destaque com linhas pontilhadas
+\tikzstyle{highlight} = [draw, dashed, thick, rectangle, rounded corners, inner sep=0.2cm, orange]
+
+
+\tikzstyle{startstop} = [
+    rectangle, rounded corners, minimum width=0.5cm,
+    text centered, draw=black, fill=blue!10, font=\small
+]
+\tikzstyle{startstop_S} = [
+    rectangle, rounded corners, minimum width=0.5cm, minimum height=0.8cm,
+    text centered, draw=black, fill=green!30, font=\small
+]
+\tikzstyle{decision} = [
+    diamond, aspect=2, draw=black, fill=orange!15, align=center,
+    text centered, inner sep=0pt, font=\small
+]
+\tikzstyle{decision_S} = [
+    diamond, aspect=2, draw=black, fill=orange!30, align=center,
+    text centered, inner sep=0pt, font=\small
+]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+
+% Metadata
+\date{\today}
+\setmodule{MAE5911/IME: Fundamentos de Estatística e Machine Learning. \\ Prof.: Alexandre Galvão Patriota} 
+\setterm{2o. semestre, 2025}
+
+%-------------------------------%
+% Other details
+% TODO: Fill these
+%-------------------------------%
+\title{Prova - 04/11}
+\setmembername{Nara Avila Moraes}  % Fill group member names
+\setmemberuid{5716734}  % Fill group member uids (same order)
+
+%-------------------------------%
+% Add / Delete commands and packages
+% TODO: Add / Delete here as you need
+%-------------------------------%
+\usepackage{amsmath,amssymb,bm}
+
+\newcommand{\KL}{\mathrm{KL}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\T}{\top}
+
+\newcommand{\expdist}[2]{%
+        \normalfont{\textsc{Exp}}(#1, #2)%
+    }
+\newcommand{\expparam}{\bm \lambda}
+\newcommand{\Expparam}{\bm \Lambda}
+\newcommand{\natparam}{\bm \eta}
+\newcommand{\Natparam}{\bm H}
+\newcommand{\sufstat}{\bm u}
+
+% Main document
+\begin{document}
+    % Add header
+    \header{}
+
+\textbf{Questão 01:} Defina formalmente o valor-p (\textbf{aproximado}) para testar uma hipótese geral e discuta os problemas de interpretação usuais ao utilizar a sua versão condicional à hipótese nula. Apresente um exemplo numérico e simulações de Monte Carlo, usando um modelo de regressão Poisson, para ilustrar a sua aplicação. \\[0.5cm]
+\textbf{Questão 02:} Apresente um Teorema da Aproximação Universal que generalize o Teorema de Funahashi, discuta as diferenças entre os resultados por meio de exemplos de redes neurais. \\[0.5cm]
+\textbf{Questão 03:} Proponha uma função de estimação robusta para estimar os parâmetros de uma regressão Binomial, $Y|X=x \sim \mathrm{Bin}(m,\mu_\theta(x))$, em que $\mu_\theta(\cdot)$ é uma função com imagem em $[0,1]$ e $\theta$ é o vetor de parâmetros. Apresente um exemplo numérico e uma simulação de Monte Carlo, como feito em sala, para ilustrar os resultados. Perturbe a distribuição dos dados e mostre que a sua proposta é de fato robusta contra essa perturbação. \\[0.5cm]
+
+    \begin{answer}[Questão 01]
+O valor-p, tal como proposto originalmente por \textit{Fisher} (1925), é uma medida \textbf{condicional sob} $H_0$, definida por
+\[
+p(H_0, z_n) = P_\theta^{(n)}\big(T_{H_0}(Z_n) \ge T_{H_0}(z_n) \mid H_0\big),
+\]
+isto é, a probabilidade de se observar uma estatística tão extrema quanto a obtida, assumindo $H_0$ verdadeira.
+O valor-p foi concebido por Fisher como um \textit{instrumento de contraste} entre dado e hipótese, e não como uma medida de verdade.
+Seu objetivo era expressar o grau de incompatibilidade empírica entre o fenômeno observado e as consequências lógicas de $H_0$.
+
+Posteriormente, a escola Neyman--Pearson reinterpretou esse conceito dentro de uma estrutura de decisão.
+Nessa transição, o valor-p perdeu seu caráter exploratório e passou a ser tratado como um critério binário, expresso por: ``rejeita'' ou ``não rejeita'' $H_0$.
+Essa leitura gerou um equívoco lógico: o valor-p, que é definido dentro do universo em que $H_0$ é verdadeira,
+passou a ser interpretado como se dissesse algo sobre a probabilidade de $H_0$ ser verdadeira.
+
+Na ausência da distribuição exata de $T_{H_0}$, o \textbf{valor-p assintótico} é definido por:
+\[
+p^{(a)}(H_0, z_n) = \sup_{\theta \in \Theta_0} P_\theta(W_\theta \ge T_{H_0}(z_n)),
+\]
+em que $W_\theta$ representa a distribuição-limite de $T_{H_0}$ quando $n \to \infty$.
+Essa versão não é um aprimoramento do valor exato, mas uma \textit{idealização teórica}: o cálculo passa a ocorrer em um mundo em que o tamanho da amostra tende ao infinito
+e as condições de regularidade são perfeitamente satisfeitas.
+Nesse sentido, o valor-p aproximado não se aproxima da verdade empírica, mas de uma coerência lógica interna ao modelo.
+
+Assim, o valor-p nunca mede a probabilidade de $H_0$, mas apenas a compatibilidade entre dado e modelo,
+isto é, o quanto o fenômeno observado tensiona o universo hipotético que o contém.
+Tratá-lo como probabilidade de $H_0$ é tentar inferir o mundo empírico a partir de uma suposição epistemológica autorreferente e idealizada.
+Por isso, o valor-p deve ser entendido não como medida de crença, mas como \textbf{medida de discrepância entre o real e o teórico} --- 
+uma forma de pontuar a coerência entre o fenômeno e o modelo, e não de confirmar a verdade da hipótese nula.
+\end{answer}
+
+    \begin{answer}[Questão 02]
+    \end{answer}
+
+    \begin{answer}[Questão 03]
+    \end{answer}
+
+
+
+
+Na ausência da distribuição exata de $T_{H_0}$, define-se o \textbf{valor-p assintótico}:
+\[
+p^{(a)}(H_0, z_n) = \sup_{\theta \in \Theta_0} P_\theta(W_\theta \ge T_{H_0}(z_n)),
+\]
+em que $W_\theta$ representa a distribuição-limite de $T_{H_0}$ quando $n \to \infty$.
+Essa versão não é um aprimoramento do valor exato, mas uma \textit{idealização teórica}: o cálculo passa a ocorrer em um mundo em que o tamanho da amostra tende ao infinito
+e as condições de regularidade são perfeitamente satisfeitas.
+Nesse sentido, o valor-p aproximado não se aproxima da verdade empírica, mas de uma coerência lógica interna ao modelo.
+
+O valor-p, tal como proposto originalmente por \textit{Fisher} (1925), é uma medida \textbf{condicional sob} $H_0$, definida por
+\[
+p(H_0, z_n) = P_\theta^{(n)}\big(T_{H_0}(Z_n) \ge T_{H_0}(z_n) \mid H_0\big),
+\]
+isto é, a probabilidade de se observar uma estatística tão extrema quanto a obtida, assumindo $H_0$ verdadeira.
+O valor-p foi concebido por Fisher como um \textit{instrumento de contraste} entre dado e hipótese, e não como uma medida de verdade.
+Seu objetivo era expressar o grau de incompatibilidade empírica entre o fenômeno observado e as consequências lógicas de $H_0$.
+
+Posteriormente, a escola \textit{Neyman--Pearson} reinterpretou esse conceito dentro de uma estrutura de decisão formal,
+introduzindo regras fixas de rejeição, níveis de significância ($\alpha$) e poder do teste.
+Nessa transição, o valor-p perdeu seu caráter exploratório e passou a ser tratado como um \textit{critério binário de decisão} --- ``rejeita'' ou ``não rejeita'' $H_0$.
+Essa leitura gerou um equívoco lógico: o valor-p, que é definido dentro do universo em que $H_0$ é verdadeira,
+passou a ser interpretado como se dissesse algo sobre a probabilidade de $H_0$ ser verdadeira.
+
+Assim, o valor-p nunca mede a probabilidade de $H_0$, mas apenas a compatibilidade entre dado e modelo,
+isto é, o quanto o fenômeno observado tensiona o universo hipotético que o contém.
+Tratá-lo como probabilidade de $H_0$ é tentar inferir o mundo empírico a partir de uma suposição epistemológica autorreferente e idealizada.
+Por isso, o valor-p deve ser entendido não como medida de crença, mas como \textbf{medida de discrepância entre o real e o teórico} --- 
+uma forma de pontuar a coerência entre o fenômeno e o modelo, e não de confirmar a verdade da hipótese nula.
+
+
+\end{document}
