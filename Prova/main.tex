@@ -523,6 +523,117 @@ noquote(resumo_mc)
     \end{answer}
 
     \begin{answer}[Questão 03]
+        \section{Regressão Binomial Robusta: Formulação e Evidências}
+
+\subsection{Modelo e Construção do Experimento}
+
+Considerou-se o modelo binomial
+\[
+Y_i \mid X_i \sim \mathrm{Bin}(m, \mu_\theta(X_i)), 
+\quad \text{com} \quad 
+\mu_\theta(x) = \frac{1}{1 + e^{-(\theta_0 + \theta_1 x)}},
+\]
+onde $\theta = (\theta_0, \theta_1)$ é o vetor de parâmetros a ser estimado. 
+Os parâmetros verdadeiros foram fixados em $\theta_0 = -0.5$ e $\theta_1 = 1.2$, com $n = 200$ observações e $m = 10$ tentativas por ponto.
+
+A variável explicativa foi gerada como $X_i \sim U(-2,2)$ e as respostas $Y_i$ a partir do modelo binomial acima.  
+Para introduzir contaminação, selecionaram-se $10\%$ das observações com $x_i < 0.5$ e aplicou-se a seguinte modificação adversária:
+\[
+x_i \leftarrow x_i + 3, 
+\quad 
+y_i \leftarrow 
+\begin{cases}
+0, & \text{com probabilidade } 0.5,\\
+m, & \text{com probabilidade } 0.5.
+\end{cases}
+\]
+Esse procedimento gera simultaneamente \textit{outliers de alavancagem} (no eixo $x$) e \textit{outliers de resposta} (no eixo $y$), de modo análogo à estratégia demonstrada em sala.
+
+\subsection{Função de Estimação Robusta}
+
+O estimador clássico de máxima verossimilhança (MLE) foi obtido pela regressão logística usual:
+\[
+\hat{\theta}_{\text{MLE}} = 
+\arg\max_{\theta} 
+\sum_{i=1}^{n} 
+\left[
+y_i \log \mu_\theta(x_i)
++ (m - y_i) \log (1 - \mu_\theta(x_i))
+\right].
+\]
+
+Para tornar a estimação robusta, definiu-se uma \textbf{função de estimação ponderada} baseada no resíduo $r_i = y_i - m \mu_\theta(x_i)$:
+\[
+U_i(\theta) = 
+\begin{pmatrix}
+w_i (y_i - m \mu_\theta(x_i)) \\
+w_i x_i (y_i - m \mu_\theta(x_i))
+\end{pmatrix},
+\quad
+w_i = \exp\!\big(-(|r_i| - c)_+\big),
+\quad
+c = p \cdot \mathrm{IQR}(r),
+\]
+em que $(a)_+ = \max(0,a)$ e $p = 1.5$ controla o ponto de corte do intervalo interquartil.  
+O estimador robusto $\hat{\theta}_R$ é então obtido pela minimização do quadrado da soma das funções de estimação:
+\[
+\hat{\theta}_R = \arg\min_{\theta}
+\left\| \sum_{i=1}^n U_i(\theta) \right\|^2.
+\]
+
+Essa construção faz com que observações cujos resíduos ultrapassam o limite $c = p\,\mathrm{IQR}(r)$ recebam peso reduzido, atenuando sua influência no ajuste.
+
+\subsection{Simulação e Resultados}
+
+Foram realizadas $R = 500$ repetições do experimento (Monte Carlo), calculando-se para cada método a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
+A Tabela~\ref{tab:binomial_robusta} apresenta os resultados obtidos.
+
+\begin{table}[H]
+\centering
+\caption{Resumo da simulação Monte Carlo (\(R=500\)): comparação entre MLE e estimador robusto.}
+\label{tab:binomial_robusta}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Estimador} & \textbf{Média} & \textbf{Viés} & \textbf{RMSE} \\
+\midrule
+MLE $\beta_0$ & $-0.561$ & $-0.061$ & $0.087$ \\
+MLE $\beta_1$ & $0.845$ & $-0.355$ & $0.370$ \\
+Robusto $\beta_0$ & $-0.484$ & $0.016$ & $0.068$ \\
+Robusto $\beta_1$ & $1.281$ & $0.081$ & $0.104$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Evidências Gráficas}
+
+A Figura~\ref{fig:curvas_binomial_robusta} mostra as curvas ajustadas pelo MLE e pelo método robusto.  
+Os pontos destacados em vermelho correspondem às observações atenuadas pelo corte baseado no IQR.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{figuras/Regressao_Binomial_Robusta.png}
+\caption{Curvas ajustadas sob contaminação (pontos atenuados em vermelho). 
+Parâmetros: $n=200$, $m=10$, $\theta=(-0.5,1.2)$, contaminação $10\%$, $p=1.5$.}
+\label{fig:curvas_binomial_robusta}
+\end{figure}
+
+A Figura~\ref{fig:hist_binomial_robusta} apresenta as distribuições empíricas (histogramas) das estimativas sob $R=500$ repetições.  
+As curvas vermelhas representam a densidade normal ajustada a cada conjunto de estimativas, e as linhas tracejadas indicam os valores verdadeiros dos parâmetros.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figuras/histograma.png}
+\caption{Distribuição das estimativas sob contaminação: comparação entre MLE e estimador robusto.}
+\label{fig:hist_binomial_robusta}
+\end{figure}
+
+\subsection{Conclusão}
+
+Os resultados mostram que a contaminação de apenas $10\%$ das observações foi suficiente para produzir um viés expressivo no estimador clássico de máxima verossimilhança, especialmente no coeficiente $\beta_1$ (viés médio de $-0.355$).  
+O estimador robusto, por sua vez, manteve os parâmetros próximos dos valores verdadeiros e apresentou menores valores de RMSE, indicando maior estabilidade e menor sensibilidade aos outliers.
+
+As curvas ajustadas confirmam que o método robusto atenua as observações contaminadas, sem comprometer o ajuste das demais, e os histogramas de Monte Carlo mostram distribuições aproximadamente normais centradas em torno dos valores verdadeiros.  
+Essas evidências demonstram que o tratamento robusto via ponderação $w_i = \exp(-(|r_i|-c)_+)$ aproxima as estimativas da distribuição original do modelo, recuperando a forma assintótica esperada mesmo em presença de contaminação.
     \end{answer}
 
      \begin{minipage}[c]{0.84\textwidth}
