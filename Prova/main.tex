@@ -150,7 +150,7 @@ O conceito do p-valor, tal como proposto originalmente por \textit{Fisher} (1925
 \[
 \text{valor-p}(H_0, z_n) = \sup_{\theta \in \Theta_0} P_\theta^{(n)}\big(T_{H_0}(Z_n) \ge T_{H_0}(z_n)\big),
 \]
-isto é, a probabilidade de se observar uma estatística tão extrema quanto a obtida, assumindo $H_0$ verdadeira.
+isto é, a probabilidade de se observar uma estatística tão ou mais extrema quanto a obtida, assumindo $H_0$ verdadeira.
 O valor-p foi concebido por Fisher como um \textit{instrumento de contraste} entre o dado e hipótese, mas não como uma medida de verdade.
 Seu objetivo era expressar o grau de incompatibilidade empírica entre o fenômeno observado e as consequências lógicas de $H_0$.
 
@@ -192,7 +192,7 @@ O valor-p pertence ao universo lógico em que a hipótese nula $H_0$ é assumida
 Ele não pertence à $\sigma$-álgebra empírica $\mathcal{F}_n$, e portanto não pode ser interpretado
 como uma probabilidade sobre o mundo real ou sobre a veracidade de $H_0$.
 Tratá-lo dessa forma constitui um erro de violação da $\sigma$-álgebra — 
-um deslize epistemológico em que se tenta extrair informação empírica de uma construção em sua definição epistêmica condicional e autoreferente.
+um deslize epistemológico em que se tenta extrair informação empírica de uma construção que em sua definição é epistêmica e condicional.
 
 \subsection*{Implementações}
 
@@ -245,10 +245,10 @@ Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 0{,}000
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Monte Carlo
-O experimento de Monte Carlo apresentado na Listing~\ref{lst:lst:poisson-monte-carlo} tem como objetivo avaliar, de forma empírica, 
+O experimento de Monte Carlo apresentado na Listing~\ref{lst:poisson-monte-carlo} tem como objetivo avaliar, de forma empírica, 
 o comportamento assintótico do valor-$p$ quando múltiplas amostras são geradas a partir 
 de um mesmo modelo de regressão de Poisson. 
-Considera-se o modelo
+Considera-se o mesmo modelo
 
 \[
 Y_i \sim \text{Poisson}(\lambda_i), 
@@ -294,8 +294,8 @@ Observa-se que, quando $H_{0}^{(A)}$ coincide com o valor verdadeiro do parâmet
 a proporção de rejeição aproxima-se do nível $\alpha = 0{,}05$, 
 e os valores-$p$ seguem aproximadamente uma distribuição uniforme. 
 À medida que as hipóteses nulas se deslocam para valores superiores ao verdadeiro 
-— como em $H_{0}^{(B)}$ e $H_{0}^{(C)}$ — o teste unicaudal à esquerda 
-ganha poder, e os valores-$p$ tornam-se progressivamente menores. 
+— como em $H_{0}^{(B)}$ e $H_{0}^{(C)}$ — os valores presentes na porção unicaudal à esquerda 
+se tornam mais expressivos, e os valores-$p$ tornam-se progressivamente menores. 
 Nos casos de grande discrepância ($H_{0}^{(C)}$), a rejeição de $H_0$ 
 é praticamente certa, refletindo a coerência do teste de Wald 
 com o comportamento teórico esperado sob o modelo de Poisson.
@@ -388,7 +388,7 @@ resA = testa_glm_theta(modelo, H0_A, alpha)
 resB = testa_glm_theta(modelo, H0_B, alpha)
 resC = testa_glm_theta(modelo, H0_C, alpha)
 
-# Consolida com rbind 
+# Consolida os resultados
 resumo_glm = rbind(
   "Cenário A (H0 exato)"        = resA,
   "Cenário B (H0 pouco desvio)" = resB,
@@ -403,7 +403,7 @@ resumo_fmt$valor_p   = format(round(resumo_fmt$valor_p,   6), nsmall = 6)
 resumo_fmt$theta_hat = format(round(resumo_fmt$theta_hat, 6), nsmall = 6)
 resumo_fmt$theta     = format(round(resumo_fmt$theta,     6), nsmall = 6)
 
-# Tabela final (analítica)
+# Tabela final
 noquote(resumo_fmt)
 \end{lstlisting}
 
@@ -514,7 +514,7 @@ resumo_mc$q95_p           = format(round(resumo_mc$q95_p,         6), nsmall = 6
 resumo_mc$theta_hat_medio = format(round(resumo_mc$theta_hat_medio, 6), nsmall = 6)
 resumo_mc$theta_real      = format(round(resumo_mc$theta_real,      6), nsmall = 6)
 
-# Impressao da tabela
+# Tabela final
 rownames(resumo_mc) = c(
   "Cenário A (H0_A exato)",
   "Cenário B (H0_B pouco desvio)",
@@ -549,7 +549,7 @@ y_i \leftarrow
 m, & \text{com probabilidade } 0.5.
 \end{cases}
 \]
-Gerando \textit{outliers} com desvio em relação ao eixo $x$ e \textit{outliers} com desvio em relação ao eixo $y$.
+Gerando \textit{outliers} com desvio em relação ao eixo $x$, de resposta, e \textit{outliers} com desvio em relação ao eixo $y$, de alavancagem.
 \subsubsection*{Função de Estimação Robusta}
 
 O estimador clássico de máxima verossimilhança (MLE) foi obtido pela regressão logística:
