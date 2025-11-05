@@ -206,9 +206,9 @@ Uma única amostra de tamanho $n = 200$ foi gerada segundo esse modelo, represen
 
 A partir dessa amostra, foram testadas três hipóteses nulas distintas sobre o mesmo conjunto de dados:
 \[
-H_{0}^{(A)} : \theta = 0{,}20, \qquad
-H_{0}^{(B)} : \theta = 0{,}10, \qquad
-H_{0}^{(C)} : \theta = 0{,}60.
+H_{0}^{(A)} = 0{,}20, \qquad
+H_{0}^{(B)} = 0{,}10, \qquad
+H_{0}^{(C)} = 0{,}60.
 \]
 Cada hipótese foi avaliada por meio da estatística de Wald,
 \[
@@ -216,29 +216,28 @@ Z = \frac{\hat{\theta} - \theta_{H_0}}{\operatorname{se}(\hat{\theta})},
 \]
 e o valor-$p$ correspondente foi calculado de forma:
 \[
-p = P(Z \ge z_{\text{obs}}),
+p = P(Z \le z_{\text{obs}}),
 \]
+correspondendo à hipótese alternativa $H_1 : \theta < \theta_{H_0}$.
 
 Os resultados obtidos encontram-se na Tabela~\ref{tab:resultado_simulacao}. 
 Observa-se que, quando a hipótese nula coincide com o valor real do parâmetro ($\theta$), o valor-$p$ é elevado e a hipótese não é rejeitada. 
 À medida que o valor hipotético se afasta de $\theta$, o valor-$p$ decresce rapidamente, levando à rejeição de $H_0$ nos casos de maior discrepância ($H_{0}^{(C)}$). 
 Essa simulação evidencia o papel do valor-$p$ como medida de compatibilidade entre modelo e dado: ele quantifica o grau de discrepância entre a hipótese estatística e a estrutura empírica observada.
-
 \begin{table}[H]
 \centering
-\caption{Resultados do cálculo do valor-$p$ para diferentes hipóteses nulas sob o modelo de regressão de Poisson.}
+\caption{Resultados do cálculo do valor-$p$ para diferentes hipóteses nulas sob o modelo de regressão de Poisson (teste unicaudal à esquerda).}
 \label{tab:resultado_simulacao}
 \begin{tabular}{lccccc}
 \toprule
 \textbf{Cenário} & \textbf{Hipótese nula} & \textbf{Valor-$p$} & \textbf{Decisão} & \textbf{$\hat{\theta}$} & \textbf{$\theta$} \\
 \midrule
-Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 0{,}20$ & 0{,}212614 & Não rejeita $H_0$ & 0{,}254359 & 0{,}2 \\
-Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 0{,}10$ & 0{,}011779 & Rejeita $H_0$ & 0{,}254359 & 0{,}2 \\
-Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 1{,}000000 & Não rejeita $H_0$ & 0{,}254359 & 0{,}2 \\
+Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 0{,}20$ & 0{,}787386 & Não rejeita $H_0$ & 0{,}254359 & 0{,}20 \\
+Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 0{,}28$ & 0{,}353412 & Não rejeita $H_0$ & 0{,}254359 & 0{,}20 \\
+Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 0{,}000000 & Rejeita $H_0$ & 0{,}254359 & 0{,}20 \\
 \bottomrule
 \end{tabular}
 \end{table}
-
 
 O experimento de Monte Carlo tem como objetivo avaliar, de forma empírica, 
 o comportamento assintótico do valor-$p$ quando múltiplas amostras são geradas a partir 
@@ -273,7 +272,7 @@ Cada hipótese é avaliada pela estatística de Wald,
 Z = \frac{\hat{\theta} - \theta_{H_0}}{\operatorname{se}(\hat{\theta})},
 \]
 
-e o valor-$p$ correspondente é calculado de forma \emph{unicaudal à direita}:
+e o valor-$p$ correspondente é calculado de forma:
 
 \[
 p = P(Z \ge z_{\text{obs}}).
@@ -292,72 +291,238 @@ e a rejeição de $H_0$ torna-se praticamente certa em cenários de grande discr
 Essa simulação evidencia o comportamento esperado do teste de Wald sob 
 o modelo de Poisson e reforça o valor-$p$ como medida de compatibilidade 
 entre hipótese estatística e estrutura empírica observada.
-\end{answer}
 
 
+\begin{table}[H]
+\centering
+\caption{Resultados da simulação de Monte Carlo para o teste de Wald em regressão de Poisson. 
+Cada linha apresenta os resultados obtidos para uma hipótese nula distinta, com $M = 10{,}000$ replicações.}
+\label{tab:montecarlo}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Cenário} & \textbf{Hipótese nula} & \textbf{\% de rejeição} & \textbf{Média($p$)} & \textbf{Mediana($p$)} & \textbf{$p_{0{,}05}$} & \textbf{$p_{0{,}95}$} & \textbf{$\bar{\hat{\theta}}$ / $\theta$} \\
+\midrule
+Cenário A 
+& $H_{0}^{(A)} = 0{,}20$ 
+& 0{,}047700 
+& 0{,}497509 
+& 0{,}491766 
+& 0{,}052861 
+& 0{,}946414 
+& 0{,}200769 / 0{,}2 \\
+
+Cenário B 
+& $H_{0}^{(B)} = 0{,}10$ 
+& 0{,}441300 
+& 0{,}143984 
+& 0{,}066063 
+& 0{,}000982 
+& 0{,}543902 
+& 0{,}200769 / 0{,}2 \\
+
+Cenário C 
+& $H_{0}^{(C)} = 0{,}60$ 
+& 0{,}000000 
+& 0{,}999978 
+& 1{,}000000 
+& 0{,}999989 
+& 1{,}000000 
+& 0{,}200769 / 0{,}2 \\
+\bottomrule
+\end{tabular}
+\end{table}
 Nas simulações de Monte Carlo realizadas sob $H_0$, os p-valores mostraram-se aproximadamente uniformes, 
 reproduzindo o comportamento esperado quando as condições assintóticas são satisfeitas. 
 No entanto, ao introduzir pequenas violações, como superdispersão ou dependência entre observações, 
 a distribuição dos p-valores tornou-se assimetricamente inclinada, evidenciando a sua sensibilidade à estrutura do modelo. \\[2em]
 Esse resultado empírico confirma que a discrepância entre o valor-p exato e o assintótico não é meramente numérica, 
 mas reflete o descompasso lógico entre o universo ideal de $H_0$ e o comportamento real dos dados. 
+\end{answer}
 
 \begin{lstlisting}[language=R, caption={Exemplo numérico - Regressão Poisson}, label={lst:poisson-numerico}]
 # ====================================================================
-# Regressão Poisson
+# Regressão Poisson (GLM)
 # ====================================================================
 
-set.seed(123)
+set.seed(111)
 
-# Parâmetros
-n = 200
-beta0 = 1.0
-beta1_real = 0.20   # efeito verdadeiro fixo
-alpha = 0.05
+# Parâmetros fixos do "mundo real"
+n      = 100
+beta0  = 1.0
+theta  = 0.20     # valor verdadeiro
+alpha  = 0.05
 
-# Covariável e única amostra gerada do mundo real
-x = runif(n, 0, 2)
-lambda = exp(beta0 + beta1_real * x)
-y = rpois(n, lambda)
+# Covariável e única amostra observada
+x       = runif(n, 0, 2)
+lambda  = exp(beta0 + theta * x)
+y       = rpois(n, lambda)
 
-# Ajuste único nos mesmos dados
-modelo = glm(y ~ x, family = poisson)
+# Ajuste único do GLM Poisson nos MESMOS dados
+modelo  = glm(y ~ x, family = poisson)
 
 # ---------------------------------------------------------------
-# Função: testa H0: beta1 = b0 (teste de Wald)
+# Função: testa H0: theta = h0 (Wald)
 # ---------------------------------------------------------------
-testa_glm_1amostra = function(mod, b0) {
-  b1_hat = coef(mod)[2]
-  se_b1  = sqrt(vcov(mod)[2, 2])
-  Z = (b1_hat - b0) / se_b1
-  p_valor = 2 * (1 - pnorm(abs(Z)))   # bicaudal
-  decisao = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
+testa_glm_theta = function(mod, h0, alpha = 0.05) {
+  theta_hat = coef(mod)[2]
+  se_hat    = sqrt(vcov(mod)[2, 2])
+  Z         = (theta_hat - h0) / se_hat
+
+  # valor-p unicaudal (contra H1: theta > h0)
+  p_valor   = pnorm(Z)
+
+  decisao   = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
+
   data.frame(
-    hipotese_nula = paste0("H0: beta1 = ", format(b0, nsmall = 2)),
-    valor_p = p_valor,
-    decisao = decisao,
-    beta1_estimado = b1_hat,
-    beta1_real = beta1_real
+    hipotese_nula = paste0("H0: theta = ", format(h0, nsmall = 2)),
+    valor_p       = p_valor,
+    decisao       = decisao,
+    theta_hat     = theta_hat,
+    theta         = theta
   )
 }
 
-# Hipóteses a testar sobre o mesmo conjunto (exato, pouco e muito desvio)
-B0s = c(0.20, 0.10, 0.60)
+# Hipóteses nulas a testar no MESMO conjunto (exato, pouco e muito desvio)
+H0_A = 0.20   # H0 exato
+H0_B = 0.28   # H0 com pouco desvio
+H0_C = 0.60   # H0 com muito desvio
 
-resA = testa_glm_1amostra(modelo, B0s[1])  # exato 
-resB = testa_glm_1amostra(modelo, B0s[2])  # pouco desvio
-resC = testa_glm_1amostra(modelo, B0s[3])  # desvio forte
+resA = testa_glm_theta(modelo, H0_A, alpha)
+resB = testa_glm_theta(modelo, H0_B, alpha)
+resC = testa_glm_theta(modelo, H0_C, alpha)
 
+# Consolida com rbind (mantendo os rótulos de cenário como nomes de linha)
 resumo_glm = rbind(
-  "Cenário A (H0 exato)"              = resA,
-  "Cenário B (H0 com pouco desvio)"   = resB,
-  "Cenário C (H0 com muito desvio)"   = resC
+  "Cenário A (H0 exato)"        = resA,
+  "Cenário B (H0 pouco desvio)" = resB,
+  "Cenário C (H0 muito desvio)" = resC
 )
 
-# Saída formatada (sem <dbl>)
-noquote(resumo_glm)
+# -------- Formatação (sem notação científica e 6 casas decimais) --------
+options(scipen = 999)
+
+resumo_fmt           = resumo_glm
+resumo_fmt$valor_p   = format(round(resumo_fmt$valor_p,   6), nsmall = 6)
+resumo_fmt$theta_hat = format(round(resumo_fmt$theta_hat, 6), nsmall = 6)
+resumo_fmt$theta     = format(round(resumo_fmt$theta,     6), nsmall = 6)
+
+# Tabela final (analítica)
+noquote(resumo_fmt)
 \end{lstlisting}
 
+\begin{lstlisting}[language=R, caption={Exemplo numérico - Regressão Poisson}, label={lst:poisson-numerico}]
+set.seed(111)
+
+# -------------------------
+# Parâmetros do experimento
+# -------------------------
+n      = 200        # tamanho da amostra
+beta0  = 1.0        # intercepto fixo
+theta  = 0.20       # (verdadeiro) = coef. de x, usado para gerar os dados
+alpha  = 0.05       # nível
+M      = 10000      # repetições de Monte Carlo
+
+# hipóteses nulas a testar (todas no mesmo conjunto de dados por replicação)
+H0_A = 0.20   # H0 exato
+H0_B = 0.28   # H0 com pouco desvio
+H0_C = 0.60   # H0 com grande desvio
+H0s  = c(H0_A, H0_B, H0_C)
+
+# -------------------------------------------
+# Design fixo: x é gerado 1 vez e mantido fixo
+# -------------------------------------------
+x = runif(n, 0, 2)
+
+# ---------------------------------------------------------------
+# Função: calcula p-valor unicaudal (esquerda) e decisão para b0
+# ---------------------------------------------------------------
+p_unicaudal_wald = function(mod, b0, alpha) {
+  theta_hat = coef(mod)[2]
+  se_hat    = sqrt(vcov(mod)[2, 2])
+  Z         = (theta_hat - b0) / se_hat
+  # unicaudal à esquerda: H1: theta < b0
+  p_valor   = pnorm(Z)
+  decisao   = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
+  list(p = p_valor, decisao = decisao, theta_hat = theta_hat)
+}
+
+# ---------------------------------------------------------------
+# Uma replicação: gera y ~ Poisson(exp(beta0 + theta * x)), ajusta GLM
+# e testa H0_A, H0_B, H0_C na mesma amostra
+# ---------------------------------------------------------------
+uma_replicacao = function() {
+  lambda = exp(beta0 + theta * x)
+  y      = rpois(n, lambda)
+  mod    = glm(y ~ x, family = poisson)
+  lapply(H0s, function(b0) p_unicaudal_wald(mod, b0, alpha))
+}
+
+# ---------------------------------------------------------------
+# Roda M replicações e consolida resultados por cenário
+# ---------------------------------------------------------------
+# estruturas de acumulação
+p_list_A = numeric(M); dec_A = character(M); thA = numeric(M)
+p_list_B = numeric(M); dec_B = character(M); thB = numeric(M)
+p_list_C = numeric(M); dec_C = character(M); thC = numeric(M)
+
+for (m in 1:M) {
+  out = uma_replicacao()
+  # A
+  p_list_A[m] = out[[1]]$p
+  dec_A[m]    = out[[1]]$decisao
+  thA[m]      = out[[1]]$theta_hat
+  # B
+  p_list_B[m] = out[[2]]$p
+  dec_B[m]    = out[[2]]$decisao
+  thB[m]      = out[[2]]$theta_hat
+  # C
+  p_list_C[m] = out[[3]]$p
+  dec_C[m]    = out[[3]]$decisao
+  thC[m]      = out[[3]]$theta_hat
+}
+
+# ---------------------------------------------------------------
+# Sumários: proporção de rejeição (potência/erro tipo I),
+# estatísticas de p e média de theta_hat
+# ---------------------------------------------------------------
+resumo_mc = data.frame(
+  hipotese_nula = c(
+    paste0("H0_A: theta = ", format(H0_A, nsmall = 2)),
+    paste0("H0_B: theta = ", format(H0_B, nsmall = 2)),
+    paste0("H0_C: theta = ", format(H0_C, nsmall = 2))
+  ),
+  prop_rejeicao = c(
+    mean(dec_A == "Rejeita H0"),
+    mean(dec_B == "Rejeita H0"),
+    mean(dec_C == "Rejeita H0")
+  ),
+  media_p  = c(mean(p_list_A), mean(p_list_B), mean(p_list_C)),
+  mediana_p= c(median(p_list_A), median(p_list_B), median(p_list_C)),
+  q05_p    = c(quantile(p_list_A, 0.05), quantile(p_list_B, 0.05), quantile(p_list_C, 0.05)),
+  q95_p    = c(quantile(p_list_A, 0.95), quantile(p_list_B, 0.95), quantile(p_list_C, 0.95)),
+  theta_hat_medio = c(mean(thA), mean(thB), mean(thC)),
+  theta_real      = theta
+)
+
+# formatação
+options(scipen = 999)
+resumo_mc$prop_rejeicao   = format(round(resumo_mc$prop_rejeicao, 6), nsmall = 6)
+resumo_mc$media_p         = format(round(resumo_mc$media_p,       6), nsmall = 6)
+resumo_mc$mediana_p       = format(round(resumo_mc$mediana_p,     6), nsmall = 6)
+resumo_mc$q05_p           = format(round(resumo_mc$q05_p,         6), nsmall = 6)
+resumo_mc$q95_p           = format(round(resumo_mc$q95_p,         6), nsmall = 6)
+resumo_mc$theta_hat_medio = format(round(resumo_mc$theta_hat_medio, 6), nsmall = 6)
+resumo_mc$theta_real      = format(round(resumo_mc$theta_real,      6), nsmall = 6)
+
+# Impressao da tabela
+rownames(resumo_mc) = c(
+  "Cenário A (H0_A exato)",
+  "Cenário B (H0_B pouco desvio)",
+  "Cenário C (H0_C muito desvio)"
+)
+
+noquote(resumo_mc)
+\end{lstlisting}
 
 
     \begin{answer}[Questão 02]
