@@ -235,9 +235,9 @@ Essa simulação evidencia o papel do valor-$p$ como medida de compatibilidade e
 \toprule
 \textbf{Cenário} & \textbf{Hipótese nula} & \textbf{Valor-$p$} & \textbf{Decisão} & \textbf{$\hat{\theta}$} & \textbf{$\theta$} \\
 \midrule
-Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 0{,}20$ & 0{,}787386 & Não rejeita $H_0$ & 0{,}254359 & 0{,}20 \\
-Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 0{,}28$ & 0{,}353412 & Não rejeita $H_0$ & 0{,}254359 & 0{,}20 \\
-Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 0{,}000000 & Rejeita $H_0$ & 0{,}254359 & 0{,}20 \\
+Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 0{,}20$ & 0{,}547473 & Não rejeita $H_0$ & 0{,}211726 & 0{,}20 \\
+Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 0{,}28$ & 0{,}243689 & Não rejeita $H_0$ & 0{,}211726 & 0{,}20 \\
+Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 0{,}000039 & Rejeita $H_0$ & 0{,}211726 & 0{,}20 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -347,10 +347,9 @@ Cenário C
 
 set.seed(111)
 
-# Parâmetros fixos
 n      = 100
 beta0  = 1.0
-theta  = 0.20     # valor verdadeiro do parâmetro (inclinação)
+theta  = 0.20     # valor verdadeiro
 alpha  = 0.05
 
 # Covariável e única amostra observada
@@ -358,7 +357,7 @@ x       = runif(n, 0, 2)
 lambda  = exp(beta0 + theta * x)
 y       = rpois(n, lambda)
 
-# Ajuste único do GLM Poisson nos mesmos dados
+# Ajuste único do GLM Poisson
 modelo  = glm(y ~ x, family = poisson)
 
 # ---------------------------------------------------------------
