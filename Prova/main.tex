@@ -612,8 +612,27 @@ O estimador robusto $\hat{\theta}_R$ é então obtido pela minimização do quad
 
 \subsubsection*{Simulação e Resultados}
 
-Foram realizadas $R = 500$ repetições do experimento, calculando-se para cada método a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
-A Tabela~\ref{tab:binomial_robusta} apresenta os resultados obtidos.
+
+A implementação da regressão binomial robusta apresentada no 
+Listing~\ref{lst:binomial-analitica} definiu a função de estimação ponderada 
+baseada nos resíduos $r_i = y_i - m\mu_\theta(x_i)$, com pesos 
+$w_i = \exp(-(|r_i| - c)_+)$ e ponto de corte adaptativo 
+$c = p \cdot \mathrm{IQR}(r)$.  
+Esse mecanismo reduz a influência de observações com grandes desvios, 
+tornando o estimador menos sensível a outliers de resposta e de alavancagem.
+
+O procedimento de simulação Monte Carlo foi implementado no 
+Listing~\ref{lst:binomial-monte-carlo}, responsável pelo cálculo das estimativas 
+numéricas apresentadas na Tabela~\ref{tab:binomial_robusta}.  
+Foram realizadas $R = 500$ repetições, nas quais se computaram, para cada método 
+(MLE e robusto), a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
+
+As representações gráficas correspondentes, incluindo as curvas ajustadas e as 
+distribuições empíricas obtidas, foram geradas pelo 
+Listing~\ref{lst:binomial-monte-carlo}, permitindo comparar visualmente o comportamento 
+dos estimadores e a eficiência da ponderação robusta.
+% Foram realizadas $R = 500$ repetições do experimento, calculando-se para cada método a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
+% A Tabela~\ref{tab:binomial_robusta} apresenta os resultados obtidos.
 
 \begin{table}[H]
 \centering
