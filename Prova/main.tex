@@ -552,16 +552,34 @@ m, & \text{com probabilidade } 0.5.
 Gerando \textit{outliers} com desvio em relação ao eixo $x$, de resposta, e \textit{outliers} com desvio em relação ao eixo $y$, de alavancagem.
 \subsubsection*{Função de Estimação Robusta}
 
-O estimador clássico de máxima verossimilhança (MLE) foi obtido pela regressão logística:
+O estimador de máxima verossimilhança (MLE) é obtido pela 
+minimização do negativo da log-verossimilhança binomial, 
+cuja parametrização em termos do logito conduz ao modelo de regressão logística.  
+Nesse caso, os parâmetros $\theta = (\beta_0, \beta_1)$ são estimados como
 \[
 \hat{\theta}_{\text{MLE}} = 
-\arg\max_{\theta} 
-\sum_{i=1}^{n} 
+\arg\min_{\theta}
+\Big\{
+-\sum_{i=1}^{n}
 \left[
-y_i \log \mu_\theta(x_i)
-+ (m - y_i) \log (1 - \mu_\theta(x_i))
-\right].
+y_i \log \mu_{\theta}(x_i)
++
+(m - y_i)\log(1 - \mu_{\theta}(x_i))
+\right]
+\Big\},
 \]
+em que $\mu_{\theta}(x_i) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_i)}}$ 
+representa a probabilidade de sucesso segundo o modelo logístico.
+% O estimador clássico de máxima verossimilhança (MLE) foi obtido pela regressão logística:
+% \[
+% \hat{\theta}_{\text{MLE}} = 
+% \arg\max_{\theta} 
+% \sum_{i=1}^{n} 
+% \left[
+% y_i \log \mu_\theta(x_i)
+% + (m - y_i) \log (1 - \mu_\theta(x_i))
+% \right].
+% \]
 
 Para tornar a estimação robusta, definiu-se uma \textbf{função de estimação ponderada} baseada no resíduo $r_i = y_i - m \mu_\theta(x_i)$:
 \[
