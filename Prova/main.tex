@@ -239,6 +239,9 @@ Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 0{,}000
 \end{tabular}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Monte Carlo
 O experimento de Monte Carlo tem como objetivo avaliar, de forma empírica, 
 o comportamento assintótico do valor-$p$ quando múltiplas amostras são geradas a partir 
 de um mesmo modelo de regressão de Poisson. 
@@ -250,8 +253,8 @@ Y_i \sim \text{Poisson}(\lambda_i),
 \log(\lambda_i) = \theta_0 + \theta x_i,
 \]
 
-onde $\theta_0 = 1$ e o valor verdadeiro do parâmetro é $\theta = 0{,}20$. 
-Em cada replicação, é gerada uma amostra de tamanho $n = 200$ com covariáveis 
+onde o intercepto $\theta_0 = 1$ e o valor verdadeiro do parâmetro é $\theta = 0{,}20$. 
+Em cada replicação, é gerada uma amostra de tamanho $n = 100$ com covariáveis 
 $x_i \sim \text{Unif}(0,2)$ e respostas $Y_i$ conforme o modelo acima.
 O processo é repetido $M = 10{,}000$ vezes, mantendo $\theta$ fixo.
 
@@ -261,7 +264,7 @@ três hipóteses nulas distintas sobre o mesmo conjunto de dados:
 \[
 H_{0}^{(A)} : \theta = 0{,}20, 
 \qquad
-H_{0}^{(B)} : \theta = 0{,}10, 
+H_{0}^{(B)} : \theta = 0{,}28, 
 \qquad
 H_{0}^{(C)} : \theta = 0{,}60.
 \]
@@ -272,11 +275,13 @@ Cada hipótese é avaliada pela estatística de Wald,
 Z = \frac{\hat{\theta} - \theta_{H_0}}{\operatorname{se}(\hat{\theta})},
 \]
 
-e o valor-$p$ correspondente é calculado de forma:
+e o valor-$p$ correspondente é calculado da seguinte forma, 
+considerando o teste contra a alternativa $H_1 : \theta < \theta_{H_0}$:
 
 \[
-p = P(Z \ge z_{\text{obs}}).
+p = P(Z \le z_{\text{obs}}).
 \]
+
 
 A partir das $M$ replicações, calcula-se a proporção de rejeição de cada hipótese, 
 a média e a mediana dos valores-$p$, bem como a média dos estimadores $\hat{\theta}$. 
@@ -285,13 +290,12 @@ Os resultados são apresentados na Tabela~\ref{tab:montecarlo}.
 Observa-se que, quando $H_{0}^{(A)}$ coincide com o valor verdadeiro do parâmetro, 
 a proporção de rejeição aproxima-se do nível $\alpha = 0{,}05$, 
 e os valores-$p$ seguem aproximadamente uma distribuição uniforme. 
-Quando a hipótese nula se afasta do valor real — como em $H_{0}^{(B)}$ e $H_{0}^{(C)}$ — 
-a potência do teste aumenta, os valores-$p$ concentram-se próximos de zero 
-e a rejeição de $H_0$ torna-se praticamente certa em cenários de grande discrepância. 
-Essa simulação evidencia o comportamento esperado do teste de Wald sob 
-o modelo de Poisson e reforça o valor-$p$ como medida de compatibilidade 
-entre hipótese estatística e estrutura empírica observada.
-
+À medida que as hipóteses nulas se deslocam para valores superiores ao verdadeiro 
+— como em $H_{0}^{(B)}$ e $H_{0}^{(C)}$ — o teste unicaudal à esquerda 
+ganha poder, e os valores-$p$ tornam-se progressivamente menores. 
+Nos casos de grande discrepância ($H_{0}^{(C)}$), a rejeição de $H_0$ 
+é praticamente certa, refletindo a coerência do teste de Wald 
+com o comportamento teórico esperado sob o modelo de Poisson.
 
 \begin{table}[H]
 \centering
@@ -300,7 +304,7 @@ Cada linha apresenta os resultados obtidos para uma hipótese nula distinta, com
 \label{tab:montecarlo}
 \begin{tabular}{lccccccc}
 \toprule
-\textbf{Cenário} & \textbf{Hipótese nula} & \textbf{\% de rejeição} & \textbf{Média($p$)} & \textbf{Mediana($p$)} & \textbf{$p_{0{,}05}$} & \textbf{$p_{0{,}95}$} & \textbf{$\bar{\hat{\theta}}$ / $\theta$} \\
+\textbf{Cenário} & \textbf{H0} & \textbf{\% de rejeição} & \textbf{Média($p$)} & \textbf{Mediana($p$)} & \textbf{$p_{0{,}05}$} & \textbf{$p_{0{,}95}$} & \textbf{$\bar{\hat{\theta}}$ / $\theta$} \\
 \midrule
 Cenário A 
 & $H_{0}^{(A)} = 0{,}20$ 
@@ -309,7 +313,7 @@ Cenário A
 & 0{,}491766 
 & 0{,}052861 
 & 0{,}946414 
-& 0{,}200769 / 0{,}2 \\
+& 0{,}2007 / 0{,}2 \\
 
 Cenário B 
 & $H_{0}^{(B)} = 0{,}10$ 
@@ -318,7 +322,7 @@ Cenário B
 & 0{,}066063 
 & 0{,}000982 
 & 0{,}543902 
-& 0{,}200769 / 0{,}2 \\
+& 0{,}2007 / 0{,}2 \\
 
 Cenário C 
 & $H_{0}^{(C)} = 0{,}60$ 
@@ -327,16 +331,10 @@ Cenário C
 & 1{,}000000 
 & 0{,}999989 
 & 1{,}000000 
-& 0{,}200769 / 0{,}2 \\
+& 0{,}2007 / 0{,}2 \\
 \bottomrule
 \end{tabular}
 \end{table}
-Nas simulações de Monte Carlo realizadas sob $H_0$, os p-valores mostraram-se aproximadamente uniformes, 
-reproduzindo o comportamento esperado quando as condições assintóticas são satisfeitas. 
-No entanto, ao introduzir pequenas violações, como superdispersão ou dependência entre observações, 
-a distribuição dos p-valores tornou-se assimetricamente inclinada, evidenciando a sua sensibilidade à estrutura do modelo. \\[2em]
-Esse resultado empírico confirma que a discrepância entre o valor-p exato e o assintótico não é meramente numérica, 
-mas reflete o descompasso lógico entre o universo ideal de $H_0$ e o comportamento real dos dados. 
 \end{answer}
 
 \begin{lstlisting}[language=R, caption={Exemplo numérico - Regressão Poisson}, label={lst:poisson-numerico}]
