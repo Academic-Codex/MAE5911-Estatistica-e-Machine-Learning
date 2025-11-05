@@ -113,7 +113,7 @@
 % Other details
 % TODO: Fill these
 %-------------------------------%
-\title{Prova - 04/11}
+\title{Prova - 05/11}
 \setmembername{Nara Avila Moraes}  % Fill group member names
 \setmemberuid{5716734}  % Fill group member uids (same order)
 
@@ -647,7 +647,7 @@ e não-viesado, apresentando variância mínima quando o modelo é corretamente 
 e as observações são independentes e não contaminadas. 
 Notamos que a introdução de 10\% de contaminação nos dados foi suficiente para violar essas condições, 
 fazendo com que o MLE apresentasse deslocamento em relação ao valor verdadeiro dos parâmetros 
-— um viés negativo mais evidente em $\beta_1$, cuja média amostral ficou abaixo de $1.2$. 
+— um viés negativo mais evidente em $\beta_1$, cuja média amostral ficou mais distante de $1.2$. 
 
 A Figura~\ref{fig:hist_binomial_robusta} ilustra o que foi observado: 
 as distribuições empíricas das estimativas obtidas via MLE mostram um deslocamento sistemático 
@@ -657,42 +657,6 @@ As ponderações e atenuações com base no desvio em relação ao intervalo int
 com eficiencia a influência de observações com maiores desvios de resposta e de alavancagem.
 
 O estimador robusto portanto foi capaz de reduzir o viés e diminuir a variância total das estimativas, minimizando o erro quadrático médio (EQM). 
-% As curvas ajustadas mostram que o modelo robusto recupera o formato da curva verdadeira mesmo 
-% em presença de dados contaminados, e os histogramas de Monte Carlo mantêm forma aproximadamente normal, 
-% com média próxima ao valor real dos parâmetros. 
-
-% Segundo analisado por Fisher (1922) e formalizada posteriormente por 
-% Cramér (1946) e Rao (1945), o estimador de máxima verossimilhança é assintoticamente não-viesado e eficiente,
-% isto é, apresenta variância assintótica mínima e tende, em média, ao valor verdadeiro do parâmetro
-% quando o modelo é corretamente especificado e as observações são independentes e não contaminadas.
-
-
-% Os resultados de simulação mostram que o estimador robusto, ao ponderar as observações por 
-% $w_i = \exp(-(|r_i|-c)_+)$, reduz a influência de pontos contaminados e mantém as estimativas 
-% próximas dos valores verdadeiros. Assim, preserva-se a forma assintoticamente normal esperada 
-% e obtém-se menor EQM, o que indica maior estabilidade e menor sensibilidade a outliers.
-% De acordo com a definição clássica, estimadores de máxima verossimilhança são 
-% \textit{eficientes assintoticamente}, isto é, apresentam viés tendendo a zero e variância assintótica 
-% igual ao limite inferior de Cramér–Rao, desde que o modelo esteja corretamente especificado 
-% e as observações sejam independentes e não contaminadas. 
-
-% Observa-se que as distribuições associadas ao estimador clássico (MLE) apresentaram um deslocamento 
-% em relação à linha tracejada que indica o valor verdadeiro dos parâmetros, 
-% caracterizando a presença de viés — especialmente em $\beta_1$, cuja média amostral se encontra 
-% abaixo do valor teórico $1.2$. 
-
-% No entanto, os resultados obtidos mostram que a introdução de 10\% de contaminação violou essa 
-% condição de eficiência: o estimador MLE passou a apresentar viés negativo em $\beta_1$ 
-% (viés médio de $-0.355$), indicando subestimação sistemática do parâmetro verdadeiro. 
-% O estimador robusto, por sua vez, manteve o viés próximo de zero e reduziu o RMSE, 
-% aproximando-se mais das propriedades desejáveis de um estimador não-viesado, mesmo fora das 
-% condições ideais de verossimilhança.
-
-% Os resultados mostram que a contaminação de $10\%$ das observações foi suficiente para produzir um viés expressivo no estimador clássico de máxima verossimilhança, especialmente no coeficiente $\beta_1$ (viés médio de $-0.355$).  
-% O estimador robusto, por sua vez, manteve os parâmetros próximos dos valores verdadeiros e apresentou menores valores de RMSE, indicando maior estabilidade e menor sensibilidade aos outliers.
-
-% As curvas ajustadas confirmam que o método robusto atenua as observações contaminadas, sem comprometer o ajuste das demais, e os histogramas de Monte Carlo mostram distribuições aproximadamente normais centradas em torno dos valores verdadeiros.  
-% Essas evidências demonstram que o tratamento robusto via ponderação $w_i = \exp(-(|r_i|-c)_+)$ aproxima as estimativas da distribuição original do modelo, recuperando a forma assintótica esperada mesmo em presença de contaminação.
     \end{answer}
 
 \begin{lstlisting}[language=R, 
