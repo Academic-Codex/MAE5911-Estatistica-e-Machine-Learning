@@ -368,7 +368,7 @@ testa_glm_theta = function(mod, h0, alpha = 0.05) {
   se_hat    = sqrt(vcov(mod)[2, 2])
   Z         = (theta_hat - h0) / se_hat
 
-  # valor-p unicaudal (contra H1: theta > h0)
+  # valor-p unicaudal (contra H1: theta < h0)
   p_valor   = pnorm(Z)
 
   decisao   = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
