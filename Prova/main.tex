@@ -621,8 +621,8 @@ $c = p \cdot \mathrm{IQR}(r)$.
 Esse mecanismo reduz a influência de observações com grandes desvios, 
 tornando o estimador menos sensível a outliers de resposta e de alavancagem.
 
-O procedimento de simulação Monte Carlo foi implementado no 
-Listing~\ref{lst:binomial-monte-carlo}, responsável pelo cálculo das estimativas 
+O procedimento de simulação Monte Carlo anexado no 
+Listing~\ref{lst:binomial-monte-carlo}, calculou as estimativas 
 numéricas apresentadas na Tabela~\ref{tab:binomial_robusta}.  
 Foram realizadas $R = 500$ repetições, nas quais se computaram, para cada método 
 (MLE e robusto), a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
@@ -649,8 +649,6 @@ Robusto $\beta_1$ & $1.281$ & $0.081$ & $0.104$ \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\subsubsection*{Evidências Gráficas}
 
 A Figura~\ref{fig:curvas_binomial_robusta} apresenta a curva real dos dados em comparação com as curvas ajustadas pelo MLE e pelo método robusto proposto, 
 mostrando que o método proposto foi robusto contra desvios fora do padrão de resposta e alavancagem dos dados.  
