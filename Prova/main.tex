@@ -615,8 +615,9 @@ Robusto $\beta_1$ & $1.281$ & $0.081$ & $0.104$ \\
 
 \subsubsection*{Evidências Gráficas}
 
-A Figura~\ref{fig:curvas_binomial_robusta} apresenta as curvas ajustadas pelo MLE e pelo método robusto proposto.  
-Os pontos destacados em vermelho correspondem às observações atenuadas pelo corte baseado no intervalo interquartil (IQR).
+A Figura~\ref{fig:curvas_binomial_robusta} apresenta a curva real dos dados em comparação com as curvas ajustadas pelo MLE e pelo método robusto proposto, 
+mostrando que o método proposto foi robusto contra desvios fora do padrão de resposta e alavancagem dos dados.  
+Os pontos destacados em vermelho correspondem às observações atenuadas pelo corte baseado no intervalo interquartil (IQR) da distribuição dos resíduos.
 
 \begin{figure}[H]
 \centering
@@ -626,9 +627,10 @@ Parâmetros: $n=200$, $m=10$, $\theta=(-0.5,1.2)$, contaminação $10\%$, $p=1.5
 \label{fig:curvas_binomial_robusta}
 \end{figure}
 
-A Figura~\ref{fig:hist_binomial_robusta} apresenta as distribuições empíricas das estimativas sob $R = 500$ repetições. 
-As curvas vermelhas correspondem à densidade normal teórica construída a partir da média e do desvio-padrão empíricos das estimativa,
-ilustrando a caracteristica normal assintotica prevista para os estimadores.
+A Figura~\ref{fig:hist_binomial_robusta} apresenta as distribuições empíricas das estimativas da simulação de Monte Carlo sob $R = 500$ repetições. 
+As curvas vermelhas correspondem à densidade normal construída a partir da média e do desvio-padrão empíricos das estimativa,
+ilustrando a caracteristica normal assintotica prevista para os estimadores. 
+
 
 \begin{figure}[H]
 \centering
@@ -637,14 +639,266 @@ ilustrando a caracteristica normal assintotica prevista para os estimadores.
 \label{fig:hist_binomial_robusta}
 \end{figure}
 
-\subsection{Conclusão}
+\subsubsection*{Conclusão}
 
-Os resultados mostram que a contaminação de apenas $10\%$ das observações foi suficiente para produzir um viés expressivo no estimador clássico de máxima verossimilhança, especialmente no coeficiente $\beta_1$ (viés médio de $-0.355$).  
-O estimador robusto, por sua vez, manteve os parâmetros próximos dos valores verdadeiros e apresentou menores valores de RMSE, indicando maior estabilidade e menor sensibilidade aos outliers.
+Segundo a formulação clássica de Fisher da função de máxima verossimilhança (1922) e o limite de eficiência de Cramér–Rao 
+(Cramér, 1946; Rao, 1945), o estimador de máxima verossimilhança (MLE) é assintoticamente eficiente 
+e não-viesado, apresentando variância mínima quando o modelo é corretamente especificado 
+e as observações são independentes e não contaminadas. 
+Notamos que a introdução de 10\% de contaminação nos dados foi suficiente para violar essas condições, 
+fazendo com que o MLE apresentasse deslocamento em relação ao valor verdadeiro dos parâmetros 
+— um viés negativo mais evidente em $\beta_1$, cuja média amostral ficou abaixo de $1.2$. 
 
-As curvas ajustadas confirmam que o método robusto atenua as observações contaminadas, sem comprometer o ajuste das demais, e os histogramas de Monte Carlo mostram distribuições aproximadamente normais centradas em torno dos valores verdadeiros.  
-Essas evidências demonstram que o tratamento robusto via ponderação $w_i = \exp(-(|r_i|-c)_+)$ aproxima as estimativas da distribuição original do modelo, recuperando a forma assintótica esperada mesmo em presença de contaminação.
+A Figura~\ref{fig:hist_binomial_robusta} ilustra o que foi observado: 
+as distribuições empíricas das estimativas obtidas via MLE mostram um deslocamento sistemático 
+em relação à linha tracejada (parâmetro real), enquanto as estimativas robustas permanecem 
+centradas ou mais próximas do valor verdadeiro. 
+As ponderações e atenuações com base no desvio em relação ao intervalo interquatil das amostras reduzem 
+com eficiencia a influência de observações com maiores desvios de resposta e de alavancagem.
+
+O estimador robusto portanto foi capaz de reduzir o viés e diminuir a variância total das estimativas, minimizando o erro quadrático médio (EQM). 
+% As curvas ajustadas mostram que o modelo robusto recupera o formato da curva verdadeira mesmo 
+% em presença de dados contaminados, e os histogramas de Monte Carlo mantêm forma aproximadamente normal, 
+% com média próxima ao valor real dos parâmetros. 
+
+% Segundo analisado por Fisher (1922) e formalizada posteriormente por 
+% Cramér (1946) e Rao (1945), o estimador de máxima verossimilhança é assintoticamente não-viesado e eficiente,
+% isto é, apresenta variância assintótica mínima e tende, em média, ao valor verdadeiro do parâmetro
+% quando o modelo é corretamente especificado e as observações são independentes e não contaminadas.
+
+
+% Os resultados de simulação mostram que o estimador robusto, ao ponderar as observações por 
+% $w_i = \exp(-(|r_i|-c)_+)$, reduz a influência de pontos contaminados e mantém as estimativas 
+% próximas dos valores verdadeiros. Assim, preserva-se a forma assintoticamente normal esperada 
+% e obtém-se menor EQM, o que indica maior estabilidade e menor sensibilidade a outliers.
+% De acordo com a definição clássica, estimadores de máxima verossimilhança são 
+% \textit{eficientes assintoticamente}, isto é, apresentam viés tendendo a zero e variância assintótica 
+% igual ao limite inferior de Cramér–Rao, desde que o modelo esteja corretamente especificado 
+% e as observações sejam independentes e não contaminadas. 
+
+% Observa-se que as distribuições associadas ao estimador clássico (MLE) apresentaram um deslocamento 
+% em relação à linha tracejada que indica o valor verdadeiro dos parâmetros, 
+% caracterizando a presença de viés — especialmente em $\beta_1$, cuja média amostral se encontra 
+% abaixo do valor teórico $1.2$. 
+
+% No entanto, os resultados obtidos mostram que a introdução de 10\% de contaminação violou essa 
+% condição de eficiência: o estimador MLE passou a apresentar viés negativo em $\beta_1$ 
+% (viés médio de $-0.355$), indicando subestimação sistemática do parâmetro verdadeiro. 
+% O estimador robusto, por sua vez, manteve o viés próximo de zero e reduziu o RMSE, 
+% aproximando-se mais das propriedades desejáveis de um estimador não-viesado, mesmo fora das 
+% condições ideais de verossimilhança.
+
+% Os resultados mostram que a contaminação de $10\%$ das observações foi suficiente para produzir um viés expressivo no estimador clássico de máxima verossimilhança, especialmente no coeficiente $\beta_1$ (viés médio de $-0.355$).  
+% O estimador robusto, por sua vez, manteve os parâmetros próximos dos valores verdadeiros e apresentou menores valores de RMSE, indicando maior estabilidade e menor sensibilidade aos outliers.
+
+% As curvas ajustadas confirmam que o método robusto atenua as observações contaminadas, sem comprometer o ajuste das demais, e os histogramas de Monte Carlo mostram distribuições aproximadamente normais centradas em torno dos valores verdadeiros.  
+% Essas evidências demonstram que o tratamento robusto via ponderação $w_i = \exp(-(|r_i|-c)_+)$ aproxima as estimativas da distribuição original do modelo, recuperando a forma assintótica esperada mesmo em presença de contaminação.
     \end{answer}
+
+\begin{lstlisting}[language=R, 
+caption={Implementação analítica do estimador robusto para regressão binomial, 
+com ponderação $w_i = \exp(-(|r_i|-c)_+)$ e corte definido por $c = p \cdot \mathrm{IQR}(r)$.}, 
+label={lst:binomial-analitica}]
+## ================================================
+##  Regressão Binomial Robusta
+## ================================================
+
+expit = function(eta) 1/(1+exp(-eta))
+set.seed(2025)
+
+## ======================
+## DADOS ÚNICO
+## ======================
+n = 200
+m = rep(10, n)
+x = runif(n, -2, 2)
+
+theta = c(-0.5, 1.2)              # valores verdadeiros
+mu = expit(theta[1] + theta[2]*x)
+y  = rbinom(n, size=m, prob=mu)
+
+## contaminação
+aux = sample(which(x < 0.5), round(0.10*n))
+x[aux] = x[aux] + 3
+y[aux] = ifelse(runif(length(aux)) < 0.5, 0, m[aux])
+
+## MLE de referência
+fit0 = glm(cbind(y, m-y) ~ x, family=binomial())
+theta.hat0 = coef(fit0)
+
+## ==== Estimador robusto: IQR + exp(-(|r|-c)_+) ====
+p = 1.5
+
+L = function(th){
+  eta = th[1] + th[2]*x
+  mu  = expit(eta)
+  r   = y - m*mu
+  c   = p * IQR(r)
+  exc = pmax(0, abs(r) - c)
+  w   = exp(-exc)
+  cbind( w*(y - m*mu),
+         w*x*(y - m*mu) )
+}
+
+LL = function(th){
+  u = colSums(L(th))
+  sum(u^2)
+}
+
+B = function(th){
+  U = L(th)
+  t(U) %*% U / n
+}
+
+V = function(th){
+  eps = 1e-6
+  U0  = colSums(L(th))
+  J   = matrix(NA_real_, 2, 2)
+  for(j in 1:2){
+    thj = th; thj[j] = thj[j] + eps
+    Uj = colSums(L(thj))
+    J[, j] = (Uj - U0)/eps
+  }
+  solve(J) %*% B(th) %*% t(solve(J))
+}
+
+fit1 = optim(LL, par=theta.hat0, control=list(reltol=1e-12))
+theta.hat1 = fit1$par
+V.hat = V(theta.hat1)
+
+E = eigen(V.hat)
+V_0.5 = E$vectors %*% diag(1/sqrt(E$values)) %*% t(E$vectors)
+W1 = sqrt(n) * V_0.5 %*% (theta.hat1 - theta)
+
+## Plot
+eta.r  = theta.hat1[1] + theta.hat1[2]*x
+r.now  = y - m*expit(eta.r)
+cut.now= p * IQR(r.now)
+mask   = abs(r.now) > cut.now   # TRUE = atenuado
+
+par(mfrow=c(1,1))
+plot(y/m ~ x,
+     pch = 20, col = "grey40",
+     main = "Regressão Binomial: Verdadeira vs. MLE vs. Robusto",
+     xlab = "x", ylab = "y/m")
+
+xs = seq(min(x), max(x), length=200)
+
+## 1) curva verdadeira (parâmetros que geraram os dados)
+lines(xs, expit(theta[1] + theta[2]*xs), lwd=2, col="blue")
+
+## 2) MLE e 3) Robusto
+lines(xs, expit(theta.hat0[1] + theta.hat0[2]*xs), lwd=2, col="black")
+lines(xs, expit(theta.hat1[1] + theta.hat1[2]*xs), lwd=2, col="tomato")
+
+## pontos atenuados por cima (em vermelho)
+points(x[mask], (y/m)[mask], pch=20, col="tomato")
+
+legend("topleft",
+       c("Verdadeira", "MLE", "Robusto", "Atenuado (IQR)"),
+       col = c("blue", "black", "tomato", "tomato"),
+       lwd = c(2, 2, 2, NA),
+       pch = c(NA, NA, NA, 20),
+       bty = "n")
+
+theta      # verdadeiro
+theta.hat0 # MLE
+theta.hat1 # Robusto
+W1 
+\end{lstlisting}
+
+\begin{lstlisting}[language=R, 
+caption={Simulação de Monte Carlo para avaliação do desempenho do estimador robusto 
+na regressão binomial ($R = 500$, $n = 200$, contaminação de 10\%, $p = 1{,}5$).}, 
+label={lst:binomial-monte-carlo}]
+## ======================
+##  MONTE CARLO
+## ======================
+
+mc_binom_iqrexp = function(R=500, n=200, contam=0.10, p=1.5){
+  out = matrix(NA_real_, R, 4)
+  colnames(out) = c("b0_mle","b1_mle","b0_rob","b1_rob")
+  theta = c(-0.5, 1.2)
+  m = rep(10, n)
+
+  for(t in 1:R){
+    x = runif(n, -2, 2)
+    mu = expit(theta[1] + theta[2]*x)
+    y  = rbinom(n, size=m, prob=mu)
+
+    ## contaminação idêntica ao exemplo
+    aux = sample(which(x < 0.5), round(contam*n))
+    x[aux] = x[aux] + 3
+    y[aux] = ifelse(runif(length(aux)) < 0.5, 0, m[aux])
+
+    ## MLE
+    b_mle = coef(glm(cbind(y, m - y) ~ x, family=binomial()))
+
+    ## Robusto
+    L = function(th){
+      eta = th[1] + th[2]*x
+      mu  = expit(eta)
+      r   = y - m*mu
+      c   = p * IQR(r)
+      exc = pmax(0, abs(r) - c)
+      w   = exp(-exc)
+      cbind( w*(y - m*mu),
+             w*x*(y - m*mu) )
+    }
+    LL = function(th){ u = colSums(L(th)); sum(u^2) }
+
+    b_rob = try(optim(LL, par=b_mle, control=list(reltol=1e-12))$par,
+                silent=TRUE)
+    if(inherits(b_rob, "try-error")) next
+
+    out[t,] = c(b_mle[1], b_mle[2], b_rob[1], b_rob[2])
+  }
+  out
+}
+
+set.seed(99)
+res = mc_binom_iqrexp(R=500, n=200, contam=0.10, p=1.5)
+
+## Tabela de resumo
+summ = function(v, tru) c(mean=mean(v,na.rm=TRUE),
+                         bias=mean(v-tru,na.rm=TRUE),
+                         rmse=sqrt(mean((v-tru)^2,na.rm=TRUE)))
+TAB = rbind(
+  "MLE beta0" = summ(res[,1], -0.5),
+  "MLE beta1" = summ(res[,2],  1.2),
+  "ROB beta0" = summ(res[,3], -0.5),
+  "ROB beta1" = summ(res[,4],  1.2)
+)
+round(TAB, 3)
+
+## ======================
+##  PLOTS
+## ======================
+
+true_b0 <- -0.5
+true_b1 <-  1.2
+
+plot_hist <- function(z, true, titulo){
+  hist(z, prob = TRUE, col = "grey70", border = "white", main = titulo, xlab = "")
+  ## curva normal ajustada aos MC
+  curve(dnorm(x, mean = mean(z, na.rm=TRUE), sd = sd(z, na.rm=TRUE)),
+        add = TRUE, col = "tomato", lwd = 2)
+  ## valor verdadeiro (linha tracejada)
+  abline(v = true, lty = 2, lwd = 2, col = "steelblue")
+  ## média Monte Carlo (opcional)
+  abline(v = mean(z, na.rm=TRUE), lty = 1, lwd = 1.2, col = "grey30")
+  legend("topright",
+         c("Normal ajustada", "Valor verdadeiro", "Média MC"),
+         col = c("tomato", "steelblue", "grey30"),
+         lty = c(1, 2, 1), lwd = c(2, 2, 1.2), bty = "n", cex = 0.9)
+}
+
+par(mfrow = c(2,2))
+plot_hist(res[,1], true_b0, expression(beta[0]~" MLE"))
+plot_hist(res[,2], true_b1, expression(beta[1]~" MLE"))
+plot_hist(res[,3], true_b0, expression(beta[0]~" Robusto"))
+plot_hist(res[,4], true_b1, expression(beta[1]~" Robusto"))
+    \end{lstlisting}
 
      \begin{minipage}[c]{0.84\textwidth}
         \hspace{2em}%

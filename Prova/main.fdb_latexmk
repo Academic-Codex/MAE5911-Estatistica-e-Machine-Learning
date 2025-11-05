@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1762353007.93952 "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" "main.pdf" "main" 1762353009.03967 0
-  "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" 1762353007.84711 27388 5721264f7cd47f7cebab8c8aa1e19111 ""
+["pdflatex"] 1762356281.11548 "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" "main.pdf" "main" 1762356282.22465 0
+  "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" 1762356279.89425 36864 96e8e511fa5f5b3fc14086d15120f239 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -220,10 +220,10 @@
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
   "figuras/Regressao_Binomial_Robusta.png" 1762350263.10291 84077 986af1d1801bd5fee32ab50bb237bfa9 ""
-  "figuras/histograma.png" 1762335431.23479 71823 32de1841c46be8ccb6bbc63ba9aecbf5 ""
+  "figuras/histograma.png" 1762354056.67876 87184 654037d96a03262b3f19e3fafcb99fcf ""
   "figuras/qrcode.png" 1762287050.03975 16268 5ce51a1cf6e9a817b91c24229dd21a3b ""
-  "main.aux" 1762353008.94464 2395 6a1fe557a94c58da0d1732c059d3df67 "pdflatex"
-  "main.tex" 1762353007.84711 27388 5721264f7cd47f7cebab8c8aa1e19111 ""
+  "main.aux" 1762356282.13169 2965 0f37ac0a2fb6aafc0bf4ca0a1918141b "pdflatex"
+  "main.tex" 1762356279.89425 36864 96e8e511fa5f5b3fc14086d15120f239 ""
   "student.sty" 1761855038.52336 2396 f7da7f427cf32ded8b685ce2de8a8a16 ""
   (generated)
   "main.aux"
