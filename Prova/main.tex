@@ -340,7 +340,7 @@ Cenário C
 \end{table}
 \end{answer}
 
-\begin{lstlisting}[language=R, caption={Exemplo numérico - Regressão Poisson}, label={lst:poisson-numerico}]
+\begin{lstlisting}[language=R, caption={Exemplo numérico — Regressão de Poisson ($n = 100$, $\theta = 0{,}20$).}, label={lst:poisson-numerico}]
 set.seed(111)
 
 n      = 100
@@ -404,7 +404,7 @@ resumo_fmt$theta     = format(round(resumo_fmt$theta,     6), nsmall = 6)
 noquote(resumo_fmt)
 \end{lstlisting}
 
-\begin{lstlisting}[language=R, caption={Simulação Monte Carlo, valor-p - Regressão Poisson}, label={lst:poisson-monte-carlo}]
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo do teste de Wald sob regressão de Poisson ($M = 10{,}000$, $n = 100$, $\theta = 0{,}20$).}, label={lst:poisson-monte-carlo}]
 set.seed(111)
 
 # -------------------------

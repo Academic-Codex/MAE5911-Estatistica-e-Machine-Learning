@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1762305500.63056 "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" "main.pdf" "main" 1762305501.54612 0
-  "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" 1762305500.45012 21441 e94df543f9bb352260aec67e11c6a975 ""
+["pdflatex"] 1762305729.04473 "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" "main.pdf" "main" 1762305729.92181 0
+  "/Users/chanahyo/Repository/Attention/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova/main.tex" 1762305727.89195 21542 1949e93e3a3f3aa680fe3f385fc5a3e5 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -220,8 +220,8 @@
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
   "figuras/qrcode.png" 1762287050.03975 16268 5ce51a1cf6e9a817b91c24229dd21a3b ""
-  "main.aux" 1762305501.45331 1375 edbc128fa899e67052988d0b42d7cbcd "pdflatex"
-  "main.tex" 1762305500.45012 21441 e94df543f9bb352260aec67e11c6a975 ""
+  "main.aux" 1762305729.83125 1476 9f361a9f16502eee8488d462a8a3f0ce "pdflatex"
+  "main.tex" 1762305727.89195 21542 1949e93e3a3f3aa680fe3f385fc5a3e5 ""
   "student.sty" 1761855038.52336 2396 f7da7f427cf32ded8b685ce2de8a8a16 ""
   (generated)
   "main.aux"
