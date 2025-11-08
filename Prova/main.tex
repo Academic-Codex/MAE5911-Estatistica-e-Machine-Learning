@@ -413,29 +413,23 @@ noquote(resumo_fmt)
 # -----------------------------------------------
 set.seed(111)
 
-# -------------------------
-# Parâmetros do experimento
-# -------------------------
+## Parâmetros do experimento
 n      = 200        # tamanho da amostra
 beta0  = 1.0        # intercepto fixo
 theta  = 0.20       # (verdadeiro) = coef. de x, usado para gerar os dados
 alpha  = 0.05       # nível
 M      = 10000      # repetições de Monte Carlo
 
-# hipóteses nulas a testar (todas no mesmo conjunto de dados por replicação)
+## hipóteses nulas a testar (todas no mesmo conjunto de dados por replicação)
 H0_A = 0.20   # H0 exato
 H0_B = 0.28   # H0 com pouco desvio
 H0_C = 0.60   # H0 com grande desvio
 H0s  = c(H0_A, H0_B, H0_C)
 
-# -------------------------------------------
-# Design fixo: x é gerado 1 vez e mantido fixo
-# -------------------------------------------
+## Design: x é gerado 1 vez e mantido fixo
 x = runif(n, 0, 2)
 
-# ---------------------------------------------------------------
-# Função: calcula p-valor unicaudal (esquerda) e decisão para b0
-# ---------------------------------------------------------------
+## Função: calcula p-valor unicaudal (esquerda) e decisão para b0
 p_unicaudal_wald = function(mod, b0, alpha) {
   theta_hat = coef(mod)[2]
   se_hat    = sqrt(vcov(mod)[2, 2])
@@ -446,10 +440,8 @@ p_unicaudal_wald = function(mod, b0, alpha) {
   list(p = p_valor, decisao = decisao, theta_hat = theta_hat)
 }
 
-# ---------------------------------------------------------------
-# Uma replicação: gera y ~ Poisson(exp(beta0 + theta * x)), ajusta GLM
-# e testa H0_A, H0_B, H0_C na mesma amostra
-# ---------------------------------------------------------------
+## Uma replicação: gera y ~ Poisson(exp(beta0 + theta * x)), ajusta GLM
+## e testa H0_A, H0_B, H0_C na mesma amostra
 uma_replicacao = function() {
   lambda = exp(beta0 + theta * x)
   y      = rpois(n, lambda)
@@ -457,10 +449,8 @@ uma_replicacao = function() {
   lapply(H0s, function(b0) p_unicaudal_wald(mod, b0, alpha))
 }
 
-# ---------------------------------------------------------------
-# Roda M replicações e consolida resultados por cenário
-# ---------------------------------------------------------------
-# estruturas de acumulação
+## Roda M replicações e consolida resultados por cenário
+## estruturas de acumulação
 p_list_A = numeric(M); dec_A = character(M); thA = numeric(M)
 p_list_B = numeric(M); dec_B = character(M); thB = numeric(M)
 p_list_C = numeric(M); dec_C = character(M); thC = numeric(M)
@@ -481,10 +471,8 @@ for (m in 1:M) {
   thC[m]      = out[[3]]$theta_hat
 }
 
-# ---------------------------------------------------------------
-# Sumários: proporção de rejeição (potência/erro tipo I),
-# estatísticas de p e média de theta_hat
-# ---------------------------------------------------------------
+## Sumários: proporção de rejeição (potência/erro tipo I),
+## estatísticas de p e média de theta_hat
 resumo_mc = data.frame(
   hipotese_nula = c(
     paste0("H0_A: theta = ", format(H0_A, nsmall = 2)),
@@ -526,6 +514,22 @@ noquote(resumo_mc)
 
 
     \begin{answer}[Questão 02]
+[Leshno--Lin--Pinkus--Schocken, 1993]
+Seja $K\subset\mathbb{R}^n$ compacto e $\sigma:\mathbb{R}\to\mathbb{R}$ localmente limitada. As combinações finitas
+\[
+x\longmapsto \sum_{j=1}^N a_j\,\sigma(w_j^\top x+b_j)
+\]
+são densas em $C(K)$ se, e somente se, $\sigma$ não é um polinômio. Consequentemente, para qualquer $f\in C(K)$ e $\varepsilon>0$,
+existem $N$, pesos e vieses tais que
+\[
+\sup_{x\in K}\Bigl\|f(x)-\sum_{j=1}^N a_j\,\sigma(w_j^\top x+b_j)\Bigr\|<\varepsilon.
+\]
+O resultado é demonstrado para funções escalares, mas vale consequentemente para saídas vetoriais, isto é, para redes neurais com vários outputs, aproximando cada componente de $f:K\to\mathbb{R}^m$.
+
+Este resultado generaliza os de Funahashi (1989) e Cybenko (1989), estendendo ao teorema da universalidade funções 
+de ativação não sigmoidais, como a ReLU. A prova mostra que a propriedade essencial não depende da forma específica da ativação, 
+mas apenas da condição fundamental de que ela não seja um polinômio.
+
     \end{answer}
 
     \begin{answer}[Questão 03]
@@ -612,27 +616,31 @@ O estimador robusto $\hat{\theta}_R$ é então obtido pela minimização do quad
 
 \subsubsection*{Simulação e Resultados}
 
+A implementação da regressão binomial robusta é apresentada no \textit{Listing}~\ref{lst:binomial-robusta} e define uma função de estimação ponderada baseada nos resíduos 
+\(
+r_i = y_i - m\mu_\theta(x_i),
+\)
+com pesos adaptativos
+\(
+w_i = \exp\!\big(-(|r_i|-c)_+\big), \quad c = p \cdot \text{IQR}(r),
+\)
+em que o ponto de corte \(c\) é proporcional à dispersão interquartil dos resíduos, conforme já apresentada. 
 
-A implementação da regressão binomial robusta apresentada no 
-Listing~\ref{lst:binomial-analitica} definiu a função de estimação ponderada 
-baseada nos resíduos $r_i = y_i - m\mu_\theta(x_i)$, com pesos 
-$w_i = \exp(-(|r_i| - c)_+)$ e ponto de corte adaptativo 
-$c = p \cdot \mathrm{IQR}(r)$.  
-Esse mecanismo reduz a influência de observações com grandes desvios, 
-tornando o estimador menos sensível a outliers de resposta e de alavancagem.
+A Figura~\ref{fig:curvas_binomial_robusta} ilustra o comportamento do ajuste em um único experimento, 
+mostrando as curvas estimadas pelo MLE e pelo método robusto em comparação com a curva verdadeira dos dados. 
+Os pontos destacados em vermelho correspondem às observações atenuadas pela ponderação robusta.
 
-O procedimento de simulação Monte Carlo anexado no 
-Listing~\ref{lst:binomial-monte-carlo}, calculou as estimativas 
-numéricas apresentadas na Tabela~\ref{tab:binomial_robusta}.  
-Foram realizadas $R = 500$ repetições, nas quais se computaram, para cada método 
-(MLE e robusto), a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{figuras/Regressao_Binomial_Robusta.png}
+\caption{Curvas ajustadas sob contaminação (pontos atenuados em vermelho). 
+Parâmetros: $n=200$, $m=10$, $\theta=(-0.5,1.2)$, contaminação $10\%$, $p=1.5$.}
+\label{fig:curvas_binomial_robusta}
+\end{figure}
 
-As representações gráficas correspondentes, incluindo as curvas ajustadas e as 
-distribuições empíricas obtidas, foram geradas pelo 
-Listing~\ref{lst:binomial-monte-carlo}, permitindo comparar visualmente o comportamento 
-dos estimadores e a eficiência da ponderação robusta.
-% Foram realizadas $R = 500$ repetições do experimento, calculando-se para cada método a média, o viés e o erro quadrático médio (RMSE) das estimativas.  
-% A Tabela~\ref{tab:binomial_robusta} apresenta os resultados obtidos.
+O \textit{Listing}~\ref{lst:binomial-monte-carlo} apresenta o procedimento de simulação de Monte Carlo correspondente, 
+no qual foram realizadas \(R = 500\) repetições para comparar o desempenho do estimador de máxima verossimilhança (MLE) com o estimador robusto proposto. 
+Para cada método, foram calculadas a média, o viés e o erro quadrático médio (RMSE) das estimativas, cujos resultados são apresentados na Tabela~\ref{tab:binomial_robusta} abaixo.
 
 \begin{table}[H]
 \centering
@@ -650,22 +658,16 @@ Robusto $\beta_1$ & $1.281$ & $0.081$ & $0.104$ \\
 \end{tabular}
 \end{table}
 
-A Figura~\ref{fig:curvas_binomial_robusta} apresenta a curva real dos dados em comparação com as curvas ajustadas pelo MLE e pelo método robusto proposto, 
-mostrando que o método proposto foi robusto contra desvios fora do padrão de resposta e alavancagem dos dados.  
-Os pontos destacados em vermelho correspondem às observações atenuadas pelo corte baseado no intervalo interquartil (IQR) da distribuição dos resíduos.
+Os resultados mostram que o MLE apresenta subestimação do parâmetro verdadeiro, com viés negativo em $\beta_1$
+e maior erro quadrático médio. O estimador robusto, por sua vez, reduziu o viés de $\beta_1$ em aproximadamente \textbf{77\%} 
+e o RMSE em cerca de \textbf{72\%}.
+Para $\beta_0$, observou-se uma redução de \textbf{74\%} no viés e de \textbf{22\%} no RMSE.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.75\textwidth]{figuras/Regressao_Binomial_Robusta.png}
-\caption{Curvas ajustadas sob contaminação (pontos atenuados em vermelho). 
-Parâmetros: $n=200$, $m=10$, $\theta=(-0.5,1.2)$, contaminação $10\%$, $p=1.5$.}
-\label{fig:curvas_binomial_robusta}
-\end{figure}
-
-A Figura~\ref{fig:hist_binomial_robusta} apresenta as distribuições empíricas das estimativas da simulação de Monte Carlo sob $R = 500$ repetições. 
-As curvas vermelhas correspondem à densidade normal construída a partir da média e do desvio-padrão empíricos das estimativa,
-ilustrando a caracteristica normal assintotica prevista para os estimadores. 
-
+A Figura~\ref{fig:hist_binomial_robusta} apresenta as distribuições empíricas das estimativas obtidas nas simulações de Monte Carlo. 
+As curvas vermelhas correspondem às densidades normais ajustadas com base na média e no desvio-padrão empíricos, 
+evidenciando a característica de normalidade assintótica esperada para os estimadores. 
+Observa-se que o estimador robusto manteve as distribuições centradas próximas aos valores verdadeiros, 
+apresentando \textbf{menor viés e menor erro quadrático médio (RMSE)} em comparação ao MLE.
 
 \begin{figure}[H]
 \centering
@@ -682,22 +684,21 @@ e não-viesado, apresentando variância mínima quando o modelo é corretamente 
 e as observações são independentes e não contaminadas. 
 Notamos que a introdução de 10\% de contaminação nos dados foi suficiente para violar essas condições, 
 fazendo com que o MLE apresentasse deslocamento em relação ao valor verdadeiro dos parâmetros 
-— um viés negativo mais evidente em $\beta_1$, cuja média amostral ficou mais distante de $1.2$. 
+— um viés negativo mais evidente em $\beta_1$. 
 
-A Figura~\ref{fig:hist_binomial_robusta} ilustra o que foi observado: 
-as distribuições empíricas das estimativas obtidas via MLE mostram um deslocamento sistemático 
+As distribuições empíricas das estimativas obtidas via MLE mostram um deslocamento sistemático 
 em relação à linha tracejada (parâmetro real), enquanto as estimativas robustas permanecem 
 centradas ou mais próximas do valor verdadeiro. 
-As ponderações e atenuações com base no desvio em relação ao intervalo interquatil das amostras reduzem 
+As ponderações e atenuações com base no desvio em relação ao intervalo interquatil dos resíduos reduzem 
 com eficiencia a influência de observações com maiores desvios de resposta e de alavancagem.
 
-O estimador robusto portanto foi capaz de reduzir o viés e diminuir a variância total das estimativas, minimizando o erro quadrático médio (EQM). 
-    \end{answer}
+O estimador robusto, portanto, reduziu simultaneamente o viés e a variância das estimativas, levando à minimização do erro quadrático médio (EQM).
+ \end{answer}
 
 \begin{lstlisting}[language=R, 
 caption={Implementação analítica do estimador robusto para regressão binomial, 
 com ponderação $w_i = \exp(-(|r_i|-c)_+)$ e corte definido por $c = p \cdot \mathrm{IQR}(r)$.}, 
-label={lst:binomial-analitica}]
+label={lst:binomial-robusta}]
 ## ================================================
 ##  Regressão Binomial Robusta
 ## ================================================
