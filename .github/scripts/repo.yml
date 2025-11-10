@@ -1,0 +1,17 @@
+TITLE_1: MAE5911
+TITLE_2: Fundamentos de Estatistica e Machine Learning
+SUBTITLE_1: Disciplina de pós-graduação
+SUBTITLE_2: Material de aula, notebooks e referências.
+
+ABOUT: |
+  Este site organiza as aulas, exercícios e material suplementar da disciplina.
+
+REFERENCIAS: |
+  <ul>
+    <li>Livro A …</li>
+    <li>Artigo B …</li>
+  </ul>
+
+GITHUB_LINK: https://github.com/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning
+
+HERO_FILE: estatistica.png
