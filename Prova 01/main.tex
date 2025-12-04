@@ -1,0 +1,912 @@
+\documentclass[a4paper]{article}
+\usepackage{student}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[version=4]{mhchem}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, decorations.pathreplacing}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[numbers,sort&compress]{natbib} % ou [authoryear]
+\usepackage[alf]{abntex2cite} % citação ABNT autor-data
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{url}
+\lstset{
+  basicstyle=\ttfamily\small,
+  commentstyle=\color{gray}\itshape,
+  keywordstyle=\color{blue},
+  stringstyle=\color{orange},
+  frame=single,
+  backgroundcolor=\color{gray!5},
+  breaklines=true,
+  captionpos=b
+}
+% --- Suporte a UTF-8 ---
+\usepackage{lmodern}           % fonte moderna compatível com T1
+
+% --- Pacotes para exibir código ---
+
+
+% --- Define o idioma R com palavras-chave e cores ---
+\lstdefinelanguage{R}{
+  keywords={function, if, else, for, in, while, repeat, return, library, require, next, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={TRUE, FALSE, NULL, NA, Inf, NaN},
+  ndkeywordstyle=\color{magenta}\bfseries,
+  comment=[l]{\#},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{orange}\ttfamily,
+  morestring=[b]",
+  morestring=[b]',
+  sensitive=true
+}
+
+% --- Mapeamento para UTF-8 (acentos, ç, etc.) ---
+\lstset{
+  literate=
+    {á}{{\'a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 {à}{{\`a}}1
+    {é}{{\'e}}1 {ê}{{\^e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+    {ú}{{\'u}}1 {ü}{{\"u}}1
+    {ç}{{\c{c}}}1
+    {Á}{{\'A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1
+    {É}{{\'E}}1 {Ê}{{\^E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1 {Õ}{{\~O}}1 {Ô}{{\^O}}1
+    {Ú}{{\'U}}1 {Ü}{{\"U}}1
+    {Ç}{{\c{C}}}1,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!5},
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  keepspaces=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=6pt
+}
+\pagestyle{plain}
+
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% Definindo o estilo de destaque com linhas pontilhadas
+\tikzstyle{highlight} = [draw, dashed, thick, rectangle, rounded corners, inner sep=0.2cm, orange]
+
+
+\tikzstyle{startstop} = [
+    rectangle, rounded corners, minimum width=0.5cm,
+    text centered, draw=black, fill=blue!10, font=\small
+]
+\tikzstyle{startstop_S} = [
+    rectangle, rounded corners, minimum width=0.5cm, minimum height=0.8cm,
+    text centered, draw=black, fill=green!30, font=\small
+]
+\tikzstyle{decision} = [
+    diamond, aspect=2, draw=black, fill=orange!15, align=center,
+    text centered, inner sep=0pt, font=\small
+]
+\tikzstyle{decision_S} = [
+    diamond, aspect=2, draw=black, fill=orange!30, align=center,
+    text centered, inner sep=0pt, font=\small
+]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+
+% Metadata
+\date{\today}
+\setmodule{MAE5911/IME: Fundamentos de Estatística e Machine Learning. \\ Prof.: Alexandre Galvão Patriota} 
+\setterm{2o. semestre, 2025}
+
+%-------------------------------%
+% Other details
+% TODO: Fill these
+%-------------------------------%
+\title{Prova - 05/11}
+\setmembername{Nara Avila Moraes}  % Fill group member names
+\setmemberuid{5716734}  % Fill group member uids (same order)
+
+%-------------------------------%
+% Add / Delete commands and packages
+% TODO: Add / Delete here as you need
+%-------------------------------%
+\usepackage{amsmath,amssymb,bm}
+
+\newcommand{\KL}{\mathrm{KL}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\T}{\top}
+
+\newcommand{\expdist}[2]{%
+        \normalfont{\textsc{Exp}}(#1, #2)%
+    }
+\newcommand{\expparam}{\bm \lambda}
+\newcommand{\Expparam}{\bm \Lambda}
+\newcommand{\natparam}{\bm \eta}
+\newcommand{\Natparam}{\bm H}
+\newcommand{\sufstat}{\bm u}
+
+% Main document
+\begin{document}
+    % Add header
+    \header{}
+
+\textbf{Questão 01:} Defina formalmente o valor-p (\textbf{aproximado}) para testar uma hipótese geral e discuta os problemas de interpretação usuais ao utilizar a sua versão condicional à hipótese nula. Apresente um exemplo numérico e simulações de Monte Carlo, usando um modelo de regressão Poisson, para ilustrar a sua aplicação. \\[0.5cm]
+\textbf{Questão 02:} Apresente um Teorema da Aproximação Universal que generalize o Teorema de Funahashi, discuta as diferenças entre os resultados por meio de exemplos de redes neurais. \\[0.5cm]
+\textbf{Questão 03:} Proponha uma função de estimação robusta para estimar os parâmetros de uma regressão Binomial, $Y|X=x \sim \mathrm{Bin}(m,\mu_\theta(x))$, em que $\mu_\theta(\cdot)$ é uma função com imagem em $[0,1]$ e $\theta$ é o vetor de parâmetros. Apresente um exemplo numérico e uma simulação de Monte Carlo, como feito em sala, para ilustrar os resultados. Perturbe a distribuição dos dados e mostre que a sua proposta é de fato robusta contra essa perturbação. \\[0.5cm]
+\begin{answer}[Questão 01]
+O conceito do p-valor, tal como proposto originalmente por \textit{Fisher} (1925), é uma medida \textbf{condicional sob} $H_0$, definida por
+\[
+\text{valor-p}(H_0, z_n) = \sup_{\theta \in \Theta_0} P_\theta^{(n)}\big(T_{H_0}(Z_n) \ge T_{H_0}(z_n)\big),
+\]
+isto é, a probabilidade de se observar uma estatística tão ou mais extrema quanto a obtida, assumindo $H_0$ verdadeira.
+O valor-p foi concebido por Fisher como um \textit{instrumento de contraste} entre o dado e hipótese, mas não como uma medida de verdade.
+Seu objetivo era expressar o grau de incompatibilidade empírica entre o fenômeno observado e as consequências lógicas de $H_0$.
+
+Posteriormente, a escola \textit{Neyman--Pearson} reinterpretou esse conceito dentro de uma estrutura de decisão.
+Nessa transição, o valor-p perdeu seu caráter exploratório e passou a ser tratado como um critério binário, externo e supostamente não condicionado a $H_0$, capaz de expressar a decisão: ``rejeita'' ou ``não rejeita'' $H_0$.
+Esta leitura gerou um equívoco lógico: o valor-p, que é definido dentro do universo em que $H_0$ é verdadeira,
+passou a ser interpretado como se pudesse mensurar a probabilidade de $H_0$ ser verdadeira.
+
+O \textbf{valor-p assintótico}, que é o valor usualmente utilizado, na ausência da distribuição exata de $T_{H_0}$, é definido por:
+\[
+p^{(a)}(H_0, z_n) = \sup_{\theta \in \Theta_0} P_\theta(W_\theta \ge T_{H_0}(z_n)),
+\]
+em que $W_\theta$ representa a distribuição-limite de $T_{H_0}$ quando $n \to \infty$.
+
+Confirmando essa natureza epistêmica, o valor-p assintótico nem sempre converge para o valor-p exato, isto porque, estando definido condicionalmente a $H_0$, pode não ser sensível a falhas estruturais do modelo, 
+como a ausência de independência entre as observações, a presença de hipóteses condicionais aninhadas, ou a violação das condições de regularidade que garantem a validade assintótica — 
+como homocedasticidade. 
+
+Por isso, o valor-p deve ser entendido apenas como originalmente proposto — 
+uma \textbf{medida de discrepância entre o real e o teórico} — 
+que opera em um único sentido: como evidência contra a hipótese nula, mas nunca para confirmá-la.
+
+Em termos das $\sigma$-álgebras envolvidas, a construção inferencial pode ser representada como uma sequência de aplicações mensuráveis, onde cada espaço de probabilidade possui a sua própria $\sigma$-álgebra, refletindo níveis distintos de abstração:
+\[
+(\Omega_n, \mathcal{F}_n, \mathbb{P}_n)
+\;\xrightarrow{Z_n}\;
+(\mathcal{Z}_n, \mathcal{B}_{Z_n}, \mathbb{P}_{Z_n})
+\;\xrightarrow{T}\;
+(\mathcal{T}_n, \mathcal{B}_{T_n}, \mathbb{P}_{T_n}).
+\]
+
+\begin{itemize}
+    \item $\mathcal{F}_n$ — descreve o universo empírico de incertezas, isto é, os eventos do mundo observável;
+    \item $\mathcal{B}_{Z_n}$ — corresponde ao espaço amostral modelado, onde as variáveis aleatórias $Z_n$ são definidas sob $\mathbb{P}_{Z_n}$;
+    \item $\mathcal{B}_{T_n}$ — é a $\sigma$-álgebra induzida pela estatística $T$, onde vivem as distribuições teóricas dos testes e, em particular, o valor-p.
+\end{itemize}
+
+O valor-p pertence ao universo lógico em que a hipótese nula $H_0$ é assumida como verdadeira.
+Ele não pertence à $\sigma$-álgebra empírica $\mathcal{F}_n$, e portanto não pode ser interpretado
+como uma probabilidade sobre o mundo real ou sobre a veracidade de $H_0$.
+Tratá-lo dessa forma constitui um erro de violação da $\sigma$-álgebra — 
+um deslize epistemológico em que se tenta extrair informação empírica de uma construção que em sua definição é epistêmica e condicional.
+
+\subsection*{Implementações}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Numerico
+O exemplo numérico apresentado na Listing~\ref{lst:poisson-numerico} tem o objetivo de ilustrar o comportamento do valor-$p$ sob diferentes hipóteses nulas, mantendo fixos os dados observados. 
+O experimento baseia-se em um modelo de regressão de Poisson definido por
+\[
+Y_i \sim \text{Poisson}(\lambda_i), \quad \text{com} \quad \log(\lambda_i) = \theta_0 + \theta x_i,
+\]
+onde $\theta_0 = 1$ e o valor verdadeiro do parâmetro é $\theta = 0{,}20$. 
+Uma única amostra de tamanho $n = 100$ foi gerada segundo esse modelo, representando o conjunto de dados ``observados'' em um mundo empírico fixo.
+
+A partir dessa amostra, foram testadas três hipóteses nulas distintas sobre o mesmo conjunto de dados:
+\[
+H_{0}^{(A)} = 0{,}20, \qquad
+H_{0}^{(B)} = 0{,}28, \qquad
+H_{0}^{(C)} = 0{,}60.
+\]
+Cada hipótese foi avaliada por meio da estatística de Wald,
+\[
+Z = \frac{\hat{\theta} - \theta_{H_0}}{\operatorname{se}(\hat{\theta})},
+\]
+e o valor-$p$ correspondente foi calculado de forma:
+\[
+p = P(Z \le z_{\text{obs}}),
+\]
+correspondendo à hipótese alternativa $H_1 : \theta < \theta_{H_0}$.
+
+Os resultados obtidos encontram-se na Tabela~\ref{tab:resultado_simulacao}. 
+Observa-se que, quando a hipótese nula coincide com o valor real do parâmetro ($\theta$), o valor-$p$ é elevado e a hipótese não é rejeitada. 
+À medida que o valor hipotético se afasta de $\theta$, o valor-$p$ decresce rapidamente, levando à rejeição de $H_0$ nos casos de maior discrepância ($H_{0}^{(C)}$). 
+Essa simulação evidencia o papel do valor-$p$ como medida de compatibilidade entre modelo e dado: ele quantifica o grau de discrepância entre a hipótese estatística e a estrutura empírica observada.
+\begin{table}[H]
+\centering
+\caption{Resultados do cálculo do valor-$p$ para diferentes hipóteses nulas sob o modelo de regressão de Poisson.}
+\label{tab:resultado_simulacao}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Cenário} & \textbf{Hipótese nula} & \textbf{Valor-$p$} & \textbf{Decisão} & \textbf{$\hat{\theta}$} & \textbf{$\theta$} \\
+\midrule
+Cenário A ($H_{0}^{(A)}$ exato) & $\theta_{H_0} = 0{,}20$ & 0{,}547473 & Não rejeita $H_0$ & 0{,}211726 & 0{,}20 \\
+Cenário B ($H_{0}^{(B)}$ com pequeno desvio) & $\theta_{H_0} = 0{,}28$ & 0{,}243689 & Não rejeita $H_0$ & 0{,}211726 & 0{,}20 \\
+Cenário C ($H_{0}^{(C)}$ com grande desvio) & $\theta_{H_0} = 0{,}60$ & 0{,}000039 & Rejeita $H_0$ & 0{,}211726 & 0{,}20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Monte Carlo
+O experimento de Monte Carlo apresentado na Listing~\ref{lst:poisson-monte-carlo} tem como objetivo avaliar, de forma empírica, 
+o comportamento assintótico do valor-$p$ quando múltiplas amostras são geradas a partir 
+de um mesmo modelo de regressão de Poisson. 
+Considera-se o mesmo modelo
+
+\[
+Y_i \sim \text{Poisson}(\lambda_i), 
+\quad \text{com} \quad 
+\log(\lambda_i) = \theta_0 + \theta x_i,
+\]
+
+onde o intercepto $\theta_0 = 1$ e o valor verdadeiro do parâmetro é $\theta = 0{,}20$. 
+Em cada replicação, é gerada uma amostra de tamanho $n = 100$ com covariáveis 
+$x_i \sim \text{Unif}(0,2)$ e respostas $Y_i$ conforme o modelo acima.
+O processo é repetido $M = 10{,}000$ vezes, mantendo $\theta$ fixo.
+
+Para cada amostra, ajusta-se um modelo de regressão de Poisson e testam-se 
+três hipóteses nulas distintas sobre o mesmo conjunto de dados:
+
+\[
+H_{0}^{(A)} = 0{,}20, 
+\qquad
+H_{0}^{(B)} = 0{,}28, 
+\qquad
+H_{0}^{(C)} = 0{,}60.
+\]
+
+Cada hipótese é avaliada pela estatística de Wald,
+
+\[
+Z = \frac{\hat{\theta} - \theta_{H_0}}{\operatorname{se}(\hat{\theta})},
+\]
+
+e o valor-$p$ correspondente é calculado da seguinte forma, 
+considerando o teste contra a alternativa $H_1 : \theta < \theta_{H_0}$:
+
+\[
+p = P(Z \le z_{\text{obs}}).
+\]
+
+
+A partir das $M$ replicações, calcula-se a proporção de rejeição de cada hipótese, 
+a média e a mediana dos valores-$p$, bem como a média dos estimadores $\hat{\theta}$. 
+Os resultados são apresentados na Tabela~\ref{tab:montecarlo}.
+
+Observa-se que, quando $H_{0}^{(A)}$ coincide com o valor verdadeiro do parâmetro, 
+a proporção de rejeição aproxima-se do nível $\alpha = 0{,}05$, 
+e os valores-$p$ seguem aproximadamente uma distribuição uniforme. 
+À medida que as hipóteses nulas se deslocam para valores superiores ao verdadeiro 
+— como em $H_{0}^{(B)}$ e $H_{0}^{(C)}$ — os valores presentes na porção unicaudal à esquerda 
+se tornam mais expressivos, e os valores-$p$ tornam-se progressivamente menores. 
+Nos casos de grande discrepância ($H_{0}^{(C)}$), a rejeição de $H_0$ 
+é praticamente certa, refletindo a coerência do teste de Wald 
+com o comportamento teórico esperado sob o modelo de Poisson.
+
+\begin{table}[H]
+\centering
+\caption{Resultados da simulação de Monte Carlo para o teste de Wald em regressão de Poisson. 
+Cada linha apresenta os resultados obtidos para uma hipótese nula distinta, com $M = 10{,}000$ replicações e $n = 100$.}
+\label{tab:montecarlo}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Cenário} & \textbf{H0} & \textbf{\% de rejeição} & \textbf{Média($p$)} & \textbf{Mediana($p$)} & \textbf{$p_{0{,}05}$} & \textbf{$p_{0{,}95}$} & \textbf{$\bar{\hat{\theta}}$ / $\theta$} \\
+\midrule
+Cenário A 
+& $H_{0}^{(A)} = 0{,}20$ 
+& 0{,}053700 
+& 0{,}494656 
+& 0{,}488848 
+& 0{,}045770 
+& 0{,}950321 
+& 0{,}1983 / 0{,}2 \\
+
+Cenário B 
+& $H_{0}^{(B)} = 0{,}28$ 
+& 0{,}204100 
+& 0{,}282815 
+& 0{,}204148 
+& 0{,}006543 
+& 0{,}804670 
+& 0{,}1983 / 0{,}2 \\
+
+Cenário C 
+& $H_{0}^{(C)} = 0{,}60$ 
+& 0{,}989600 
+& 0{,}002594 
+& 0{,}000030 
+& 0{,}000000 
+& 0{,}010802 
+& 0{,}1983 / 0{,}2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{answer}
+
+\begin{lstlisting}[language=R, caption={Exemplo numérico — Regressão de Poisson ($n = 100$, $\theta = 0{,}20$).}, label={lst:poisson-numerico}]
+# -------------------------------------------
+# Exemplo Numerico - Regressao de Poisson
+# -------------------------------------------
+set.seed(111)
+
+n      = 100
+beta0  = 1.0
+theta  = 0.20     # valor verdadeiro
+alpha  = 0.05
+
+# Covariável e única amostra observada
+x       = runif(n, 0, 2)
+lambda  = exp(beta0 + theta * x)
+y       = rpois(n, lambda)
+
+# Ajuste único do GLM Poisson
+modelo  = glm(y ~ x, family = poisson)
+
+# Função: testa H0
+testa_glm_theta = function(mod, h0, alpha = 0.05) {
+  theta_hat = coef(mod)[2]
+  se_hat    = sqrt(vcov(mod)[2, 2])
+  Z         = (theta_hat - h0) / se_hat
+
+  # valor-p unicaudal (contra H1: theta < h0)
+  p_valor   = pnorm(Z)
+
+  decisao   = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
+
+  data.frame(
+    hipotese_nula = paste0("H0: theta = ", format(h0, nsmall = 2)),
+    valor_p       = p_valor,
+    decisao       = decisao,
+    theta_hat     = theta_hat,
+    theta         = theta
+  )
+}
+
+# Hipóteses nulas a testar no mesmo conjunto 
+H0_A = 0.20   # H0 exato
+H0_B = 0.28   # H0 com pouco desvio
+H0_C = 0.60   # H0 com muito desvio
+
+resA = testa_glm_theta(modelo, H0_A, alpha)
+resB = testa_glm_theta(modelo, H0_B, alpha)
+resC = testa_glm_theta(modelo, H0_C, alpha)
+
+# Consolida os resultados
+resumo_glm = rbind(
+  "Cenário A (H0 exato)"        = resA,
+  "Cenário B (H0 pouco desvio)" = resB,
+  "Cenário C (H0 muito desvio)" = resC
+)
+
+# Formatação
+options(scipen = 999)
+
+resumo_fmt           = resumo_glm
+resumo_fmt$valor_p   = format(round(resumo_fmt$valor_p,   6), nsmall = 6)
+resumo_fmt$theta_hat = format(round(resumo_fmt$theta_hat, 6), nsmall = 6)
+resumo_fmt$theta     = format(round(resumo_fmt$theta,     6), nsmall = 6)
+
+# Tabela final
+noquote(resumo_fmt)
+\end{lstlisting}
+
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo do teste de Wald sob regressão de Poisson ($M = 10{,}000$, $n = 100$, $\theta = 0{,}20$).}, label={lst:poisson-monte-carlo}]
+# -----------------------------------------------
+# Simulacao de Monte Carlo - Regressao de Poisson
+# -----------------------------------------------
+set.seed(111)
+
+## Parâmetros do experimento
+n      = 200        # tamanho da amostra
+beta0  = 1.0        # intercepto fixo
+theta  = 0.20       # (verdadeiro) = coef. de x, usado para gerar os dados
+alpha  = 0.05       # nível
+M      = 10000      # repetições de Monte Carlo
+
+## hipóteses nulas a testar (todas no mesmo conjunto de dados por replicação)
+H0_A = 0.20   # H0 exato
+H0_B = 0.28   # H0 com pouco desvio
+H0_C = 0.60   # H0 com grande desvio
+H0s  = c(H0_A, H0_B, H0_C)
+
+## Design: x é gerado 1 vez e mantido fixo
+x = runif(n, 0, 2)
+
+## Função: calcula p-valor unicaudal (esquerda) e decisão para b0
+p_unicaudal_wald = function(mod, b0, alpha) {
+  theta_hat = coef(mod)[2]
+  se_hat    = sqrt(vcov(mod)[2, 2])
+  Z         = (theta_hat - b0) / se_hat
+  # unicaudal à esquerda: H1: theta < b0
+  p_valor   = pnorm(Z)
+  decisao   = ifelse(p_valor < alpha, "Rejeita H0", "Não rejeita H0")
+  list(p = p_valor, decisao = decisao, theta_hat = theta_hat)
+}
+
+## Uma replicação: gera y ~ Poisson(exp(beta0 + theta * x)), ajusta GLM
+## e testa H0_A, H0_B, H0_C na mesma amostra
+uma_replicacao = function() {
+  lambda = exp(beta0 + theta * x)
+  y      = rpois(n, lambda)
+  mod    = glm(y ~ x, family = poisson)
+  lapply(H0s, function(b0) p_unicaudal_wald(mod, b0, alpha))
+}
+
+## Roda M replicações e consolida resultados por cenário
+## estruturas de acumulação
+p_list_A = numeric(M); dec_A = character(M); thA = numeric(M)
+p_list_B = numeric(M); dec_B = character(M); thB = numeric(M)
+p_list_C = numeric(M); dec_C = character(M); thC = numeric(M)
+
+for (m in 1:M) {
+  out = uma_replicacao()
+  # A
+  p_list_A[m] = out[[1]]$p
+  dec_A[m]    = out[[1]]$decisao
+  thA[m]      = out[[1]]$theta_hat
+  # B
+  p_list_B[m] = out[[2]]$p
+  dec_B[m]    = out[[2]]$decisao
+  thB[m]      = out[[2]]$theta_hat
+  # C
+  p_list_C[m] = out[[3]]$p
+  dec_C[m]    = out[[3]]$decisao
+  thC[m]      = out[[3]]$theta_hat
+}
+
+## Sumários: proporção de rejeição (potência/erro tipo I),
+## estatísticas de p e média de theta_hat
+resumo_mc = data.frame(
+  hipotese_nula = c(
+    paste0("H0_A: theta = ", format(H0_A, nsmall = 2)),
+    paste0("H0_B: theta = ", format(H0_B, nsmall = 2)),
+    paste0("H0_C: theta = ", format(H0_C, nsmall = 2))
+  ),
+  prop_rejeicao = c(
+    mean(dec_A == "Rejeita H0"),
+    mean(dec_B == "Rejeita H0"),
+    mean(dec_C == "Rejeita H0")
+  ),
+  media_p  = c(mean(p_list_A), mean(p_list_B), mean(p_list_C)),
+  mediana_p= c(median(p_list_A), median(p_list_B), median(p_list_C)),
+  q05_p    = c(quantile(p_list_A, 0.05), quantile(p_list_B, 0.05), quantile(p_list_C, 0.05)),
+  q95_p    = c(quantile(p_list_A, 0.95), quantile(p_list_B, 0.95), quantile(p_list_C, 0.95)),
+  theta_hat_medio = c(mean(thA), mean(thB), mean(thC)),
+  theta_real      = theta
+)
+
+# formatação
+options(scipen = 999)
+resumo_mc$prop_rejeicao   = format(round(resumo_mc$prop_rejeicao, 6), nsmall = 6)
+resumo_mc$media_p         = format(round(resumo_mc$media_p,       6), nsmall = 6)
+resumo_mc$mediana_p       = format(round(resumo_mc$mediana_p,     6), nsmall = 6)
+resumo_mc$q05_p           = format(round(resumo_mc$q05_p,         6), nsmall = 6)
+resumo_mc$q95_p           = format(round(resumo_mc$q95_p,         6), nsmall = 6)
+resumo_mc$theta_hat_medio = format(round(resumo_mc$theta_hat_medio, 6), nsmall = 6)
+resumo_mc$theta_real      = format(round(resumo_mc$theta_real,      6), nsmall = 6)
+
+# Tabela final
+rownames(resumo_mc) = c(
+  "Cenário A (H0_A exato)",
+  "Cenário B (H0_B pouco desvio)",
+  "Cenário C (H0_C muito desvio)"
+)
+
+noquote(resumo_mc)
+\end{lstlisting}
+
+
+    \begin{answer}[Questão 02]
+[Leshno--Lin--Pinkus--Schocken, 1993]
+Seja $K\subset\mathbb{R}^n$ compacto e $\sigma:\mathbb{R}\to\mathbb{R}$ localmente limitada. As combinações finitas
+\[
+x\longmapsto \sum_{j=1}^N a_j\,\sigma(w_j^\top x+b_j)
+\]
+são densas em $C(K)$ se, e somente se, $\sigma$ não é um polinômio. Consequentemente, para qualquer $f\in C(K)$ e $\varepsilon>0$,
+existem $N$, pesos e vieses tais que
+\[
+\sup_{x\in K}\Bigl\|f(x)-\sum_{j=1}^N a_j\,\sigma(w_j^\top x+b_j)\Bigr\|<\varepsilon.
+\]
+O resultado é demonstrado para funções escalares, mas vale consequentemente para saídas vetoriais, isto é, para redes neurais com vários outputs, aproximando cada componente de $f:K\to\mathbb{R}^m$.
+
+Este resultado generaliza os de Funahashi (1989) e Cybenko (1989), estendendo ao teorema da universalidade funções 
+de ativação não sigmoidais, como a ReLU. A prova mostra que a propriedade essencial não depende da forma específica da ativação, 
+mas apenas da condição fundamental de que ela não seja um polinômio.
+
+    \end{answer}
+
+    \begin{answer}[Questão 03]
+Foi construido um modelo de regresão binomial da seguinte forma:
+\[
+Y_i \mid X_i \sim \mathrm{Bin}(m, \mu_\theta(X_i)), 
+\quad \text{com} \quad 
+\mu_\theta(x) = \frac{1}{1 + e^{-(\theta_0 + \theta_1 x)}},
+\]
+onde $\theta = (\theta_0, \theta_1)$ é o vetor de parâmetros a ser estimado. 
+Os parâmetros verdadeiros foram fixados em $\theta_0 = -0.5$ e $\theta_1 = 1.2$, com $n = 200$ observações e $m = 10$ tentativas por ponto.
+
+As variáveis independentes foram geradas por uma distribuição uniforme $X_i \sim U(-2,2)$ e as variáveis observadas $Y_i$ foram geradas a partir do modelo binomial acima.  
+Para introduzir contaminação, selecionaram-se $10\%$ das observações com $x_i < 0.5$ e aplicou-se a seguinte modificação adversária:
+\[
+x_i \leftarrow x_i + 3, 
+\quad 
+y_i \leftarrow 
+\begin{cases}
+0, & \text{com probabilidade } 0.5,\\
+m, & \text{com probabilidade } 0.5.
+\end{cases}
+\]
+Gerando \textit{outliers} com desvio em relação ao eixo $x$, de resposta, e \textit{outliers} com desvio em relação ao eixo $y$, de alavancagem.
+\subsubsection*{Função de Estimação Robusta}
+
+O estimador de máxima verossimilhança (MLE) é obtido pela 
+minimização do negativo da log-verossimilhança binomial, 
+cuja parametrização em termos do logito conduz ao modelo de regressão logística.  
+Nesse caso, os parâmetros $\theta = (\beta_0, \beta_1)$ são estimados como
+\[
+\hat{\theta}_{\text{MLE}} = 
+\arg\min_{\theta}
+\Big\{
+-\sum_{i=1}^{n}
+\left[
+y_i \log \mu_{\theta}(x_i)
++
+(m - y_i)\log(1 - \mu_{\theta}(x_i))
+\right]
+\Big\},
+\]
+em que $\mu_{\theta}(x_i) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_i)}}$ 
+representa a probabilidade de sucesso segundo o modelo logístico.
+% O estimador clássico de máxima verossimilhança (MLE) foi obtido pela regressão logística:
+% \[
+% \hat{\theta}_{\text{MLE}} = 
+% \arg\max_{\theta} 
+% \sum_{i=1}^{n} 
+% \left[
+% y_i \log \mu_\theta(x_i)
+% + (m - y_i) \log (1 - \mu_\theta(x_i))
+% \right].
+% \]
+
+Para tornar a estimação robusta, definiu-se uma \textbf{função de estimação ponderada} baseada no resíduo $r_i = y_i - m \mu_\theta(x_i)$:
+\[
+U_i(\theta) = 
+\begin{pmatrix}
+w_i (y_i - m \mu_\theta(x_i)) \\
+w_i x_i (y_i - m \mu_\theta(x_i))
+\end{pmatrix},
+\quad
+w_i = \exp\!\big(-(|r_i| - c)_+\big),
+\quad
+c = p \cdot \mathrm{IQR}(r),
+\]
+% em que $(a)_+ = \max(0,a)$ e $p = 1.5$ controla o ponto de corte do intervalo interquartil.  
+em que $(a)_+ = \max(0, a)$ indica a parte positiva do argumento, 
+isto é, $(|r_i|-c)_+ = 0$ quando $|r_i| \le c$ e $(|r_i|-c)_+ = |r_i|-c$ quando $|r_i| > c$. 
+Dessa forma, o argumento da exponencial em 
+$w_i = \exp\!\big(-(|r_i|-c)_+\big)$ 
+atua como uma penalização progressiva aplicada apenas aos resíduos que excedem o limite $c = p \cdot \mathrm{IQR}(r)$, 
+onde $p = 1.5$ controla o ponto de corte do intervalo interquartil. 
+Assim, observações com $|r_i| \le c$ mantêm peso unitário ($w_i = 1$), 
+enquanto aquelas com $|r_i| > c$ têm seu peso reduzido de forma exponencial, 
+atenuando a influência dos outliers no processo de estimação.
+
+O estimador robusto $\hat{\theta}_R$ é então obtido pela minimização do quadrado da soma das funções de estimação:
+\[
+\hat{\theta}_R = \arg\min_{\theta}
+\left\| \sum_{i=1}^n U_i(\theta) \right\|^2.
+\]
+
+\subsubsection*{Simulação e Resultados}
+
+A implementação da regressão binomial robusta é apresentada no \textit{Listing}~\ref{lst:binomial-robusta} e define uma função de estimação ponderada baseada nos resíduos 
+\(
+r_i = y_i - m\mu_\theta(x_i),
+\)
+com pesos adaptativos
+\(
+w_i = \exp\!\big(-(|r_i|-c)_+\big), \quad c = p \cdot \text{IQR}(r),
+\)
+em que o ponto de corte \(c\) é proporcional à dispersão interquartil dos resíduos, conforme já apresentada. 
+
+A Figura~\ref{fig:curvas_binomial_robusta} ilustra o comportamento do ajuste em um único experimento, 
+mostrando as curvas estimadas pelo MLE e pelo método robusto em comparação com a curva verdadeira dos dados. 
+Os pontos destacados em vermelho correspondem às observações atenuadas pela ponderação robusta.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{figuras/Regressao_Binomial_Robusta.png}
+\caption{Curvas ajustadas sob contaminação (pontos atenuados em vermelho). 
+Parâmetros: $n=200$, $m=10$, $\theta=(-0.5,1.2)$, contaminação $10\%$, $p=1.5$.}
+\label{fig:curvas_binomial_robusta}
+\end{figure}
+
+O \textit{Listing}~\ref{lst:binomial-monte-carlo} apresenta o procedimento de simulação de Monte Carlo correspondente, 
+no qual foram realizadas \(R = 500\) repetições para comparar o desempenho do estimador de máxima verossimilhança (MLE) com o estimador robusto proposto. 
+Para cada método, foram calculadas a média, o viés e o erro quadrático médio (RMSE) das estimativas, cujos resultados são apresentados na Tabela~\ref{tab:binomial_robusta} abaixo.
+
+\begin{table}[H]
+\centering
+\caption{Resumo da simulação Monte Carlo (\(R=500\)): comparação entre MLE e estimador robusto.}
+\label{tab:binomial_robusta}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Estimador} & \textbf{Média} & \textbf{Viés} & \textbf{RMSE} \\
+\midrule
+MLE $\beta_0$ & $-0.561$ & $-0.061$ & $0.087$ \\
+MLE $\beta_1$ & $0.845$ & $-0.355$ & $0.370$ \\
+Robusto $\beta_0$ & $-0.484$ & $0.016$ & $0.068$ \\
+Robusto $\beta_1$ & $1.281$ & $0.081$ & $0.104$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Os resultados mostram que o MLE apresenta subestimação do parâmetro verdadeiro, com viés negativo em $\beta_1$
+e maior erro quadrático médio. O estimador robusto, por sua vez, reduziu o viés de $\beta_1$ em aproximadamente \textbf{77\%} 
+e o RMSE em cerca de \textbf{72\%}.
+Para $\beta_0$, observou-se uma redução de \textbf{74\%} no viés e de \textbf{22\%} no RMSE.
+
+A Figura~\ref{fig:hist_binomial_robusta} apresenta as distribuições empíricas das estimativas obtidas nas simulações de Monte Carlo. 
+As curvas vermelhas correspondem às densidades normais ajustadas com base na média e no desvio-padrão empíricos, 
+evidenciando a característica de normalidade assintótica esperada para os estimadores. 
+Observa-se que o estimador robusto manteve as distribuições centradas próximas aos valores verdadeiros, 
+apresentando \textbf{menor viés e menor erro quadrático médio (RMSE)} em comparação ao MLE.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figuras/histograma.png}
+\caption{Distribuição das estimativas sob contaminação: comparação entre MLE e estimador robusto.}
+\label{fig:hist_binomial_robusta}
+\end{figure}
+
+\subsubsection*{Conclusão}
+
+Segundo a formulação clássica de Fisher da função de máxima verossimilhança (1922) e o limite de eficiência de Cramér–Rao 
+(Cramér, 1946; Rao, 1945), o estimador de máxima verossimilhança (MLE) é assintoticamente eficiente 
+e não-viesado, apresentando variância mínima quando o modelo é corretamente especificado 
+e as observações são independentes e não contaminadas. 
+Notamos que a introdução de 10\% de contaminação nos dados foi suficiente para violar essas condições, 
+fazendo com que o MLE apresentasse deslocamento em relação ao valor verdadeiro dos parâmetros 
+— um viés negativo mais evidente em $\beta_1$. 
+
+As distribuições empíricas das estimativas obtidas via MLE mostram um deslocamento sistemático 
+em relação à linha tracejada (parâmetro real), enquanto as estimativas robustas permanecem 
+centradas ou mais próximas do valor verdadeiro. 
+As ponderações e atenuações com base no desvio em relação ao intervalo interquatil dos resíduos reduzem 
+com eficiencia a influência de observações com maiores desvios de resposta e de alavancagem.
+
+O estimador robusto, portanto, reduziu simultaneamente o viés e a variância das estimativas, levando à minimização do erro quadrático médio (EQM).
+ \end{answer}
+
+\begin{lstlisting}[language=R, 
+caption={Implementação analítica do estimador robusto para regressão binomial, 
+com ponderação $w_i = \exp(-(|r_i|-c)_+)$ e corte definido por $c = p \cdot \mathrm{IQR}(r)$.}, 
+label={lst:binomial-robusta}]
+## ================================================
+##  Regressão Binomial Robusta
+## ================================================
+
+expit = function(eta) 1/(1+exp(-eta))
+set.seed(2025)
+
+## ======================
+## DADOS ÚNICO
+## ======================
+n = 200
+m = rep(10, n)
+x = runif(n, -2, 2)
+
+theta = c(-0.5, 1.2)              # valores verdadeiros
+mu = expit(theta[1] + theta[2]*x)
+y  = rbinom(n, size=m, prob=mu)
+
+## contaminação
+aux = sample(which(x < 0.5), round(0.10*n))
+x[aux] = x[aux] + 3
+y[aux] = ifelse(runif(length(aux)) < 0.5, 0, m[aux])
+
+## MLE de referência
+fit0 = glm(cbind(y, m-y) ~ x, family=binomial())
+theta.hat0 = coef(fit0)
+
+## ==== Estimador robusto: IQR + exp(-(|r|-c)_+) ====
+p = 1.5
+
+L = function(th){
+  eta = th[1] + th[2]*x
+  mu  = expit(eta)
+  r   = y - m*mu
+  c   = p * IQR(r)
+  exc = pmax(0, abs(r) - c)
+  w   = exp(-exc)
+  cbind( w*(y - m*mu),
+         w*x*(y - m*mu) )
+}
+
+LL = function(th){
+  u = colSums(L(th))
+  sum(u^2)
+}
+
+B = function(th){
+  U = L(th)
+  t(U) %*% U / n
+}
+
+V = function(th){
+  eps = 1e-6
+  U0  = colSums(L(th))
+  J   = matrix(NA_real_, 2, 2)
+  for(j in 1:2){
+    thj = th; thj[j] = thj[j] + eps
+    Uj = colSums(L(thj))
+    J[, j] = (Uj - U0)/eps
+  }
+  solve(J) %*% B(th) %*% t(solve(J))
+}
+
+fit1 = optim(LL, par=theta.hat0, control=list(reltol=1e-12))
+theta.hat1 = fit1$par
+V.hat = V(theta.hat1)
+
+E = eigen(V.hat)
+V_0.5 = E$vectors %*% diag(1/sqrt(E$values)) %*% t(E$vectors)
+W1 = sqrt(n) * V_0.5 %*% (theta.hat1 - theta)
+
+## Plot
+eta.r  = theta.hat1[1] + theta.hat1[2]*x
+r.now  = y - m*expit(eta.r)
+cut.now= p * IQR(r.now)
+mask   = abs(r.now) > cut.now   # TRUE = atenuado
+
+par(mfrow=c(1,1))
+plot(y/m ~ x,
+     pch = 20, col = "grey40",
+     main = "Regressão Binomial: Verdadeira vs. MLE vs. Robusto",
+     xlab = "x", ylab = "y/m")
+
+xs = seq(min(x), max(x), length=200)
+
+## 1) curva verdadeira (parâmetros que geraram os dados)
+lines(xs, expit(theta[1] + theta[2]*xs), lwd=2, col="blue")
+
+## 2) MLE e 3) Robusto
+lines(xs, expit(theta.hat0[1] + theta.hat0[2]*xs), lwd=2, col="black")
+lines(xs, expit(theta.hat1[1] + theta.hat1[2]*xs), lwd=2, col="tomato")
+
+## pontos atenuados por cima (em vermelho)
+points(x[mask], (y/m)[mask], pch=20, col="tomato")
+
+legend("topleft",
+       c("Verdadeira", "MLE", "Robusto", "Atenuado (IQR)"),
+       col = c("blue", "black", "tomato", "tomato"),
+       lwd = c(2, 2, 2, NA),
+       pch = c(NA, NA, NA, 20),
+       bty = "n")
+
+theta      # verdadeiro
+theta.hat0 # MLE
+theta.hat1 # Robusto
+W1 
+\end{lstlisting}
+
+\begin{lstlisting}[language=R, 
+caption={Simulação de Monte Carlo para avaliação do desempenho do estimador robusto 
+na regressão binomial ($R = 500$, $n = 200$, contaminação de 10\%, $p = 1{,}5$).}, 
+label={lst:binomial-monte-carlo}]
+## ======================
+##  MONTE CARLO
+## ======================
+
+mc_binom_iqrexp = function(R=500, n=200, contam=0.10, p=1.5){
+  out = matrix(NA_real_, R, 4)
+  colnames(out) = c("b0_mle","b1_mle","b0_rob","b1_rob")
+  theta = c(-0.5, 1.2)
+  m = rep(10, n)
+
+  for(t in 1:R){
+    x = runif(n, -2, 2)
+    mu = expit(theta[1] + theta[2]*x)
+    y  = rbinom(n, size=m, prob=mu)
+
+    ## contaminação idêntica ao exemplo
+    aux = sample(which(x < 0.5), round(contam*n))
+    x[aux] = x[aux] + 3
+    y[aux] = ifelse(runif(length(aux)) < 0.5, 0, m[aux])
+
+    ## MLE
+    b_mle = coef(glm(cbind(y, m - y) ~ x, family=binomial()))
+
+    ## Robusto
+    L = function(th){
+      eta = th[1] + th[2]*x
+      mu  = expit(eta)
+      r   = y - m*mu
+      c   = p * IQR(r)
+      exc = pmax(0, abs(r) - c)
+      w   = exp(-exc)
+      cbind( w*(y - m*mu),
+             w*x*(y - m*mu) )
+    }
+    LL = function(th){ u = colSums(L(th)); sum(u^2) }
+
+    b_rob = try(optim(LL, par=b_mle, control=list(reltol=1e-12))$par,
+                silent=TRUE)
+    if(inherits(b_rob, "try-error")) next
+
+    out[t,] = c(b_mle[1], b_mle[2], b_rob[1], b_rob[2])
+  }
+  out
+}
+
+set.seed(99)
+res = mc_binom_iqrexp(R=500, n=200, contam=0.10, p=1.5)
+
+## Tabela de resumo
+summ = function(v, tru) c(mean=mean(v,na.rm=TRUE),
+                         bias=mean(v-tru,na.rm=TRUE),
+                         rmse=sqrt(mean((v-tru)^2,na.rm=TRUE)))
+TAB = rbind(
+  "MLE beta0" = summ(res[,1], -0.5),
+  "MLE beta1" = summ(res[,2],  1.2),
+  "ROB beta0" = summ(res[,3], -0.5),
+  "ROB beta1" = summ(res[,4],  1.2)
+)
+round(TAB, 3)
+
+## ======================
+##  PLOTS
+## ======================
+
+true_b0 <- -0.5
+true_b1 <-  1.2
+
+plot_hist <- function(z, true, titulo){
+  hist(z, prob = TRUE, col = "grey70", border = "white", main = titulo, xlab = "")
+  ## curva normal ajustada aos MC
+  curve(dnorm(x, mean = mean(z, na.rm=TRUE), sd = sd(z, na.rm=TRUE)),
+        add = TRUE, col = "tomato", lwd = 2)
+  ## valor verdadeiro (linha tracejada)
+  abline(v = true, lty = 2, lwd = 2, col = "steelblue")
+  ## média Monte Carlo (opcional)
+  abline(v = mean(z, na.rm=TRUE), lty = 1, lwd = 1.2, col = "grey30")
+  legend("topright",
+         c("Normal ajustada", "Valor verdadeiro", "Média MC"),
+         col = c("tomato", "steelblue", "grey30"),
+         lty = c(1, 2, 1), lwd = c(2, 2, 1.2), bty = "n", cex = 0.9)
+}
+
+par(mfrow = c(2,2))
+plot_hist(res[,1], true_b0, expression(beta[0]~" MLE"))
+plot_hist(res[,2], true_b1, expression(beta[1]~" MLE"))
+plot_hist(res[,3], true_b0, expression(beta[0]~" Robusto"))
+plot_hist(res[,4], true_b1, expression(beta[1]~" Robusto"))
+    \end{lstlisting}
+
+     \begin{minipage}[c]{0.84\textwidth}
+        \hspace{2em}%
+        Os códigos desde estudo estão disponibilizados em \url{http://academic-codex.github.io/MAE5911-Estatistica-e-Machine-Learning}.
+      \end{minipage}
+      \hfill
+      \begin{minipage}[c]{0.13\textwidth}
+    \centering
+        \includegraphics[width=0.7\linewidth]{figuras/qrcode.png}
+      \end{minipage}
+\end{document}

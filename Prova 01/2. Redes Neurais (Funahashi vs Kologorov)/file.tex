@@ -1,0 +1,39 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\newtheorem{teorema}{Teorema}
+
+\begin{document}
+
+\section*{Teorema da Aproximação Universal (Generalização de Funahashi)}
+
+\begin{teorema}[Leshno et al., 1993]
+Seja \( K \subset \mathbb{R}^n \) compacto e seja \( \sigma:\mathbb{R}\to\mathbb{R} \) uma função de ativação \textbf{não polinomial}.  
+Então, o conjunto de todas as funções da forma
+\[
+F(x) = \sum_{i=1}^{N} a_i\, \sigma(w_i^\top x + b_i),
+\]
+com \(N\in\mathbb{N}\), \(a_i \in \mathbb{R}\), \(w_i \in \mathbb{R}^n\) e \(b_i \in \mathbb{R}\),
+é denso em \( C(K) \), o espaço das funções contínuas sobre \(K\) com a norma uniforme.  
+Em outras palavras, para qualquer \(f \in C(K)\) e \(\varepsilon > 0\), existe uma rede neural de uma camada escondida tal que
+\[
+\sup_{x\in K} |F(x) - f(x)| < \varepsilon.
+\]
+\end{teorema}
+
+\textbf{Generalização em relação a Funahashi (1989):}
+\begin{itemize}
+    \item Funahashi exigia que a ativação fosse \textbf{sigmoidal, contínua, analítica e limitada}.
+    \item Leshno et al. (1993) mostraram que basta que a função de ativação \textbf{não seja um polinômio}, abrangendo funções não limitadas como ReLU, senóide ou exponencial.
+    \item Essa condição é ao mesmo tempo \textbf{necessária e suficiente} para a universalidade.
+\end{itemize}
+
+\textbf{Intuição:}  
+Enquanto o teorema de Funahashi garante que sigmoides conseguem aproximar qualquer função contínua em um conjunto compacto, esta versão mostra que \emph{qualquer ativação não polinomial} é suficiente — o que explica por que redes modernas com ReLU também são universalmente aproximadoras.
+
+\end{document}
