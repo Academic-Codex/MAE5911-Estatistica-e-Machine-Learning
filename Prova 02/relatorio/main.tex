@@ -710,7 +710,7 @@ ln\_f.weight              & 109 $\times$ 128  & 13\,952 \\
 
 No treinamento, foi utilizada a função de perda \emph{cross-entropy},
 computada entre os logits produzidos pelo modelo e os caracteres-alvo da sequência.
-A cada época, registramos tanto a perda de treino quanto a de teste, permitindo
+A cada época, foi registrado tanto a perda de treino quanto a de teste, permitindo
 acompanhar a evolução do aprendizado e o possível surgimento de sobreajuste.
 
 \begin{figure}[H]
@@ -743,7 +743,8 @@ de construções sintáticas características do período.
 Entretanto, o texto gerado permanece 
 semanticamente incoerente, apresentando repetições excessivas e sentenças circulares. Esse comportamento 
 é esperado para um modelo de pequena escala: ele captura a superfície do estilo, mas não reproduz 
-a coerência e os encadeamentos semânticos ao longo do texto. Uma sugestão para testes futuros é que um processo de tokenização mais robusto poderá contribuir para melhorar a coerencia do texto.
+a coerência e os encadeamentos semânticos ao longo do texto. Uma sugestão para testes futuros é que um 
+processo de tokenização mais robusto poderá contribuir para melhorar a coerencia do texto.
 
 \begin{figure}[H]
 \centering
