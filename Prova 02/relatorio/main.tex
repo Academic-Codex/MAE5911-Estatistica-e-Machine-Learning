@@ -665,13 +665,61 @@ Esse bloco também é seguido por uma conexão residual, completando a estrutura
 Ao final das camadas empilhadas (2) uma projeção linear — equivalente ao uso do embedding transposto — produz os logits sobre o vocabulário, 
 posteriormente convertidos em probabilidades via \textit{softmax}, que indica o próximo token mais provável.
 
+\subsubsection*{Tamanho do modelo}
+
+O modelo GPT implementado apresenta um total de \textbf{418\,866 parâmetros} treináveis, distribuídos entre embeddings, projeções 
+lineares das camadas de atenção, normalizações e redes feed-forward. A Tabela~\ref{tab:parametros} apresenta o detalhamento dos tensores de parâmetros que compõem o modelo.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lccc}
+\toprule
+\textbf{Parâmetro} & \textbf{Dimensão} & \textbf{Nº de parâmetros} \\
+\midrule
+wpe.weight                & 50 $\times$ 128   & 6\,400  \\
+wte.weight                & 109 $\times$ 128  & 13\,952 \\
+MM.0.in\_proj\_weight     & 384 $\times$ 128  & 49\,152 \\
+MM.0.in\_proj\_bias       & 384               & 384 \\
+MM.0.out\_proj\_weight    & 128 $\times$ 128  & 16\,384 \\
+MM.0.out\_proj\_bias      & 128               & 128 \\
+MM.1.in\_proj\_weight     & 384 $\times$ 128  & 49\,152 \\
+MM.1.in\_proj\_bias       & 384               & 384 \\
+MM.1.out\_proj\_weight    & 128 $\times$ 128  & 16\,384 \\
+MM.1.out\_proj\_bias      & 128               & 128 \\
+scale1.\{0,1\}.weight     & 128               & 128 + 128 \\
+scale1.\{0,1\}.bias       & 128               & 128 + 128 \\
+scale2.\{0,1\}.weight     & 128               & 128 + 128 \\
+scale2.\{0,1\}.bias       & 128               & 128 + 128 \\
+scale3.weight             & 128               & 128 \\
+scale3.bias               & 128               & 128 \\
+FFN.0.\{0,2\}.weight      & 512 $\times$ 128  & 65\,536 + 65\,536 \\
+FFN.0.\{0,2\}.bias        & 512               & 512 + 128 \\
+FFN.1.\{0,2\}.weight      & 512 $\times$ 128  & 65\,536 + 65\,536 \\
+FFN.1.\{0,2\}.bias        & 512               & 512 + 128 \\
+ln\_f.weight              & 109 $\times$ 128  & 13\,952 \\
+\midrule
+\textbf{Total}           & ---                & \textbf{418\,866} \\
+\bottomrule
+\end{tabular}
+\caption{Parâmetros treináveis do modelo GPT utilizado no experimento.}
+\label{tab:parametros}
+\end{table}
 
 \subsubsection*{Treinamento e métricas}
 
-Durante o treinamento, foi utilizada a função de perda \emph{cross-entropy},
+No treinamento, foi utilizada a função de perda \emph{cross-entropy},
 computada entre os logits produzidos pelo modelo e os caracteres-alvo da sequência.
 A cada época, registramos tanto a perda de treino quanto a de teste, permitindo
 acompanhar a evolução do aprendizado e o possível surgimento de sobreajuste.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{imagens/loss.png}
+    \caption{Evolução da função de perda durante o treinamento: comparação entre as curvas de treino e de teste ao longo das 1200 épocas.}
+    \label{fig:loss}
+\end{figure}
+
 
 As curvas de perda apresentaram comportamento regular ao longo das épocas:
 as perdas de treino e de teste permaneceram próximas, decrescendo de forma
@@ -683,14 +731,6 @@ bem-sucedido.
 
 O valor final da perda obtido após 1200 épocas foi de aproximadamente
 \texttt{1.82} para o conjunto de treino e \texttt{1.78} para o conjunto de teste. 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{imagens/loss.png}
-    \caption{Evolução da função de perda durante o treinamento: comparação entre as curvas de treino e de teste ao longo das 1200 épocas.}
-    \label{fig:loss}
-\end{figure}
-
 
 
 \subsubsection*{Resultado}
