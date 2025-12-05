@@ -109,8 +109,9 @@ Para o modelo com multiplas cabeças, o \emph{Multi-head Attention}, a dimensão
 O mecanismo de atenção é aplicado separadamente para cada cabeça, resultando em $h$ matrizes de atenção distintas. 
 
 Este modelo tem a vantagem de reduzir a dimensionalidade do embedding e permitir a paralelização do cálculo da matriz de atenção, além de permitir que cada cabeça foque em diferentes partes da sequência de entrada $x$,
-analisando separadamente diferentes aspectos de relacionamento entre tokens, como por exemplo, semântica, sintaxe, ou referências diretas. 
-Essas matrizes são então concatenadas e projetadas de volta para a dimensão original do embedding usando uma matriz de parâmetros adicional $W_O$. 
+analisando separadamente diferentes aspectos de relacionamento entre tokens, como por exemplo, semântica, sintaxe, ou interdependências. 
+Essas matrizes são então concatenadas e projetadas de volta para a dimensão original do embedding usando uma matriz de projeção de parâmetros adicional $W_O$, 
+que combina as matrizes de atenção com pesos diferentes, adicionando uma camada adicional de refinamento do contexto, podendo adicionalmente ser utilizada para reduzir a dimensionalidade do embedding. 
 A fórmula do modelo com multi-head attention é:
 $$
 \mathrm{MultiHead}(Q,K,V)
@@ -124,7 +125,7 @@ W^{O}.
 $$
 
 
-\subsubsection*{Exemplo do cálculo de \emph{multi-head attention}, partindo dos seguintes blocos $W_Q$, $W_K$ e $W_V$ de parâmetros de atenção treinados, para $h=2$:}
+\subsubsection*{Exemplo do cálculo de \emph{multi-head attention}, partindo dos seguintes blocos $W_Q$, $W_K$ e $W_V$ de parâmetros de atenção treinados, e $W_O = I_4$ neste exemplo por simplicidade, para $h=2$:}
 
 \begin{center}
 \begin{minipage}{0.47\linewidth}
@@ -185,7 +186,7 @@ W_V^{(2)} =
 \end{center}
 Considere um prompt com $n=3$ tokens:
 \[
-(\text{Life},\ \text{is},\ \text{beaultiful})
+(\text{Life},\ \text{is},\ \text{awesome})
 \]
 
 Cada token é representado por um embedding de dimensão $d_{\text{model}} = 4$.
@@ -195,7 +196,7 @@ X =
 \begin{bmatrix}
 \text{Life} \\
 \text{is} \\
-\text{beaultiful}
+\text{awesome}
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -299,7 +300,7 @@ S^{(2)} = \frac{1}{\sqrt{2}}
 \end{minipage}
 \end{center}
 
-Aplicamos em seguida a máscara causal, o que impede que o token $t$ seja co-relacionado com tokens em posições subsequêntes (futuras) $j>t$, exatamente igual ao treinamento.
+Aplicamos em seguida a máscara causal, o que impede que o token $t$ seja co-relacionado com tokens em posições subsequêntes (futuras) $j>t$, exatamente igual ocorre no treinamento.
 Os scores mascarados são obtidos por:
 \[
 \widetilde{S}^{(i)} = S^{(i)} + M, 
@@ -359,53 +360,6 @@ A^{(2)} =
 \end{minipage}
 \end{center}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%-----------------------------------------------------------
-\paragraph{Concatenação das cabeças e projeção de saída.}
-
-As duas cabeças produzem matrizes
-\(\text{head}_1, \text{head}_2 \in \mathbb{R}^{3 \times 2}\).
-O \emph{multi-head attention} concatena essas saídas ao longo da
-última dimensão:
-\[
-H =
-\bigl[\,\text{head}_1 \mid \text{head}_2\,\bigr]
-\simeq
-\begin{bmatrix}
-1.673 & 1.327 & 1.673 & 0.491 \\
-1.284 & 1.716 & 1.284 & 1.292 \\
-1.102 & 1.898 & 1.102 & 1.747
-\end{bmatrix}
-\in \mathbb{R}^{3 \times 4}.
-\]
-
-Tomando, para simplicidade, a projeção de saída como a identidade,
-\[
-W^{O} = I_{4},
-\]
-a saída final do bloco de \emph{multi-head attention} é
-\[
-\mathrm{MultiHead}(Q,K,V)
-=
-H W^{O}
-=
-H
-\in \mathbb{R}^{3 \times 4}.
-\]
-
-Dessa forma, cada um dos 3 tokens de entrada é mapeado para um novo
-vetor de dimensão $4$, obtido pela combinação das duas cabeças de
-atenção.
-
-    \end{answer}
-
-\textbf{Questão 02:} Treine um modelo de linguagem com dimensão embedding de 128, duas camadas e duas 
-cabeças para os dados de Shakespeare.
-
-        \begin{answer}[]
-
-\subsubsection*{3. Saída de cada cabeça}
 
 A saída da cabeça $i$ é
 \[
@@ -414,7 +368,7 @@ A saída da cabeça $i$ é
 
 \begin{center}
 \begin{minipage}{0.47\linewidth}
-\begin{tcolorbox}[title={Head 1: saída}, colback=white, boxsep=0.6mm, left=0mm]
+\begin{tcolorbox}[title={Head 1}, colback=white, boxsep=0.6mm, left=0mm]
 \[
 A^{(1)} V^{(1)}=
 \simeq
@@ -422,13 +376,13 @@ A^{(1)} V^{(1)}=
 2.000 & 1.000 \\
 1.670 & 1.330 \\
 1.102 & 1.898
-\end{bmatrix}.
+\end{bmatrix}
 \]
 \end{tcolorbox}
 \end{minipage}
 \hfill
 \begin{minipage}{0.47\linewidth}
-\begin{tcolorbox}[title={Head 2: saída}, colback=white, boxsep=0.6mm, left=0mm]
+\begin{tcolorbox}[title={Head 2}, colback=white, boxsep=0.6mm, left=0mm]
 \[
 A^{(2)} V^{(2)}=
 \simeq
@@ -436,39 +390,87 @@ A^{(2)} V^{(2)}=
 1.000 & 1.000 \\
 1.670 & 0.330 \\
 1.102 & 1.747
-\end{bmatrix}.
+\end{bmatrix}
 \]
 \end{tcolorbox}
 \end{minipage}
 \end{center}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{4. Concatenação das cabeças e saída do \emph{multi-head}}
-
-As duas cabeças produzem matrizes
-\(
-\text{head}_1, \text{head}_2 \in \mathbb{R}^{3 \times 2}.
-\)
-O \emph{multi-head attention} concatena essas saídas ao longo da última
-dimensão:
+Considerando, por simplicidade, a projeção de saída como a identidade,
 \[
-H = [\,\text{head}_1 \mid \text{head}_2\,]
-\simeq
+W^{O} = I_{4},
+\]
+a saída final do bloco de \emph{multi-head attention} é
+\[
+\mathrm{MultiHead}(Q,K,V)
+=
+\Concat(H^{(1)}|H^{(2)}) W_{O}
+\in
+H
+\in \mathbb{R}^{3 \times 4}.
+\]
+\begin{center}
+\begin{minipage}{0.85\linewidth}
+\begin{tcolorbox}[title={Multi-Head Attention}, colback=white, boxsep=0.6mm, left=0mm]
+\[
+MultiHead(Q,K,V)=
 \begin{bmatrix}
 2.000 & 1.000 & 1.000 & 1.000 \\
 1.670 & 1.330 & 1.670 & 0.330 \\
 1.102 & 1.898 & 1.102 & 1.747
 \end{bmatrix}
-\in \mathbb{R}^{3 \times 4}.
+\begin{bmatrix}
+1.000 & 0.000 & 0.000 & 0.000 \\
+0.000 & 1.000 & 0.000 & 0.000 \\
+0.000 & 0.000 & 1.000 & 0.000 \\
+0.000 & 0.000 & 0.000 & 1.000
+\end{bmatrix}
 \]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\end{center}
 
-Se tomarmos a projeção de saída como a identidade $W^O = I_4$, a saída
-final do bloco de \emph{multi-head attention} é simplesmente
+\paragraph{Resultado final:}
+
+\begin{center}
+\begin{minipage}{0.70\linewidth}
+\begin{tcolorbox}[title={Multi-Head Attention (novos \emph{embeddings} contextualizados)}, colback=white, boxsep=0.6mm, left=0mm]
 \[
-\mathrm{MultiHead}(Q,K,V) = H.
+Attention(Q,K,V)=
+\begin{bmatrix}
+\text{Life} \\
+\text{is} \\
+\text{awesome}
+\end{bmatrix}
+=
+\begin{bmatrix}
+2.000 & 1.000 & 1.000 & 1.000 \\
+1.670 & 1.330 & 1.670 & 0.330 \\
+1.102 & 1.898 & 1.102 & 1.747
+\end{bmatrix}
 \]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\end{center}
+\end{answer}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textbf{Questão 02:} Treine um modelo de linguagem com dimensão embedding de 128, duas camadas e duas 
+cabeças para os dados de Shakespeare.
+
+    \begin{answer}[]
+
     \end{answer}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \textbf{Questão 03:} Repita o item anterior sem o mecanismo de atenção (com múltiplas cabeças) e descreva 
 o que ocorre no treinamento.
     
@@ -476,8 +478,6 @@ o que ocorre no treinamento.
 
     \end{answer}
 
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
