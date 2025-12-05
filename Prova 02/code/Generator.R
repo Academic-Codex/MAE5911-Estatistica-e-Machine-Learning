@@ -116,155 +116,24 @@ generate_topk <- function(prompt,
 #   })
 # }
 
-# 
-# generate_topk <- function(prompt) {
-#   
-#   Model$eval()
-#   
-#   with_no_grad({
-#     
-#     # prompt → índices
-#     x <- torch_tensor(
-#       Encoder(prompt, voc),
-#       dtype = torch_int()
-#     )$unsqueeze(1)   # [1 x T]
-#     
-#     for (i in 1:config$max_new_tokens) {
-#       
-#       if (x$size(2) <= config$block_size) {
-#         
-#         logits <- Model$eval()(x)[, -1, ]
-#         
-#       } else {
-#         
-#         xx <- x[, (x$size(2) - config$block_size + 1):x$size(2)]
-#         logits <- Model$eval()(xx)[, -1, ]
-#       }
-#       
-#       # ---- TOP-K ----
-#       logits_k <- logits$topk(config$k_top)
-#       
-#       probs    <- torch::nnf_softmax(logits_k[[1]], dim = -1)
-#       selected <- torch::torch_multinomial(probs, num_samples = 1)
-#       next_tok <- logits_k[[2]][, selected$item()]$unsqueeze(1)
-#       
-#       # concatena
-#       x <- torch_cat(list(x, next_tok), dim = 2)
-#     }
-#     
-#     # decodifica sequência inteira
-#     idx <- as.integer(as_array(x$squeeze(1)))
-#     paste(Decoder(idx, voc), collapse = "")
-#   })
-# }
 
-# generate_topk <- function(prompt,
-#                           k_top   = config$k_top,
-#                           max_new = config$max_new_tokens) {
-#   
-#   Model$eval()
-#   with_no_grad({
-#     
-#     x <- torch_tensor(Encoder(prompt, voc),
-#                       dtype = torch_int())$unsqueeze(1)
-#     
-#     for (i in 1:max_new) {
-#       
-#       # contexto limitado ao tamanho do bloco
-#       if (x$size(2) > config$block_size) {
-#         ctx <- x[, (x$size(2)-config$block_size+1):x$size(2)]
-#       } else {
-#         ctx <- x
-#       }
-#       
-#       # forward
-#       logits <- Model(ctx)
-#       
-#       # garantir que existe último token
-#       if (ctx$size(2) < 1) {
-#         stop("Context length became zero — this should never happen.")
-#       }
-#       
-#       # pegar apenas o último passo de logits
-#       last_logits <- logits[, ctx$size(2), ]   # [1 × vocab]
-#       
-#       # top-k
-#       top <- last_logits$topk(k_top)
-#       vals <- top[[1]]$to(dtype = torch_float())
-#       idxs <- top[[2]]
-#       
-#       # softmax nos k valores
-#       probs <- torch::nnf_softmax(vals, dim = -1)
-#       
-#       # amostra 1 token
-#       selected <- torch_multinomial(probs, num_samples = 1)
-#       next_token <- idxs[, selected$item()]$unsqueeze(1)
-#       
-#       # concatena no final da sequência
-#       x <- torch_cat(list(x, next_token), dim = 2)
-#     }
-#     
-#     generated_idx <- as.integer(as_array(x$squeeze(1)))
-#     paste(voc[generated_idx], collapse = "")
-#   })
-# }
-# 
-# generate_topk <- function(prompt,
-#                           k_top   = config$k_top,
-#                           max_new = config$max_new_tokens) {
-#   
-#   Model$eval()
-#   with_no_grad({
-#     
-#     # sequência inicial (1 x T)
-#     x <- torch_tensor(
-#       Encoder(prompt, voc),
-#       dtype = torch_int()
-#     )$unsqueeze(1)
-#     
-#     for (i in 1:max_new) {
-#       
-#       # contexto limitado ao block_size
-#       if (x$size(2) > config$block_size) {
-#         ctx <- x[, (x$size(2) - config$block_size + 1):x$size(2)]
-#       } else {
-#         ctx <- x
-#       }
-#       
-#       # forward: [1, T_ctx, V]
-#       logits <- Model(ctx)
-#       
-#       # pega apenas o último passo: [V]
-#       last_logits <- logits[, ctx$size(2), ]$squeeze()
-#       
-#       # top-k nos logits (vetor 1D)
-#       top <- last_logits$topk(k_top)
-#       
-#       vals_t <- top[[1]]      # logits dos k_top
-#       idxs_t <- top[[2]]      # índices dos k_top no vocabulário
-#       
-#       # converte para R
-#       vals <- as.numeric(as_array(vals_t))
-#       idxs <- as.integer(as_array(idxs_t))
-#       
-#       # softmax em R (para estabilidade)
-#       exp_vals <- exp(vals - max(vals))   # truque de estabilidade
-#       probs <- exp_vals / sum(exp_vals)
-#       
-#       # escolhe 1 índice dentre os k_top
-#       choice_pos <- sample(seq_along(idxs), size = 1, prob = probs)
-#       next_idx   <- idxs[choice_pos]
-#       
-#       # transforma em tensor [1 x 1] e concatena
-#       next_token <- torch_tensor(
-#         matrix(next_idx, nrow = 1),
-#         dtype = torch_int()
-#       )
-#       
-#       x <- torch_cat(list(x, next_token), dim = 2)
-#     }
-#     
-#     generated_idx <- as.integer(as_array(x$squeeze(1)))
-#     paste(voc[generated_idx], collapse = "")
-#   })
+# for (i in 1:config$max_new_tokens) {
+#   if (x$size(2)<-config$block_size) {
+#     logits = Model$eval()(x)[,-1,]
+#     logits = logits$topk(2)
+#     probs = torch::nnf_softmax(logits[[1]],-1)
+#     selected = torch::torch_multinomial(probs, num_samples=1)
+#     next_token <- logits[[2]][,selected$item()]$unsqueeze(1)
+#     next_token = torch_argmax(Model$eval()(x)[,-1,],-1)$unsqueeze(1)
+#     x <- torch_cat(list(x, next_token), -1)
+#   } else {
+#     xx = x[, (x$size(2)*config$block_size+1):x$size(2)]
+#     logits = Model$eval()(xx)[,-1,]
+#     logits = logits$topk(k_top)
+#     probs = torch::nn_softmax(logits[[1]],-1)
+#     selected = torch::torch_multinomial(probs, num_samples=1)
+#     next_token <- logits[[2]][,selected$item()]$unsqueeze(1)
+#     x <- torch_cat(list(x, next_token), -1)
+#   }
+#   cat(Decoder(as.number(next_token)))
 # }

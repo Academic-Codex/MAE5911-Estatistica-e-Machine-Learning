@@ -15,6 +15,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[numbers,sort&compress]{natbib} % ou [authoryear]
 \usepackage[alf]{abntex2cite} % citação ABNT autor-data
+\usepackage{tcolorbox}
+\DeclareMathOperator{\softmax}{softmax}
+\DeclareMathOperator{\Concat}{Concat}
 \pagestyle{plain}
 
 \tikzstyle{arrow} = [thick,->,>=stealth]
@@ -86,6 +89,314 @@ Apresente o desenvolvimento como feito em sala, considerando a versão ``mascara
 médias ponderadas dinamicamente.
 
     \begin{answer}[]
+O mecanismo de atenção é o que transforma representação semântica de tokens em representação contextualizada, 
+garantindo que os tokens sejam reinterpretados de acordo com o contexto em que é referido. O mecanismo consiste em durante o treino aprender as 
+matrizes $W_Q$ e $W_K$ que representam parâmetros de \emph{query}, o que este token procura, e \emph{key}, o que este token oferece, tais que $$ Q_i=x_i*W_Q $$ $$ K_i = x_i*W_K,$$ no qual, durante o teste, o embedding $x$ de cada token é redefinido para um novo valor utilizando a fórmula
+\[
+\mathrm{Attention}(Q, K, V)
+=
+\mathrm{softmax}\!\left(
+\frac{Q K^{\top}}{\sqrt{d_k}} + M
+\right) V
+\;=\;
+\sum_{j} A_{ij} \, V_j
+\]
+na qual M é a máscara que apenas atribui contribuição não nula para tokens em relação a si mesmo e aos tokens predecessores, 
+garantindo uma análise causal de contexto e V é a estatística suficiente sobre a qual tomamos a expectativa, também calculado via matriz de parâmetros $W_V$, tal que $V_i = x_i * W_V$.
+O resultado final é a matriz Attention, que tem dimensão $n \times d_{model}$, para $n$ tokens e dimensão do embedding $d_{model}$, no modelo com uma cabeça.
+
+Para o modelo com multiplas cabeças, o \emph{Multi-head Attention}, a dimensão do embedding é dividida em $h$ cabeças, cada uma com dimensão $d_k = d_{model}/h$. Cada cabeça aprende suas próprias matrizes de parâmetros $W_Q^{(i)}$, $W_K^{(i)}$ e $W_V^{(i)}$, para $i = 1, \ldots, h$. 
+O mecanismo de atenção é aplicado separadamente para cada cabeça, resultando em $h$ matrizes de atenção distintas. 
+
+Este modelo tem a vantagem de reduzir a dimensionalidade do embedding e permitir a paralelização do cálculo da matriz de atenção, além de permitir que cada cabeça foque em diferentes partes da sequência de entrada $x$,
+analisando separadamente diferentes aspectos de relacionamento entre tokens, como por exemplo, semântica, sintaxe, ou referências diretas. 
+Essas matrizes são então concatenadas e projetadas de volta para a dimensão original do embedding usando uma matriz de parâmetros adicional $W_O$. 
+A fórmula do modelo com multi-head attention é:
+$$
+\mathrm{MultiHead}(Q,K,V)
+=
+\mathrm{Concat}\!\left(
+\mathrm{Attention}(Q W_1^{Q},\, K W_1^{K},\, V W_1^{V}),
+\;\ldots,\;
+\mathrm{Attention}(Q W_h^{Q},\, K W_h^{K},\, V W_h^{V})
+\right)
+W^{O}.
+$$
+
+
+\subsubsection*{Exemplo do cálculo de \emph{multi-head attention}, partindo dos seguintes blocos $W_Q$, $W_K$ e $W_V$ de parâmetros de atenção treinados, para $h=2$:}
+
+\begin{center}
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 1}, colback=white, boxsep=0pt]
+\[
+W_Q^{(1)} =
+\begin{bmatrix}
+1 & 0\\
+0 & 1\\
+1 & 0\\
+0 & 1
+\end{bmatrix},
+W_K^{(1)} =
+\begin{bmatrix}
+1 & 1\\
+0 & 1\\
+1 & 0\\
+0 & 1
+\end{bmatrix},
+W_V^{(1)} =
+\begin{bmatrix}
+1 & 0\\
+0 & 1\\
+1 & 1\\
+0 & 1
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 2}, colback=white, boxsep=0pt]
+\[
+W_Q^{(2)} =
+\begin{bmatrix}
+0 & 1\\
+1 & 0\\
+0 & 1\\
+1 & 0
+\end{bmatrix},
+W_K^{(2)} =
+\begin{bmatrix}
+1 & 0\\
+1 & 1\\
+0 & 1\\
+1 & 0
+\end{bmatrix},
+W_V^{(2)} =
+\begin{bmatrix}
+0 & 1\\
+1 & 0\\
+1 & 0\\
+0 & 1
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\end{center}
+Considere um prompt com $n=3$ tokens:
+\[
+(\text{Life},\ \text{is},\ \text{beaultiful})
+\]
+
+Cada token é representado por um embedding de dimensão $d_{\text{model}} = 4$.
+Para fins ilustrativos consideramos a seguinte matriz de embeddings:,
+\[
+X =
+\begin{bmatrix}
+\text{Life} \\
+\text{is} \\
+\text{beaultiful}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 \\
+1 & 1 & 0 & 1
+\end{bmatrix}
+\in \mathbb{R}^{3 \times 4}.
+\]
+
+Cálculo das projecoes Q, K, V para cada token:
+\[
+Q^{(i)} = X W_Q^{(i)},\quad
+K^{(i)} = X W_K^{(i)},\quad
+V^{(i)} = X W_V^{(i)},
+\]
+
+\begin{center}
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 1}, colback=white, boxsep=0pt]
+\[
+Q^{(1)} =
+\begin{bmatrix}
+2 & 0 \\
+1 & 1 \\
+1 & 2
+\end{bmatrix},
+K^{(1)} =
+\begin{bmatrix}
+2 & 1 \\
+1 & 1 \\
+1 & 3
+\end{bmatrix},
+V^{(1)} =
+\begin{bmatrix}
+2 & 1 \\
+1 & 2 \\
+1 & 2
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 2}, colback=white, boxsep=0pt]
+\[
+Q^{(2)} =
+\begin{bmatrix}
+0 & 2 \\
+1 & 1 \\
+2 & 1
+\end{bmatrix},
+K^{(2)} =
+\begin{bmatrix}
+1 & 1 \\
+1 & 2 \\
+3 & 1
+\end{bmatrix},
+V^{(2)} =
+\begin{bmatrix}
+1 & 1 \\
+2 & 0 \\
+1 & 2
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\end{center}
+
+Calculamos agora, para $d_k = d_{\text{model}} / h = 2$:
+
+\[
+S^{(i)} = \frac{Q^{(i)} {K^{(i)}}^{\top}}{\sqrt{d_k}}
+\]
+\begin{center}
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 1}, colback=white, boxsep=0pt]
+\[
+S^{(1)} =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+4 & 2 & 2 \\
+3 & 2 & 4 \\
+4 & 3 & 7
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 2}, colback=white, boxsep=0pt]
+\[
+S^{(2)} = \frac{1}{\sqrt{2}}
+\begin{bmatrix}
+2 & 4 & 2 \\
+2 & 3 & 4 \\
+3 & 4 & 7
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\end{center}
+
+Aplicamos em seguida a máscara causal, o que impede que o token $t$ seja co-relacionado com tokens em posições subsequêntes (futuras) $j>t$, exatamente igual ao treinamento.
+Os scores mascarados são obtidos por:
+\[
+\widetilde{S}^{(i)} = S^{(i)} + M, 
+\qquad
+M =
+\begin{bmatrix}
+0 & -\infty & -\infty \\
+0 & 0        & -\infty \\
+0 & 0        & 0
+\end{bmatrix},
+\]
+
+Note que a máscara zera as probabilidades das posições não causais:
+\[
+\widetilde{S}^{(1)}_{1,:}
+= \bigl(s_{11}, -\infty, -\infty\bigr)
+\quad
+\implies
+\quad
+\softmax\bigl(\widetilde{S}^{(1)}_{1,:}\bigr)
+=
+\frac{\bigl(e^{s_{11}}, e^{-\infty}, e^{-\infty}\bigr)}
+     {e^{s_{11}} + e^{-\infty} + e^{-\infty}}
+= (1,0,0),
+\]
+
+
+Aplicando a função $\softmax$ linha a linha aos scores mascarados,
+obtemos as matrizes $A^{(1)}$ e $A^{(2)}$.
+
+
+\begin{center}
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 1}, colback=white, boxsep=0pt]
+\[
+A^{(1)} =
+\begin{bmatrix}
+1.000 & 0.000 & 0.000 \\
+0.670 & 0.330 & 0.000 \\
+0.102 & 0.050 & 0.848
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 2}, colback=white, boxsep=0pt]
+\[
+A^{(2)} = 
+\begin{bmatrix}
+1.000 & 0.000 & 0.000 \\
+0.330 & 0.670 & 0.000 \\
+0.050 & 0.102 & 0.848
+\end{bmatrix}
+\]
+\end{tcolorbox}
+\end{minipage}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-----------------------------------------------------------
+\paragraph{Concatenação das cabeças e projeção de saída.}
+
+As duas cabeças produzem matrizes
+\(\text{head}_1, \text{head}_2 \in \mathbb{R}^{3 \times 2}\).
+O \emph{multi-head attention} concatena essas saídas ao longo da
+última dimensão:
+\[
+H =
+\bigl[\,\text{head}_1 \mid \text{head}_2\,\bigr]
+\simeq
+\begin{bmatrix}
+1.673 & 1.327 & 1.673 & 0.491 \\
+1.284 & 1.716 & 1.284 & 1.292 \\
+1.102 & 1.898 & 1.102 & 1.747
+\end{bmatrix}
+\in \mathbb{R}^{3 \times 4}.
+\]
+
+Tomando, para simplicidade, a projeção de saída como a identidade,
+\[
+W^{O} = I_{4},
+\]
+a saída final do bloco de \emph{multi-head attention} é
+\[
+\mathrm{MultiHead}(Q,K,V)
+=
+H W^{O}
+=
+H
+\in \mathbb{R}^{3 \times 4}.
+\]
+
+Dessa forma, cada um dos 3 tokens de entrada é mapeado para um novo
+vetor de dimensão $4$, obtido pela combinação das duas cabeças de
+atenção.
 
     \end{answer}
 
@@ -94,6 +405,68 @@ cabeças para os dados de Shakespeare.
 
         \begin{answer}[]
 
+\subsubsection*{3. Saída de cada cabeça}
+
+A saída da cabeça $i$ é
+\[
+\text{head}_i = A^{(i)} V^{(i)} \in \mathbb{R}^{3 \times 2}.
+\]
+
+\begin{center}
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 1: saída}, colback=white, boxsep=0.6mm, left=0mm]
+\[
+A^{(1)} V^{(1)}=
+\simeq
+\begin{bmatrix}
+2.000 & 1.000 \\
+1.670 & 1.330 \\
+1.102 & 1.898
+\end{bmatrix}.
+\]
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}{0.47\linewidth}
+\begin{tcolorbox}[title={Head 2: saída}, colback=white, boxsep=0.6mm, left=0mm]
+\[
+A^{(2)} V^{(2)}=
+\simeq
+\begin{bmatrix}
+1.000 & 1.000 \\
+1.670 & 0.330 \\
+1.102 & 1.747
+\end{bmatrix}.
+\]
+\end{tcolorbox}
+\end{minipage}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{4. Concatenação das cabeças e saída do \emph{multi-head}}
+
+As duas cabeças produzem matrizes
+\(
+\text{head}_1, \text{head}_2 \in \mathbb{R}^{3 \times 2}.
+\)
+O \emph{multi-head attention} concatena essas saídas ao longo da última
+dimensão:
+\[
+H = [\,\text{head}_1 \mid \text{head}_2\,]
+\simeq
+\begin{bmatrix}
+2.000 & 1.000 & 1.000 & 1.000 \\
+1.670 & 1.330 & 1.670 & 0.330 \\
+1.102 & 1.898 & 1.102 & 1.747
+\end{bmatrix}
+\in \mathbb{R}^{3 \times 4}.
+\]
+
+Se tomarmos a projeção de saída como a identidade $W^O = I_4$, a saída
+final do bloco de \emph{multi-head attention} é simplesmente
+\[
+\mathrm{MultiHead}(Q,K,V) = H.
+\]
     \end{answer}
 
 \textbf{Questão 03:} Repita o item anterior sem o mecanismo de atenção (com múltiplas cabeças) e descreva 
