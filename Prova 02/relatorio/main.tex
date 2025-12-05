@@ -778,6 +778,35 @@ do estilo shakespeariano.
 o que ocorre no treinamento.
     
     \begin{answer}[]
+Removendo o mecanismo de atenção, cada camada passa a consistir em uma rede \emph{feed-forward} aplicada de forma autoregressiva sobre uma janela fixa
+de contexto atuando independentemente
+a cada token, utilizando o embedding original, isto é, sem identificação de relevância e correlação de contexto entre tokens.
+
+A Fig.~\ref{fig:loss_noattn} mostra a evolução da perda durante o treinamento.
+Embora a perda apresente uma redução inicial significativa, o seu valor estabiliza
+em um platô mais alto do que no modelo com o Attention. Não há overfitting, 
+porém as curvas de treino estabilizadas com uma loss alta demonstram a incapacidade do modelo de progredir para regiões mais ricas da função de custo. A loss
+alta é evidência da perda da capacidade de capturar padrões complexos no texto.
+
+O valor final da perda obtido após 1200 épocas foi de aproximadamente
+\texttt{2.41} para o conjunto de treino e \texttt{2.44} para o conjunto de teste. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{imagens/loss_.png}
+    \caption{Curva de perda do modelo sem o mecanismo de atenção.}
+    \label{fig:loss_noattn}
+\end{figure}
+
+Os efeitos desta remoção é evidente no texto gerado como resultado, o qual manteve o seu aspecto de linguagem, porém sem reproduzir o estilo ou as palavras do corpus utilizado.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{imagens/result_.png}
+    \caption{Amostra de texto gerado pelo modelo treinado sem o bloco de atenção.}
+    \label{fig:sample_noattn}
+\end{figure}
 
     \end{answer}
 
