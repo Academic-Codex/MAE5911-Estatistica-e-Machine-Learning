@@ -2,7 +2,7 @@
 library(torch)
 
 GPT <- torch::nn_module(
-  initialize = function(block_size, n_embd, N_Layers, nvoc, Head, p0 = 0.1) {
+  initialize = function(block_size, n_embd, N_Layers, nvoc, N_Head, p0 = 0.1) {
     
     self$N   <- N_Layers
     self$wpe <- torch::nn_embedding(block_size, n_embd)
@@ -10,7 +10,7 @@ GPT <- torch::nn_module(
     
     self$MM  <- torch::nn_module_list(lapply(1:N_Layers,
       function(x) torch::nn_multihead_attention(
-        n_embd, Head, dropout = p0, batch_first = TRUE)))
+        n_embd, N_Head, dropout = p0, batch_first = TRUE)))
     
     self$scale1 <- torch::nn_module_list(lapply(1:N_Layers,
       function(x) torch::nn_layer_norm(n_embd)))

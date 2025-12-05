@@ -11,7 +11,7 @@ config <- list(
   block_size = 16,   #Maximum context
   n_embd = 128,      #Embedding dimension
   N_Layers = 2,      #Number of layers
-  Head = 2,          #Number of heads
+  N_Head = 2,          #Number of heads
   
   #Training parameters (global)
   lr = 0.003,        #Learning rate

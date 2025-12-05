@@ -16,6 +16,58 @@
 \usepackage[numbers,sort&compress]{natbib} % ou [authoryear]
 \usepackage[alf]{abntex2cite} % citação ABNT autor-data
 \usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% --- Suporte a UTF-8 ---
+\usepackage{lmodern}           % fonte moderna compatível com T1
+
+% --- Pacotes para exibir código ---
+
+
+% --- Define o idioma R com palavras-chave e cores ---
+\lstdefinelanguage{R}{
+  keywords={function, if, else, for, in, while, repeat, return, library, require, next, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={TRUE, FALSE, NULL, NA, Inf, NaN},
+  ndkeywordstyle=\color{magenta}\bfseries,
+  comment=[l]{\#},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{orange}\ttfamily,
+  morestring=[b]",
+  morestring=[b]',
+  sensitive=true
+}
+
+% --- Mapeamento para UTF-8 (acentos, ç, etc.) ---
+% ---- estilo do listing ----
+\lstset{
+  literate=
+    {á}{{\'a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 {à}{{\`a}}1
+    {é}{{\'e}}1 {ê}{{\^e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+    {ú}{{\'u}}1 {ü}{{\"u}}1
+    {ç}{{\c{c}}}1
+    {Á}{{\'A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1
+    {É}{{\'E}}1 {Ê}{{\^E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1 {Õ}{{\~O}}1 {Ô}{{\^O}}1
+    {Ú}{{\'U}}1 {Ü}{{\"U}}1
+    {Ç}{{\c{C}}}1,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!5},
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  keepspaces=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=6pt
+}
 \DeclareMathOperator{\softmax}{softmax}
 \DeclareMathOperator{\Concat}{Concat}
 \pagestyle{plain}
@@ -405,8 +457,6 @@ a saída final do bloco de \emph{multi-head attention} é
 \mathrm{MultiHead}(Q,K,V)
 =
 \Concat(H^{(1)}|H^{(2)}) W_{O}
-\in
-H
 \in \mathbb{R}^{3 \times 4}.
 \]
 \begin{center}
@@ -455,6 +505,66 @@ Attention(Q,K,V)=
 \hfill
 \end{center}
 \end{answer}
+
+\begin{lstlisting}[language=R, caption={Definição dos blocos de multi-head attention treináveis}]
+# ---------------------------------------------------------------------------------------
+# Cada camada N da rede neural receberá um módulo de atenção multi-cabeças definido da seguinte forma:
+# ---------------------------------------------------------------------------------------
+self$MM <- torch::nn_module_list(lapply(1:N_Layers,
+  function(x) torch::nn_multihead_attention(
+    n_embd,               # d_model: dimensão do vetores de embedding
+    N_Head,               # h: número de cabeças
+    dropout = p0,         # tecnica para reduzir o overfitting
+    batch_first = TRUE))) # informa a disposição dos dados à biblioteca torch
+\end{lstlisting}
+
+\begin{lstlisting}[language=R,caption={Definição da Máscara causal}]
+# ---------------------------------------------------------------------------------------
+# Cria uma matriz TxT, sendo T = número de tokens na sequência de entrada
+# Garante que será tratado no mesmo device que X (CPU ou GPU) para que eles possam ser operados juntos
+# Aplica 1 à diagonal superior, transforma 1 em booleano TRUE para que a biblioteca torch saiba quais posições precisam ser mascaradas
+# ---------------------------------------------------------------------------------------
+wei <- torch::torch_triu(
+  torch::torch_ones(T, T, device = x$device),
+  diagonal = 1)$to(dtype = torch::torch_bool())
+\end{lstlisting}
+
+\begin{lstlisting}[language=R,caption={Aplicação da atenção multi-cabeças mascarada em cada camada}]
+for (j in 1:self$N) {
+
+  # ------------------------------------------------------------------------------------
+  # 1) Pré-normalização (LayerNorm)
+  #    Normalização dos embeddings, já que todos embeddings interagirão com todos os outros.
+  #    A normalização não altera a informação e estabiliza o treinamento.
+  # ------------------------------------------------------------------------------------
+  QKV <- self$scale1[[j]](output)
+
+  # ------------------------------------------------------------------------------------
+  # 2) Chamada da função Multi-Head Self-Attention mascarada do torch que calcula Q, K e V internamente a partir de QKV.
+  # ------------------------------------------------------------------------------------
+  attn_out <- self$MM[[j]](
+    query      = QKV,     # Input para o cálculo de Q
+    key        = QKV,     # Input para o cálculo de K
+    value      = QKV,     # Input para o cálculo de V
+    attn_mask  = wei,     # Máscara causal
+    need_weights = FALSE  # Dispensa o retorno dos pesos utilizados no cáculo da média
+  )[[1]]                  # Guarda apenas o resultado da média ponderada, mas não os pesos
+
+  # ------------------------------------------------------------------------------------
+  # 3) Conexão residual após atenção
+  # Mantém a informação original dos embeddings e evita que a transformação da atenção distorça excessivamente a representação.
+  # Também estabiliza o fluxo do gradiente.
+  # ------------------------------------------------------------------------------------
+  output <- output + attn_out
+
+  # ------------------------------------------------------------------------------------
+  # 4) Feed-Forward Network + residual
+  #  Aplicação de uma MLP ponto-a-ponto em cada token individualmente, capturando relações não lineares permitindo que a rede aprenda padrões complexos.
+  #  Mantendo o resíduo e aplicando a normalização para estabilizar a operação.
+  # ------------------------------------------------------------------------------------
+  output <- output + self$FFN[[j]]( self$scale2[[j]](output) )
+}
+\end{lstlisting}
 
 
 
