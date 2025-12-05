@@ -379,6 +379,16 @@ INPUT ./imagens/loss.png
 INPUT ./imagens/loss.png
 INPUT ./imagens/loss.png
 INPUT ./imagens/loss.png
+INPUT ./imagens/resultado1.png
+INPUT ./imagens/resultado1.png
+INPUT ./imagens/resultado1.png
+INPUT ./imagens/resultado1.png
+INPUT ./imagens/resultado1.png
+INPUT ./imagens/resultado2.png
+INPUT ./imagens/resultado2.png
+INPUT ./imagens/resultado2.png
+INPUT ./imagens/resultado2.png
+INPUT ./imagens/resultado2.png
 INPUT main.aux
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx12.pfb

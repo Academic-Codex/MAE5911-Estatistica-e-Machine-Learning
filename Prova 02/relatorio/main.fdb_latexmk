@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764962052.33668 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764962054.16788 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764962052.08312 23940 dbf11b1902e725bc5d7c8bb3f5a418d6 ""
+["pdflatex"] 1764963774.64388 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764963776.7273 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764963773.00537 25550 469dbba1ff0c1dd5c39de26b43805526 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -218,13 +218,15 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "imagens/corpus1.png" 1764958488.23267 93537 b26d12a54283b1058432b34355917811 ""
-  "imagens/corpus2.png" 1764958818.01359 93116 751e25ea3c4cbc7a360f871e701edd73 ""
-  "imagens/loss.png" 1764961807.8605 308143 64260082ef63536a4f2b6edd4b9343f8 ""
+  "imagens/corpus1.png" 1764962247.20531 64384 55bbd353f9c7b308d95f8a76740f817e ""
+  "imagens/corpus2.png" 1764962326.03029 79626 be46884b2420d051f283aa9b9cd36fcb ""
+  "imagens/loss.png" 1764963289.80716 270675 624660343fbe2d7aee51d968ad4b8305 ""
   "imagens/model.png" 1764960440.17832 599298 76b9a8bb521250986385fa9bf118c275 ""
+  "imagens/resultado1.png" 1764962909.81254 130811 c0c7c039e05218659378c307f5847a2d ""
+  "imagens/resultado2.png" 1764962891.26597 167737 0e049718e09ec78f652008d3924d291e ""
   "imagens/voc.png" 1764959576.37718 68966 4dbdb58732726f11f999b38aecde154a ""
-  "main.aux" 1764962054.06178 2123 25f01c9a9360e863ec5c031c3a7f4596 "pdflatex"
-  "main.tex" 1764962052.08312 23940 dbf11b1902e725bc5d7c8bb3f5a418d6 ""
+  "main.aux" 1764963776.61569 2321 35fc949f78ec9c41c16c7fd1bf3f8231 "pdflatex"
+  "main.tex" 1764963773.00537 25550 469dbba1ff0c1dd5c39de26b43805526 ""
   "student.sty" 1764808305.08757 2514 bb4e7508fb7d13eb82e8dfa3e5a708e1 ""
   (generated)
   "main.aux"

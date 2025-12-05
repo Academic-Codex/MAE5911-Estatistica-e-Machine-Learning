@@ -53,12 +53,12 @@ GPT <- torch::nn_module(
     
     for (j in 1:self$N) {
       # pré-norm + atenção multi-cabeças
-      QKV <- self$scale1[[j]](output)
-      attn_out <- self$MM[[j]](
-        query = QKV, key = QKV, value = QKV,
-        attn_mask = wei, need_weights = FALSE
-      )[[1]]
-      # attn_out <- torch_zeros_like(QKV)
+      # QKV <- self$scale1[[j]](output)
+      # attn_out <- self$MM[[j]](
+      #   query = QKV, key = QKV, value = QKV,
+      #   attn_mask = wei, need_weights = FALSE
+      # )[[1]]
+      attn_out <- torch_zeros_like(QKV)
       output <- output + attn_out
       
       # feed-forward com pré-norm

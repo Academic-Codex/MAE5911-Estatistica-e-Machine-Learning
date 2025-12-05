@@ -630,7 +630,7 @@ Os hiperparâmetros utilizados no modelo são:
 \toprule
 \textbf{Hiperparâmetro} & \textbf{Valor} & \textbf{Descrição}\\
 \midrule
-\texttt{block\_size}     & 16 & contexto máximo (tokens anteriores). \\
+\texttt{block\_size}     & 50 & contexto máximo (janela do attention). \\
 \texttt{n\_embd}         & 128 & dimensão dos embeddings. \\
 \texttt{N\_Layers}       & 2 & número de blocos Transformer. \\
 \texttt{N\_Head}         & 2 & número de cabeças de atenção. \\
@@ -643,7 +643,7 @@ Os hiperparâmetros utilizados no modelo são:
 \label{tab:hiperparametros}
 \end{table}
 
-O tamanho de contexto (\texttt{block\_size = 16}) limita o alcance da atenção, tornando o treinamento mais leve e viável em hardware pessoal. 
+O tamanho de contexto (\texttt{block\_size = 50}) limita o alcance da atenção foi ajustado empiricamente para conseguir captar o estilo do texto e ao mesmo tempo ser viável para ser treinado em hardware pessoal. 
 A dimensão dos vetores de embedding (\texttt{n\_embd = 128}) é significativo, mas combinada ao número reduzido de camadas e a utilização de multiplas cabeças de atenção (\texttt{N\_Layers = 2}, \texttt{N\_Head = 2}), 
 mantém o modelo ágil e compacto, suficiente para capturar regularidades sintáticas e estilísticas do texto. 
 O dropout (\texttt{0.2}) fornece regularização. A taxa de aprendizado escolhida (\texttt{0.003}) foi ajustada empiricamente.
@@ -682,7 +682,7 @@ a estabilidade observada nas últimas épocas reflete um processo de otimizaçã
 bem-sucedido.
 
 O valor final da perda obtido após 1200 épocas foi de aproximadamente
-\texttt{1.93} para o conjunto de treino e \texttt{1.90} para o conjunto de teste. 
+\texttt{1.82} para o conjunto de treino e \texttt{1.78} para o conjunto de teste. 
 
 \begin{figure}[H]
     \centering
@@ -695,7 +695,37 @@ O valor final da perda obtido após 1200 épocas foi de aproximadamente
 
 \subsubsection*{Resultado}
 
-recorrentes.
+Os resultados obtidos mostram que o modelo, apesar de compacto, aprendeu 
+\emph{padrões estatísticos} presentes no inglês shakespeariano, como a distribuição típica de comprimentos 
+de palavras, certa cadência rítmica, alternância entre diálogos e rubricas, além da reprodução aproximada 
+de construções sintáticas características do período. 
+
+Entretanto, o texto gerado permanece 
+semanticamente incoerente, apresentando repetições excessivas e sentenças circulares. Esse comportamento 
+é esperado para um modelo de pequena escala: ele captura a superfície do estilo, mas não reproduz 
+a coerência e os encadeamentos semânticos ao longo do texto. O processo de tokenização mais robusto pode contribuir significativamente para melhorar a coerencia do texto.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imagens/resultado1.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imagens/resultado2.png}
+\end{minipage}
+
+\caption{Trechos do texto gerado pelo modelo treinado.}
+\label{fig:texto-gerado}
+\end{figure}
+
+
+O experimento valida a implementação completa de um Transformer do tipo \emph{decoder-only}, 
+confirmando que mesmo arquiteturas reduzidas conseguem capturar características linguísticas relevantes 
+quando treinadas sobre um corpus particular. O modelo foi capaz de replicar com consistência o \emph{ritmo}, o \emph{fluxo} e a \emph{forma} geral 
+do estilo shakespeariano.
     \end{answer}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
