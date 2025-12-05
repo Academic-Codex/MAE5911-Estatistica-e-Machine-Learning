@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764961570.49908 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764961572.23166 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764961568.5545 24547 a00378d23314c5589f05a2acb5e28b30 ""
+["pdflatex"] 1764962052.33668 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764962054.16788 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764962052.08312 23940 dbf11b1902e725bc5d7c8bb3f5a418d6 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -220,11 +220,11 @@
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
   "imagens/corpus1.png" 1764958488.23267 93537 b26d12a54283b1058432b34355917811 ""
   "imagens/corpus2.png" 1764958818.01359 93116 751e25ea3c4cbc7a360f871e701edd73 ""
-  "imagens/loss.png" 1764957372.49204 317524 d79606e7dd60ecc86200305f2aa5effb ""
+  "imagens/loss.png" 1764961807.8605 308143 64260082ef63536a4f2b6edd4b9343f8 ""
   "imagens/model.png" 1764960440.17832 599298 76b9a8bb521250986385fa9bf118c275 ""
   "imagens/voc.png" 1764959576.37718 68966 4dbdb58732726f11f999b38aecde154a ""
-  "main.aux" 1764961572.1293 2227 b56ea74c3724aac5fc0948c90d066c28 "pdflatex"
-  "main.tex" 1764961568.5545 24547 a00378d23314c5589f05a2acb5e28b30 ""
+  "main.aux" 1764962054.06178 2123 25f01c9a9360e863ec5c031c3a7f4596 "pdflatex"
+  "main.tex" 1764962052.08312 23940 dbf11b1902e725bc5d7c8bb3f5a418d6 ""
   "student.sty" 1764808305.08757 2514 bb4e7508fb7d13eb82e8dfa3e5a708e1 ""
   (generated)
   "main.aux"

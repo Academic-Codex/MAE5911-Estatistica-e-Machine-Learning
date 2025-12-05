@@ -8,7 +8,7 @@ config <- list(
   k_top=2,
   
   #gpt parameters
-  block_size = 16,   #Maximum context
+  block_size = 50,   #Maximum context
   n_embd = 128,      #Embedding dimension
   N_Layers = 2,      #Number of layers
   N_Head = 2,        #Number of heads
@@ -20,5 +20,5 @@ config <- list(
   epochs = 1200,     #Number of epochs
   num_workers = 6,   #Number of cpu workers
   
-  max_new_tokens = 700
+  max_new_tokens = 1500
 )
