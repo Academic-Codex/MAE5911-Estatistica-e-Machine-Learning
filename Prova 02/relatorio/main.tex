@@ -506,10 +506,10 @@ Attention(Q,K,V)=
 \end{center}
 \end{answer}
 
-\begin{lstlisting}[language=R, caption={Definição dos blocos de multi-head attention treináveis}]
-# ---------------------------------------------------------------------------------------
+\begin{lstlisting}[language=R, caption={\textbf{Definição} dos blocos de multi-head attention treináveis}]
+# -------------------------------------------------------------------------------------------------------
 # Cada camada N da rede neural receberá um módulo de atenção multi-cabeças definido da seguinte forma:
-# ---------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
 self$MM <- torch::nn_module_list(lapply(1:N_Layers,
   function(x) torch::nn_multihead_attention(
     n_embd,               # d_model: dimensão do vetores de embedding
@@ -518,50 +518,51 @@ self$MM <- torch::nn_module_list(lapply(1:N_Layers,
     batch_first = TRUE))) # informa a disposição dos dados à biblioteca torch
 \end{lstlisting}
 
-\begin{lstlisting}[language=R,caption={Definição da Máscara causal}]
-# ---------------------------------------------------------------------------------------
+\begin{lstlisting}[language=R,caption={\textbf{Definição} da Máscara causal}]
+# ---------------------------------------------------------------------------------------------------------
 # Cria uma matriz TxT, sendo T = número de tokens na sequência de entrada
 # Garante que será tratado no mesmo device que X (CPU ou GPU) para que eles possam ser operados juntos
-# Aplica 1 à diagonal superior, transforma 1 em booleano TRUE para que a biblioteca torch saiba quais posições precisam ser mascaradas
-# ---------------------------------------------------------------------------------------
+# Aplica 1 à diagonal superior, transforma 1 em booleano TRUE para que a biblioteca torch saiba quais 
+# posições precisam ser mascaradas
+# ---------------------------------------------------------------------------------------------------------
 wei <- torch::torch_triu(
   torch::torch_ones(T, T, device = x$device),
   diagonal = 1)$to(dtype = torch::torch_bool())
 \end{lstlisting}
 
-\begin{lstlisting}[language=R,caption={Aplicação da atenção multi-cabeças mascarada em cada camada}]
+\begin{lstlisting}[language=R,caption={\textbf{Cálculo} da atenção multi-cabeças mascarada em cada camada}]
 for (j in 1:self$N) {
 
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   # 1) Pré-normalização (LayerNorm)
   #    Normalização dos embeddings, já que todos embeddings interagirão com todos os outros.
   #    A normalização não altera a informação e estabiliza o treinamento.
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   QKV <- self$scale1[[j]](output)
 
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   # 2) Chamada da função Multi-Head Self-Attention mascarada do torch que calcula Q, K e V internamente a partir de QKV.
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   attn_out <- self$MM[[j]](
     query      = QKV,     # Input para o cálculo de Q
     key        = QKV,     # Input para o cálculo de K
     value      = QKV,     # Input para o cálculo de V
     attn_mask  = wei,     # Máscara causal
-    need_weights = FALSE  # Dispensa o retorno dos pesos utilizados no cáculo da média
+    need_weights = FALSE  # Dispensa o retorno dos pesos utilizados no cáculo da média ponderada
   )[[1]]                  # Guarda apenas o resultado da média ponderada, mas não os pesos
 
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   # 3) Conexão residual após atenção
   # Mantém a informação original dos embeddings e evita que a transformação da atenção distorça excessivamente a representação.
-  # Também estabiliza o fluxo do gradiente.
-  # ------------------------------------------------------------------------------------
+  # Estabiliza o fluxo do gradiente.
+  # -------------------------------------------------------------------------------------------------------
   output <- output + attn_out
 
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   # 4) Feed-Forward Network + residual
   #  Aplicação de uma MLP ponto-a-ponto em cada token individualmente, capturando relações não lineares permitindo que a rede aprenda padrões complexos.
   #  Mantendo o resíduo e aplicando a normalização para estabilizar a operação.
-  # ------------------------------------------------------------------------------------
+  # -------------------------------------------------------------------------------------------------------
   output <- output + self$FFN[[j]]( self$scale2[[j]](output) )
 }
 \end{lstlisting}
@@ -573,7 +574,136 @@ for (j in 1:self$N) {
 cabeças para os dados de Shakespeare.
 
     \begin{answer}[]
+\subsection*{Descrição do experimento e configuração do modelo}
 
+\subsubsection*{Corpus utilizado}
+
+O modelo foi treinado sobre um corpus textual extraído da edição completa 
+das obras de William Shakespeare disponibilizada pelo \emph{Project Gutenberg}, 
+um repositório digital que distribui gratuitamente obras que já se encontram 
+em domínio público, contendo todo o conteúdo produzido pelo autor:
+peças teatrais, poemas narrativos, sonetos, trechos introdutórios e notas 
+editoriais presentes na edição digital, com aproximadamente 5{,}4 milhões de caracteres.
+
+\begin{figure}[H]
+\centering
+
+\begin{minipage}{0.47\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imagens/corpus1.png}
+\end{minipage}
+\hfill
+\begin{minipage}{0.47\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imagens/corpus2.png}
+\end{minipage}
+
+\caption{Trechos do corpus utilizado no experimento, provenientes da obra completa de Shakespeare disponibilizado pelo Projeto Gutenberg.}
+\label{fig:corpus_shakespeare}
+\end{figure}
+
+\subsubsection*{Vocabulário extraído do corpus}
+
+O modelo foi treinado no regime \textit{character-level}, o primeiro passo 
+consistiu em extrair todos os caracteres distintos presentes no arquivo 
+\texttt{Shakespeare.txt}. Inclui letras maiúsculas e minúsculas, dígitos, 
+pontuação, símbolos especiais, acentos, quebras de linha e espaços.  
+
+O vocabulário final contém \textbf{109 tokens}, sendo o primeiro reservado para o 
+símbolo especial \texttt{<PAD>} utilizado em operações internas.  
+Segue o conjunto de caracteres identificados:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{imagens/voc.png}%
+\caption{Vocabulário extraido no corpus utilizado (obra completa de Shakespeare).}
+\label{fig:vocabulario}
+\end{figure}
+
+
+\subsubsection*{Hiperparâmetros do modelo}
+Os hiperparâmetros utilizados no modelo são:
+\begin{table}[H]
+\centering
+\caption{Hiperparâmetros utilizados no modelo GPT treinado.}
+\begin{tabular}{lll}
+\toprule
+\textbf{Hiperparâmetro} & \textbf{Valor} & \textbf{Descrição}\\
+\midrule
+\texttt{block\_size}     & 16 & contexto máximo (tokens anteriores). \\
+\texttt{n\_embd}         & 128 & dimensão dos embeddings. \\
+\texttt{N\_Layers}       & 2 & número de blocos Transformer. \\
+\texttt{N\_Head}         & 2 & número de cabeças de atenção. \\
+\texttt{dropout}         & 0.2 & regularização. \\
+\texttt{learning\_rate}  & 0.003 & taxa de aprendizado. \\
+\texttt{batch\_size}     & 64 & tamanho do mini‐batch. \\
+\texttt{epochs}          & 1200 & número total de épocas. \\
+\bottomrule
+\end{tabular}
+\label{tab:hiperparametros}
+\end{table}
+
+O tamanho de contexto (\texttt{block\_size = 16}) limita o alcance da atenção, tornando o treinamento mais leve e viável em hardware pessoal. 
+A dimensão dos vetores de embedding (\texttt{n\_embd = 128}) é significativo, mas combinada ao número reduzido de camadas e a utilização de multiplas cabeças de atenção (\texttt{N\_Layers = 2}, \texttt{N\_Head = 2}), 
+mantém o modelo ágil e compacto, suficiente para capturar regularidades sintáticas e estilísticas do texto. 
+O dropout (\texttt{0.2}) fornece regularização. A taxa de aprendizado escolhida (\texttt{0.003}) foi ajustada empiricamente.
+
+\subsubsection*{Arquitetura e fluxo do modelo}
+
+A arquitetura utilizada neste trabalho segue o padrão dos modelos GPT do tipo \textit{decoder-only}, cujo fluxo computacional está ilustrado na Fig.~\ref{fig:arquitetura}. O processamento inicia-se pela soma entre o embedding dos tokens e o embedding posicional aprendido, resultando em uma representação contínua que preserva a ordem sequencial do texto. Em seguida, cada camada Transformer aplica uma normalização prévia (\textit{LayerNorm}) seguida de um bloco de autoatenção multi-cabeças mascarada, garantindo o comportamento autoregressivo: o modelo só pode utilizar informações de tokens passados para prever o próximo token.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{imagens/model.png}
+\caption{Arquitetura geral do modelo GPT utilizado no experimento.}
+\label{fig:arquitetura}
+\end{figure}
+O resultado da atenção é então somado à entrada original por meio de uma conexão residual, estabilizando o fluxo de gradientes. 
+Após isso, uma nova normalização é aplicada antes do bloco \textit{feed-forward} ponto-a-ponto, responsável por expandir e recomprimir a 
+dimensionalidade interna, permitindo ao modelo capturar não-linearidades locais. 
+Esse bloco também é seguido por uma conexão residual, completando a estrutura \textit{pré-norm} típica de arquiteturas modernas de Transformers. 
+Ao final das camadas empilhadas (2) uma projeção linear — equivalente ao uso do embedding transposto — produz os logits sobre o vocabulário, 
+posteriormente convertidos em probabilidades via \textit{softmax}, que indica o próximo token mais provável.
+
+
+\subsubsection*{Treinamento e métricas}
+
+Durante o treinamento, foi utilizada a função de perda \emph{cross-entropy},
+computada entre os logits produzidos pelo modelo e os caracteres-alvo da sequência.
+A cada época, registramos tanto a perda de treino quanto a de teste, permitindo
+acompanhar a evolução do aprendizado e o possível surgimento de sobreajuste.
+
+As curvas de perda apresentaram comportamento regular ao longo das épocas:
+as perdas de treino e de teste permaneceram próximas, decrescendo de forma
+suave sem indícios de divergência. Essa proximidade entre as curvas indica
+ausência de sobreajuste, sugerindo que o modelo conseguiu aprender
+padrões relevantes do corpus sem memorizar o conjunto de treinamento. Além disso,
+a estabilidade observada nas últimas épocas reflete um processo de otimização
+bem-sucedido.
+
+O valor final da perda obtido após 1200 épocas foi de aproximadamente
+\texttt{1.90} para o conjunto de treino e \texttt{1.96} para o conjunto de teste. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{imagens/loss.png}
+    \caption{Evolução da função de perda durante o treinamento: comparação entre as curvas de treino e de teste ao longo das 1200 épocas.}
+    \label{fig:loss}
+\end{figure}
+
+
+
+\subsubsection{Resumo}
+Em síntese, este experimento demonstra a implementação completa de um modelo 
+Transformer treinado do zero, com pipeline de preparação do corpus, definição 
+dos hiperparâmetros, arquitetura interna e laço de treinamento. Mesmo sendo um 
+modelo compacto, ele é capaz de aprender padrões linguísticos ricos graças à 
+estrutura sofisticada do mecanismo de atenção.
+
+Esperamos observar que, após certo número de épocas, o modelo consiga gerar 
+texto coerente em estilo Shakespeareano, preservando elementos estruturais 
+como métrica aproximada, vocabulário renascentista e padrões sintáticos 
+recorrentes.
     \end{answer}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

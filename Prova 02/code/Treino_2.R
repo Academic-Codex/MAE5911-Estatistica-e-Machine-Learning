@@ -1,7 +1,3 @@
-# ============================
-# Train.R  —  Treinamento GPT
-# ============================
-
 source("Config.R")
 source("GPT.R")
 source("Generator.R")
@@ -43,7 +39,7 @@ Model <- GPT(
   n_embd     = config$n_embd,
   N_Layers   = config$N_Layers,
   nvoc       = nvoc,
-  Head       = config$Head,
+  N_Head     = config$N_Head,
   p0         = config$p0
 )
 
@@ -54,7 +50,7 @@ loss_store      <- numeric(config$epochs)
 loss_store_test <- numeric(config$epochs)
 
 batch_train <- config$batch_size
-batch_test  <- config$batch_size  # pode criar outro no Config.R se quiser
+batch_test  <- config$batch_size  
 
 
 # ===========================
@@ -122,7 +118,7 @@ for (ep in 1:config$epochs) {
   
   
   ## -------------------------
-  ## 3.3  PRINT BONITO
+  ## 3.3  ACOMPANHAMENTO DAS EPOCAS
   ## -------------------------
   cli::cli_progress_message(
     paste0(
@@ -159,7 +155,14 @@ for (ep in 1:config$epochs) {
       col  = "tomato",
       lwd  = 2
     )
+  
+    legend(
+      "topright",
+      legend = c("Treino", "Teste"),
+      col = c("black", "tomato"),
+      lwd = 2,
+      bty = "n"
+    )
   }
 }
 
-cat("\nTreinamento finalizado!\n")

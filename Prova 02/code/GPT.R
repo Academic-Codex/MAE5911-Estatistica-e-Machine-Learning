@@ -1,4 +1,3 @@
-# GPT.R
 library(torch)
 
 GPT <- torch::nn_module(

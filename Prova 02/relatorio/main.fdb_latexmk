@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764955926.37533 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764955927.31061 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764955926.13004 17426 099cda1c0079771922fa7281d611b2b8 ""
+["pdflatex"] 1764961570.49908 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764961572.23166 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764961568.5545 24547 a00378d23314c5589f05a2acb5e28b30 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -18,6 +18,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm" 1254269338 12088 d750ac78274fa7c9f73ba09914c04f8a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmbxi10.tfm" 1254269338 17180 a5723008921cdcb0c5f4ebe997919b73 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr10.tfm" 1254269338 12056 7e13df7fe4cbce21b072ba7c4f4deb6e ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr12.tfm" 1254269338 12092 7b1546e2d096cfd5dcbd4049b0b1ec2e ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr5.tfm" 1254269338 12020 46464c854bf317de2a7a0bbe4a1160ca ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr7.tfm" 1254269338 12064 09aa3eeac96bf141d673bb1b0385ce55 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/lm/ec-lmr9.tfm" 1254269338 12084 b7f5e4c003de6f57f07c7e9fee73a37c ""
@@ -58,6 +59,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy10.pfb" 1254269338 27863 09ce3735688ffde955e72da27c95b61a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy7.pfb" 1254269338 27941 d1f5d03f61a46c3fcc3a2ba904ddda52 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtk10.pfb" 1255129361 117319 7f8361f845845ce6d5b36cbd9f9cf377 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt10.pfb" 1255129361 113227 1010e11451afc2822c95dae77c390042 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt9.pfb" 1255129361 108480 ee1de99df36ee0a16b36023b9c9d8a58 ""
   "/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2025/texmf-dist/tex/generic/babel-portuges/portuguese.ldf" 1625860693 6599 898431e984e4e8b6d8aa6cdcb036f8db ""
@@ -216,8 +218,13 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1764955927.21746 827 f13c49cd2727703f7b77912d73483819 "pdflatex"
-  "main.tex" 1764955926.13004 17426 099cda1c0079771922fa7281d611b2b8 ""
+  "imagens/corpus1.png" 1764958488.23267 93537 b26d12a54283b1058432b34355917811 ""
+  "imagens/corpus2.png" 1764958818.01359 93116 751e25ea3c4cbc7a360f871e701edd73 ""
+  "imagens/loss.png" 1764957372.49204 317524 d79606e7dd60ecc86200305f2aa5effb ""
+  "imagens/model.png" 1764960440.17832 599298 76b9a8bb521250986385fa9bf118c275 ""
+  "imagens/voc.png" 1764959576.37718 68966 4dbdb58732726f11f999b38aecde154a ""
+  "main.aux" 1764961572.1293 2227 b56ea74c3724aac5fc0948c90d066c28 "pdflatex"
+  "main.tex" 1764961568.5545 24547 a00378d23314c5589f05a2acb5e28b30 ""
   "student.sty" 1764808305.08757 2514 bb4e7508fb7d13eb82e8dfa3e5a708e1 ""
   (generated)
   "main.aux"

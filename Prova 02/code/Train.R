@@ -26,7 +26,7 @@ Model <- GPT(
   n_embd     = config$n_embd,
   N_Layers   = config$N_Layers,
   nvoc       = nvoc,
-  Head       = config$Head,
+  N_Head       = config$N_Head,
   p0         = config$p0
 )
 
