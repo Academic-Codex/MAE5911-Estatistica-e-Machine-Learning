@@ -807,8 +807,307 @@ Os efeitos desta remoção é evidente no texto gerado como resultado, o qual ma
     \label{fig:sample_noattn}
 \end{figure}
 
-    \end{answer}
+\end{answer}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Anexo}
+\begin{lstlisting}[language=R, caption={Configurações do experimento.}, label={lst:config-r}]
+config <- list(
+  file_name   = "Shakespeare.txt",
+  train       = !TRUE,
+  run         = TRUE,
+  read_weights = !TRUE,
+  p_train     = 0.8,
+  k_top       = 2,
+  
+  block_size = 50,   # Maximum context
+  n_embd     = 128,  # Embedding dimension
+  N_Layers   = 2,    # Number of layers
+  N_Head     = 2,    # Number of heads
+
+  lr          = 0.003, # Learning rate
+  batch_size  = 64,    # Batch size
+  p0          = 0.2,   # Dropout proportion
+  epochs      = 1200,  # Number of epochs
+  num_workers = 6,     # Number of CPU workers
+  
+  max_new_tokens = 1500
+)
+\end{lstlisting}
+
+\begin{lstlisting}[language=R, caption={Implementação do modelo.}, label={lst:gpt-r}]
+library(torch)
+
+GPT <- torch::nn_module(
+  initialize = function(block_size, n_embd, N_Layers, nvoc, N_Head, p0 = 0.1) {
+    
+    self$N   <- N_Layers
+    self$wpe <- torch::nn_embedding(block_size, n_embd)
+    self$wte <- torch::nn_embedding(nvoc, n_embd, padding_idx = 1)
+    
+    self$MM  <- torch::nn_module_list(lapply(1:N_Layers,
+      function(x) torch::nn_multihead_attention(
+        n_embd, N_Head, dropout = p0, batch_first = TRUE)))
+    
+    self$scale1 <- torch::nn_module_list(lapply(1:N_Layers,
+      function(x) torch::nn_layer_norm(n_embd)))
+    
+    self$scale2 <- torch::nn_module_list(lapply(1:N_Layers,
+      function(x) torch::nn_layer_norm(n_embd)))
+    
+    self$scale3 <- torch::nn_layer_norm(n_embd, elementwise_affine = TRUE)
+    
+    self$FFN <- torch::nn_module_list(lapply(1:N_Layers,
+      function(x) {
+        torch::nn_sequential(
+          torch::nn_linear(n_embd, 4 * n_embd),
+          torch::nn_gelu(),
+          torch::nn_linear(4 * n_embd, n_embd),
+          torch::nn_dropout(p0))}))
+    
+    self$ln_f  <- torch::nn_linear(n_embd, nvoc, bias = FALSE)
+    self$drop0 <- torch::nn_dropout(p = p0)
+  },
+  
+  forward = function(x, return_intermediates = FALSE) {
+    # x: [B, T]
+    B <- x$size(1)
+    T <- x$size(2)
+    
+    x1 <- torch::torch_arange(
+      1, T, dtype = torch::torch_long(), device = x$device
+    )
+    
+    wei <- torch::torch_triu(
+      torch::torch_ones(T, T, device = x$device),
+      diagonal = 1)$to(dtype = torch::torch_bool())
+    
+    output <- self$wte(x) + self$wpe(x1)$unsqueeze(1)  # [B, T, E]
+    output <- self$drop0(output)
+    
+    for (j in 1:self$N) {
+      QKV <- self$scale1[[j]](output)
+      attn_out <- self$MM[[j]](
+        query = QKV, key = QKV, value = QKV,
+        attn_mask = wei, need_weights = FALSE
+      )[[1]]
+      output <- output + attn_out
+      output <- output + self$FFN[[j]](self$scale2[[j]](output))
+    }
+    
+    output <- self$scale3(output)
+    logits <- self$ln_f(output)
+    
+    if (return_intermediates) {
+      return(list(
+        x1     = x1$cpu(),
+        wei    = wei$to(dtype = torch_int())$cpu(),
+        out    = output$cpu(),
+        logits = logits$cpu()))}
+    logits
+  }
+)
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=R,
+  caption={Script de treinamento do modelo.},
+  label={lst:treino-r}]
+source("Config.R")
+source("GPT.R")
+source("Generator.R")
+
+library(torch)
+library(cli)
+
+file0 <- base::readChar(
+  config$file_name,
+  file.info(config$file_name)$size
+)
+
+voc     <- c("<PAD>", sort(unique(unlist(strsplit(file0, "")))))
+Encoded <- Encoder(file0, voc)
+nvoc    <- length(voc)
+
+n       <- length(Encoded)
+p_train <- config$p_train
+n_train <- round(p_train * n)
+
+BD.train <- torch_tensor(Encoded[1:n_train], dtype = torch_int())
+BD.test  <- torch_tensor(Encoded[(n_train + 1):n], dtype = torch_int())
+
+n_test_total <- BD.test$size()[1]
+
+Model <- GPT(
+  block_size = config$block_size,
+  n_embd     = config$n_embd,
+  N_Layers   = config$N_Layers,
+  nvoc       = nvoc,
+  N_Head     = config$N_Head,
+  p0         = config$p0
+)
+
+optimizer <- torch::optim_adamw(Model$parameters, lr = config$lr)
+loss_fn   <- torch::nn_cross_entropy_loss()
+
+loss_store      <- numeric(config$epochs)
+loss_store_test <- numeric(config$epochs)
+
+batch_train <- config$batch_size
+batch_test  <- config$batch_size  
+
+for (ep in 1:config$epochs) {
+
+  idx <- sample(
+    1:(n_train - config$block_size - 1),
+    batch_train
+  )
+  
+  idx2 <- as.integer(c(
+    t(outer(as.integer(idx), 0:config$block_size, `+`))
+  ))
+  
+  Z <- BD.train[idx2, drop = FALSE]$view(
+    c(length(idx), config$block_size + 1)
+  )
+  X <- Z[, 1:config$block_size]
+  Y <- Z[, 2:(config$block_size + 1)]
+  
+  FIT  <- Model$train()(X)
+  loss <- loss_fn(FIT$flatten(end_dim = 2), Y$flatten())
+  
+  optimizer$zero_grad()
+  loss$backward()
+  optimizer$step()
+  
+  loss_store[ep] <- loss$item()
+
+  with_no_grad({
+    idx_t <- sample(
+      1:(n_test_total - config$block_size - 1),
+      batch_test
+    )
+    
+    idx2_t <- as.integer(c(
+      t(outer(as.integer(idx_t), 0:config$block_size, `+`))
+    ))
+    
+    Zt <- BD.test[idx2_t, drop = FALSE]$view(
+      c(length(idx_t), config$block_size + 1)
+    )
+    
+    X_test <- Zt[, 1:config$block_size]
+    Y_test <- Zt[, 2:(config$block_size + 1)]
+    
+    logits_test <- Model$eval()(X_test)
+    Lte <- loss_fn(
+      logits_test$flatten(end_dim = 2),
+      Y_test$flatten()
+    )
+  })
+  
+  loss_store_test[ep] <- Lte$item()
+
+  cli::cli_progress_message(
+    paste0(
+      "Época: ", ep,
+      " | Train loss: ", round(loss_store[ep], 4),
+      " | Test loss: ",  round(loss_store_test[ep], 4)
+    )
+  )
+
+  if (ep %% 10 == 0) {
+    
+    ylim_range <- range(
+      c(loss_store[1:ep], loss_store_test[1:ep]),
+      na.rm = TRUE
+    )
+    
+    plot(
+      1:ep, loss_store[1:ep],
+      type = "l",
+      lwd  = 2,
+      col  = "black",
+      xlab = "Época",
+      ylab = "Loss",
+      main = "Evolução da perda (Train vs Test)",
+      ylim = ylim_range
+    )
+    
+    lines(
+      1:ep, loss_store_test[1:ep],
+      col  = "tomato",
+      lwd  = 2
+    )
+  
+    legend(
+      "topright",
+      legend = c("Treino", "Teste"),
+      col = c("black", "tomato"),
+      lwd = 2,
+      bty = "n"
+    )
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=R,
+  caption={Funções de codificação e geração de texto com top-k sampling.},
+  label={lst:generator-r}]
+Encoder <- function(file, vocabulary) {
+  file  <- unlist(strsplit(file, ""))
+  filex <- numeric(length(file))
+  for (i in seq_along(vocabulary)) {
+    filex[file == vocabulary[i]] <- i
+  }
+  filex
+}
+
+Decoder <- function(file, vocabulary) {
+  filex <- file
+  for (i in seq_along(vocabulary)) {
+    filex[file == i] <- vocabulary[i]
+  }
+  filex
+}
+
+generate_topk <- function(prompt, k_top = config$k_top, max_new = config$max_new_tokens) {
+  Model$eval()
+  with_no_grad({
+    x <- torch_tensor(Encoder(prompt, voc), dtype = torch_int())$unsqueeze(1)
+    
+    for (i in 1:max_new) {
+      if (x$size(2) <= config$block_size) {
+        logits <- Model$eval()(x)[, -1, ]
+      } else {
+        xx     <- x[, (x$size(2) - config$block_size + 1):x$size(2)]
+        logits <- Model$eval()(xx)[, -1, ]
+      }
+      
+      top   <- logits$topk(k_top)
+      vals  <- top[[1]]$to(dtype = torch_float())
+      probs <- torch::nnf_softmax(vals, dim = -1)   
+      selected   <- torch_multinomial(probs, num_samples = 1)
+      next_token <- top[[2]][, selected$item()]$unsqueeze(1)
+      x <- torch_cat(list(x, next_token), dim = 2)
+    }
+    
+    generated_idx <- as.integer(as_array(x$squeeze(1)))
+    paste(voc[generated_idx], collapse = "")
+  })
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=R,
+  caption={Script de geração de texto a partir de um prompt inicial.},
+  label={lst:prompt-r}]
+source("Config.R")
+source("GPT.R")
+source("Generator.R")
+
+prompt <- "A"
+cat(generate_topk(prompt), "\n")
+\end{lstlisting}
 
 \end{document}
