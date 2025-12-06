@@ -83,27 +83,24 @@
     % Add header
     \header{}
 
-\textbf{Questão 01:} 
 
+
+\textbf{Questão 01:} 
 Considere uma amostra aleatória $(Y_1,X_1),\ldots,(Y_n,X_n)$ de $(Y,X)$ tal que a distribuição condicional
-\[
-Y \mid X = x \sim \mathcal{N}\big(\mu_{\theta}(x),\,\sigma^{2}_{\theta}(x)\big),
-\]
+$Y \mid X = x \sim \mathcal{N}\big(\mu_{\theta}(x),\,\sigma^{2}_{\theta}(x)\big),$
 e suponha que a distribuição de $X$ não contém informação sobre os parâmetros.
 
 \begin{enumerate}
-    \item Apresente uma \textbf{rede neural} que modele o \textbf{quantil de ordem $75\%$} (terceiro quartil) da distribuição condicional $Y \mid X = x$.  O código deve ser generalizável para qualquer quantil.
+    \item[1.1] Apresente uma \textbf{rede neural} que modele o \textbf{quantil de ordem $75\%$} (terceiro quartil) da distribuição condicional $Y \mid X = x$.  O código deve ser generalizável para qualquer quantil.
 
-    \item Mostre a aplicação do método nos seguintes dados simulados em \textsf{R}:
-    \begin{tcolorbox}[title={.r},breakable]
-    \begin{verbatim}
-    set.seed(32)
+    \item[1.2] Mostre a aplicação do método nos seguintes dados simulados em \textsf{R}:
 
-    n = 1000
-    x = sort(runif(n, -4, 4))
-    y = 3/(3+2*abs(x)^3)+exp(-x^2)+cos(x)*sin(x)+rnorm(n)*0.3
-    \end{verbatim}
-    \end{tcolorbox}
+    
+    $$set.seed(32)$$
+    $$n = 1000$$
+    $$x = sort(runif(n, -4, 4))$$
+    $$y = 3/(3+2*abs(x)^3)+exp(-x^2)+cos(x)*sin(x)+rnorm(n)*0.3$$
+    
     \end{enumerate}
     \noindent
     Sugestão: reescreva a esperança e variância condicionais em termos do quantil
@@ -111,6 +108,137 @@ e suponha que a distribuição de $X$ não contém informação sobre os parâme
 
         \begin{answer}[]
 
+            \section{Modelagem do quantil condicional via Normal}
+
+Considere o modelo condicional
+\begin{equation}
+  Y \mid X = x \sim \mathcal{N}\big(\mu(x), \sigma^2(x)\big).
+\end{equation}
+
+Para um nível de quantil $q \in (0,1)$, definimos o quantil condicional
+$Q_q(x)$ de $Y \mid X=x$ como o valor $t$ que satisfaz
+\begin{equation}
+  \mathbb{P}\!\big( Y \le t \,\big|\, X = x \big) = q.
+\end{equation}
+
+No caso da Normal, o quantil condicional pode ser escrito em termos da média
+e do desvio-padrão:
+\begin{equation}
+  Q_q(x) = \mu(x) + \sigma(x)\, z_q,
+\end{equation}
+em que $z_q = \Phi^{-1}(q)$ é o quantil de ordem $q$ da Normal padrão
+$\mathcal{N}(0,1)$ e $\Phi$ denota a sua função de distribuição acumulada.
+
+Podemos, então, reparametrizar o modelo em função de $Q_q(x)$, escrevendo
+\begin{equation}
+  \mu(x) = Q_q(x) - \sigma(x)\,z_q.
+\end{equation}
+
+\subsection{Verossimilhança em termos do quantil}
+
+A densidade de $Y \mid X=x$ é
+\begin{equation}
+  f(y \mid x) =
+  \frac{1}{\sqrt{2\pi}\,\sigma(x)}
+  \exp\!\left\{
+    -\frac{\big(y-\mu(x)\big)^2}{2\sigma^2(x)}
+  \right\}.
+\end{equation}
+
+Substituindo $\mu(x) = Q_q(x) - \sigma(x)z_q$, obtemos
+\begin{equation}
+  f(y \mid x) =
+  \frac{1}{\sqrt{2\pi}\,\sigma(x)}
+  \exp\!\left\{
+    -\frac{\big(y - Q_q(x) + \sigma(x) z_q\big)^2}
+            {2\sigma^2(x)}
+  \right\}.
+\end{equation}
+
+A log-verossimilhança para uma observação $(x_i,y_i)$, desprezando constantes
+que não dependem de $Q_q$, é dada por
+\begin{equation}
+  \ell_i\big(Q_q,\sigma\big)
+  = - \log \sigma(x_i)
+    - \frac{\big(y_i - Q_q(x_i) + \sigma(x_i) z_q\big)^2}
+           {2\sigma^2(x_i)}.
+\end{equation}
+
+O correspondente negativo da log-verossimilhança (função de perda) é
+\begin{equation}
+  \mathcal{L}_{\text{NLL}}
+  = \sum_{i=1}^n
+    \left[
+      \log \sigma(x_i)
+      +
+      \frac{\big(y_i - Q_q(x_i) + \sigma(x_i) z_q\big)^2}
+           {2\sigma^2(x_i)}
+    \right].
+\end{equation}
+
+\subsection{Caso com variância conhecida}
+
+Se assumirmos uma variância condicional conhecida e constante,
+$\sigma(x) \equiv \sigma_0$, o termo $\log \sigma(x_i)$ torna-se constante
+e pode ser ignorado na minimização. Nesse caso, a perda se reduz a
+\begin{equation}
+  \mathcal{L}_{\text{NLL}}
+  \propto
+  \sum_{i=1}^n
+    \big(
+      y_i + \sigma_0 z_q - Q_q(x_i)
+    \big)^2.
+\end{equation}
+
+Definindo a variável transformada
+\begin{equation}
+  Z_i = y_i + \sigma_0 z_q,
+\end{equation}
+temos
+\begin{equation}
+  Z_i \mid X_i = x
+  \sim \mathcal{N}\big(Q_q(x),\, \sigma_0^2\big),
+\end{equation}
+ou seja, $Q_q(x)$ é exatamente a \emph{média condicional} de $Z_i$ dado $X_i=x$.
+
+Assim, sob o modelo Normal com variância constante, podemos estimar o quantil
+condicional $Q_q(x)$ minimizando um \emph{erro quadrático médio} sobre a
+variável transformada $Z_i$:
+\begin{equation}
+  \mathcal{L}_{\text{MSE-quantil}}
+  = \sum_{i=1}^n
+    \big(
+      Z_i - Q_q(x_i)
+    \big)^2.
+\end{equation}
+
+\subsection{Perda de quantil (pinball loss)}
+
+De forma mais geral, sem assumir Normalidade, o quantil condicional de ordem
+$q$ pode ser obtido minimizando a chamada \emph{quantile loss} ou
+\emph{pinball loss}, definida para um resíduo $u = y - Q_q(x)$ por
+\begin{equation}
+  \rho_q(u) =
+  \begin{cases}
+    q\,u, & \text{se } u \ge 0, \\[4pt]
+    (q-1)\,u, & \text{se } u < 0.
+  \end{cases}
+\end{equation}
+
+A função $Q_q(\cdot)$ que minimiza
+\begin{equation}
+  \mathcal{L}_{\text{pinball}}
+  = \sum_{i=1}^n \rho_q\big(y_i - Q_q(x_i)\big)
+\end{equation}
+é precisamente o quantil condicional de ordem $q$ de $Y \mid X$,
+independentemente da distribuição de $Y$.
+
+No caso particular em que o modelo Normal é bem especificado, tanto a perda
+$\mathcal{L}_{\text{MSE-quantil}}$ derivada da verossimilhança quanto a
+pinball loss $\mathcal{L}_{\text{pinball}}$ admitem o mesmo minimizador
+verdadeiro $Q_q(x)$. Na prática, podemos compará-las empiricamente treinando
+dois modelos de rede neural distintos, um com cada função de perda, e
+verificando se as estimativas resultantes de $Q_q(x)$ coincidem.
     \end{answer}
 
 
