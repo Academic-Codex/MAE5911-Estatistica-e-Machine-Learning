@@ -7,18 +7,21 @@ set.seed(config$seed)
 n <- config$n
 x <- sort(runif(n, config$x_min, config$x_max))
 
-y <- 3/(3 + 2*abs(x)^3) +
+# função determinística (sem ruído)
+f_x <- 3/(3 + 2*abs(x)^3) +
   exp(-x^2) +
-  cos(x)*sin(x) +
-  rnorm(n) * config$noise_sd
+  cos(x)*sin(x)
 
-# tensors completos (para plotar e/ou treinar tudo)
+# adiciona ruído Normal
+y <- f_x + rnorm(n) * config$noise_sd
+
+# tensores completos (grid todo, para plot)
 X_full <- torch_tensor(matrix(x, ncol = 1), dtype = torch_float())
 Y_full <- torch_tensor(matrix(y, ncol = 1), dtype = torch_float())
 
 # ---- split treino / teste ----
 n_train <- round(config$p_train * n)
-idx <- sample(1:n)        # embaralha os índices
+idx <- sample(1:n)
 
 idx_train <- idx[1:n_train]
 idx_test  <- idx[(n_train + 1):n]

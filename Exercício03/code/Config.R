@@ -8,11 +8,14 @@ config <- list(
   
   q           = 0.75,
   
-  # rede um pouco maior
-  n_hidden    = 64L,
+  # modelo
+  n_hidden    = 64,
+
+  # treino
+  p_train     = 0.8,
   lr          = 1e-3,
-  num_epochs  = 3000L,
+  num_epochs  = 350L,
   print_every = 200L,
-  plot_every  = 500L,
-  p_train     = 0.8
+  plot_every  = 500L
+
 )
