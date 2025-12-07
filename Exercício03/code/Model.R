@@ -4,22 +4,38 @@
 # -------------------------------
 # Rede neural para o quantil Q_q(x)
 # -------------------------------
-# Model.R
-# (pressupõe library(torch) já chamado)
-
 QuantileNet <- nn_module(
-  initialize = function(n_hidden = 64) {
-    self$l1 <- nn_linear(1, n_hidden)
-    self$l2 <- nn_linear(n_hidden, n_hidden)
-    self$l3 <- nn_linear(n_hidden, n_hidden)
-    self$l4 <- nn_linear(n_hidden, 1)
+  initialize = function(n_hidden = 64, n_layers = 2) {
+    # n_layers = número de camadas ocultas "linear+gelu"
+    layers <- list()
+    
+    # 1ª camada: da entrada (1D) para o 1º hidden
+    layers <- append(layers, list(
+      nn_linear(1, n_hidden),
+      nn_gelu()
+    ))
+    
+    # camadas ocultas intermediárias (hidden -> hidden)
+    if (n_layers > 1) {
+      for (i in 2:n_layers) {
+        layers <- append(layers, list(
+          nn_linear(n_hidden, n_hidden),
+          nn_gelu()
+        ))
+      }
+    }
+    
+    # camada de saída: hidden -> 1 (quantil)
+    layers <- append(layers, list(
+      nn_linear(n_hidden, 1)
+    ))
+    
+    # guarda tudo em um nn_sequential, como o prof faz
+    self$net <- do.call(nn_sequential, layers)
   },
+  
   forward = function(x) {
-    x <- self$l1(x); x <- torch_tanh(x)
-    x <- self$l2(x); x <- torch_tanh(x)
-    x <- self$l3(x); x <- torch_tanh(x)
-    x <- self$l4(x)
-    x
+    self$net(x)
   }
 )
 

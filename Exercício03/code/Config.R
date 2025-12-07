@@ -9,12 +9,12 @@ config <- list(
   q           = 0.75,
   
   # modelo
-  n_hidden    = 64,
+  n_hidden    = 30,
 
   # treino
   p_train     = 0.8,
   lr          = 1e-3,
-  num_epochs  = 350L,
+  num_epochs  = 1000L,
   print_every = 200L,
   plot_every  = 500L
 
