@@ -39,7 +39,7 @@ treinar_normal_quantil <- function(model,
   loss_history_test  <- numeric(epochs)
   
   # 3 painéis: média/quantil, sigma2, NLL
-  par(mfrow = c(1, 3))
+  par(mfrow = c(1, 2))
   
   for (epoch in 1:epochs) {
     
@@ -110,7 +110,7 @@ treinar_normal_quantil <- function(model,
            col  = rgb(0,0,0,0.15),
            ylim = ylim_all,
            xlab = "x", ylab = "y",
-           main = paste0("Média/Quantil condicional - época ", epoch))
+           main = paste0("Quantil condicional: verdadeiro vs estimado"))
       
       # f(x) sem ruído
       lines(x, f_x, col = "black", lwd = 2)
@@ -136,24 +136,26 @@ treinar_normal_quantil <- function(model,
              pch    = c(16, NA, 19, NA, NA),
              bty    = "n")
       
-      ## Painel 2: σ^2(x) verdadeira vs estimada (heteroscedástico)
-      plot(x, sigma2_true,
-           type = "l", lwd = 2,
-           xlab = "x", ylab = expression(sigma^2),
-           main = expression(sigma^2(x)~": verdadeira vs estimada"))
-      lines(x, sigma2_hat, col = "blue", lwd = 2)
-      legend("topleft",
-             legend = c(expression(sigma[true]^2(x)),
-                        expression(hat(sigma)^2(x))),
-             col = c("black", "blue"),
-             lwd = 2, bty = "n")
-      
+      ## Painel 2: σ^2_(x) verdadeira vs estimada (heteroscedástico)
+      # plot(x, sigma2_true,
+      #      type = "l", lwd = 2,
+      #      xlab = "x", ylab = expression(sigma^2),
+      #      main = expression(sigma(x)^2 ~ ": verdadeira vs estimada"),
+      #      ylim = c(min(sigma2_true) * 0.9, max(sigma2_true) * 1.25)
+      # )
+      # lines(x, sigma2_hat, col = "blue", lwd = 2)
+      # legend("topleft",
+      #        legend = c(expression(sigma(x)^2),
+      #                   expression(hat(sigma)(x)^2)),
+      #        col = c("black", "blue"),
+      #        lwd = 2, bty = "n")
+
       ## Painel 3: evolução da NLL
       plot(1:epoch, loss_history_train[1:epoch], type = "l",
            xlab = "Época", ylab = "NLL",
            ylim = range(c(loss_history_train[1:epoch],
                           loss_history_test[1:epoch])),
-           main = "Evolução da NLL")
+           main = "Evolução da Loss")
       lines(1:epoch, loss_history_test[1:epoch], col = "tomato")
       legend("topright", legend = c("Train", "Test"),
              col = c("black", "tomato"),

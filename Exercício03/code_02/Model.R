@@ -6,8 +6,8 @@ QuantileNormalNet <- nn_module(
   "QuantileNormalNet",
   
   initialize = function(input_dim,
-                        hidden_q     = 64,
-                        hidden_sigma = 64) {
+                        hidden_q     = config$hidden_mu,
+                        hidden_sigma = config$hidden_sigma) {
     
     # rede do quantil Q_q(x)
     self$q_net <- nn_sequential(
@@ -16,7 +16,7 @@ QuantileNormalNet <- nn_module(
       nn_linear(hidden_q, 1)
     )
     
-    # rede da variância (igual à anterior)
+    # rede da variância
     self$sigma_net <- nn_sequential(
       nn_linear(input_dim, hidden_sigma),
       nn_gelu(),
@@ -27,7 +27,7 @@ QuantileNormalNet <- nn_module(
   forward = function(x) {
     # x: [batch, 1]
     
-    q_pred <- self$q_net(x)              # Q_q(x) previsto
+    q_pred <- self$q_net(x)  # Q_q(x) previsto
     
     sigma_raw <- self$sigma_net(x)
     sigma     <- nnf_softplus(sigma_raw) + 1e-4

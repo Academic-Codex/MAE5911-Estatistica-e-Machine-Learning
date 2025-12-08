@@ -16,7 +16,7 @@ config <- list(
   hidden_sigma= 10L,
   
   
-  seed        = 2025,
+  seed        = 32,
   n           = 1000,
   x_min       = -4,
   x_max       =  4,
@@ -26,6 +26,8 @@ config <- list(
   noise_sd    = 0.3,
   
   # se TRUE, faz variância heteroscedástica
-  hetero      = TRUE,        # FALSE => variância constante
+  hetero      = FALSE,        # FALSE => variância constante
   hetero_alpha= 0.5          # força da heteroscedasticidade
+  
+
 )
