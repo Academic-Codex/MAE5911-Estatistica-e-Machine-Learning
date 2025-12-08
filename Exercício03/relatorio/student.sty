@@ -58,31 +58,31 @@
 \usepackage{etoolbox}
 
 \newcommand{\header}{%
-    {\bf \university} \hfill \term  \\
-    {\bf \department} \hfill \@title \\
-        Aluna: \membername \\
-        Nro. USP: \memberuid
-        \begin{center}
-            {\bf{\Large\module}}
-        \end{center}
-    }
+{\bf \university} \hfill \term  \\
+{\bf \department} \hfill \@title \\
+Aluna: \membername \\
+Nro. USP: \memberuid
+\begin{center}
+    {\bf{\Large\module}}
+\end{center}
+}
 
 \newenvironment{answer}[1][]{
-        \par \medskip
-        {}
-        \par
-        \begin{mdframed}[backgroundcolor=gray!10!white]
-    }
-    {
-        \end{mdframed}
-    }
+    \par \medskip
+    {\textbf{Resposta para #1}}
+    \par
+    \begin{mdframed}[backgroundcolor=gray!10!white]
+        }
+        {
+    \end{mdframed}
+}
 
 \newenvironment{research}[1][]{
     \par \medskip
     {}
     \par
     \begin{mdframed}[backgroundcolor=green!10!white]
-}
-{
+        }
+        {
     \end{mdframed}
 }
