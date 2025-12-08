@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764966977.66949 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1764966979.94015 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764966977.3659 29138 4585b94168e8c6129c843e9cf336e8b6 ""
+["pdflatex"] 1765193469.82544 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" "main.pdf" "main" 1765193472.10326 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Prova 02/relatorio/main.tex" 1764981385.96146 36803 5819ea3011dc01271ad246e515bd65b5 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -243,8 +243,8 @@
   "imagens/resultado1.png" 1764963985.63637 79349 0e2b08c3ca51412efd20115fab77d177 ""
   "imagens/resultado2.png" 1764962891.26597 167737 0e049718e09ec78f652008d3924d291e ""
   "imagens/voc.png" 1764959576.37718 68966 4dbdb58732726f11f999b38aecde154a ""
-  "main.aux" 1764966979.81235 2963 a876c370db5201acec2d90d090ef74bd "pdflatex"
-  "main.tex" 1764966977.3659 29138 4585b94168e8c6129c843e9cf336e8b6 ""
+  "main.aux" 1765193471.98308 3972 e8b08f225949c3ab8ea2466870fecc73 "pdflatex"
+  "main.tex" 1764981385.96146 36803 5819ea3011dc01271ad246e515bd65b5 ""
   "student.sty" 1764808305.08757 2514 bb4e7508fb7d13eb82e8dfa3e5a708e1 ""
   (generated)
   "main.aux"

@@ -235,33 +235,12 @@ e construa a função de verossimilhança apropriada.
         \big)^2.
     \end{equation}
 
-    \subsection{Perda de quantil (pinball loss)}
+\subsection*{Descrição do experimento e configuração do modelo}
+\subsubsection*{Hiperparâmetros do modelo}
+\subsubsection*{Arquitetura}
+\subsubsection*{Tamanho do modelo}
+\subsubsection*{Treinamento e métricas}
 
-    De forma mais geral, sem assumir Normalidade, o quantil condicional de ordem
-    $q$ pode ser obtido minimizando a chamada \emph{quantile loss} ou
-    \emph{pinball loss}, definida para um resíduo $u = y - Q_q(x)$ por
-    \begin{equation}
-        \rho_q(u) =
-        \begin{cases}
-            q\,u,     & \text{se } u \ge 0, \\[4pt]
-            (q-1)\,u, & \text{se } u < 0.
-        \end{cases}
-    \end{equation}
-
-    A função $Q_q(\cdot)$ que minimiza
-    \begin{equation}
-        \mathcal{L}_{\text{pinball}}
-        = \sum_{i=1}^n \rho_q\big(y_i - Q_q(x_i)\big)
-    \end{equation}
-    é precisamente o quantil condicional de ordem $q$ de $Y \mid X$,
-    independentemente da distribuição de $Y$.
-
-    No caso particular em que o modelo Normal é bem especificado, tanto a perda
-    $\mathcal{L}_{\text{MSE-quantil}}$ derivada da verossimilhança quanto a
-    pinball loss $\mathcal{L}_{\text{pinball}}$ admitem o mesmo minimizador
-    verdadeiro $Q_q(x)$. Na prática, podemos compará-las empiricamente treinando
-    dois modelos de rede neural distintos, um com cada função de perda, e
-    verificando se as estimativas resultantes de $Q_q(x)$ coincidem.
 \end{answer}
 
 

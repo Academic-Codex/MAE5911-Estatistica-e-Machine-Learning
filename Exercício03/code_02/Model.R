@@ -47,6 +47,13 @@ predict_quantile <- function(model, x, q) {
   out$mu + z_q * out$sigma
 }
 
+predict_quantile_vec <- function(model, x_new) {
+  x_t  <- torch_tensor(matrix(x_new, ncol = 1), dtype = torch_float())
+  out  <- model(x_t)
+  as.numeric(out$q$squeeze())
+}
+
+
 # NLL da Normal escrita em função do quantil Q_q(x) e de σ^2(x)
 # q_level é o quantil alvo (por ex., 0.75)
 nll_normal_from_quantile <- function(Qq, sigma2, y, q_level, eps = 1e-6) {

@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1765150897.33006 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercício03/relatorio/main.tex" "main.pdf" "main" 1765150898.13779 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercício03/relatorio/main.tex" 1765150897.253 8697 8e0f9ef09bf840db17721f5a83312d79 ""
+["pdflatex"] 1765193468.72102 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercício03/relatorio/main.tex" "main.pdf" "main" 1765193469.52187 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercício03/relatorio/main.tex" 1765193468.61402 7691 244c1a8091c4ace9b80fe88165299875 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1000.tfm" 1136768653 3584 2d666ecf6d466d8b007246bc2f94d9da ""
@@ -192,8 +192,8 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765150898.04252 639 53df30ddbfb651c47f9c08e3af3a1b61 "pdflatex"
-  "main.tex" 1765150897.253 8697 8e0f9ef09bf840db17721f5a83312d79 ""
+  "main.aux" 1765193469.43804 515 c1baadd7c05334f46657dc75e72c4694 "pdflatex"
+  "main.tex" 1765193468.61402 7691 244c1a8091c4ace9b80fe88165299875 ""
   "student.sty" 1765150389.01078 2487 8ce9cf78b47bad1e4b2e93344a8a5d96 ""
   (generated)
   "main.aux"
