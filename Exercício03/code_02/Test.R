@@ -1,12 +1,19 @@
+
+
 source("Config.R")
-source("Train.R")
-source("Model.R")
+library(torch)
 source("Data.R")
+source("Model.R")  
+source("Train.R")
 
-model <- HeteroNormalNet(
-  input_dim    = config$input_dim,
-  hidden_mu    = config$hidden_mu,
-  hidden_sigma = config$hidden_sigma
+# cria o modelo
+model <- HeteroNormalNet(input_dim = 1,
+                         hidden_mu = 64,
+                         hidden_sigma = 64)
+
+# treina
+res <- treinar_normal_hetero(
+  model,
+  epochs      = 3000,      # por ex.
+  lr          = 5e-3
 )
-
-res <- treinar_normal_hetero(model)

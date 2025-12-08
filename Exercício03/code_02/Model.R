@@ -1,14 +1,16 @@
 # Model.R
 library(torch)
 
+library(torch)
+
 HeteroNormalNet <- nn_module(
   "HeteroNormalNet",
   
   initialize = function(input_dim,
-                        hidden_mu   = config$hidden_mu,
-                        hidden_sigma= config$hidden_sigma) {
+                        hidden_mu    = 64,
+                        hidden_sigma = 64) {
     
-    # Rede da média μ(x)
+    # rede da média μ(x)
     self$mu_net <- nn_sequential(
       nn_linear(input_dim, hidden_mu),
       nn_relu(),
@@ -17,7 +19,7 @@ HeteroNormalNet <- nn_module(
       nn_linear(hidden_mu, 1)
     )
     
-    # Rede da variância (na verdade log-σ ou algo antes do softplus)
+    # rede da variância (na verdade algo que vira σ(x))
     self$sigma_net <- nn_sequential(
       nn_linear(input_dim, hidden_sigma),
       nn_relu(),
@@ -28,22 +30,20 @@ HeteroNormalNet <- nn_module(
   },
   
   forward = function(x) {
-    # x: tensor [batch, 1]
+    # x: [batch, 1]
     
-    mu_raw    <- self$mu_net(x)        # pode ser qualquer real
-    sigma_raw <- self$sigma_net(x)     # pode ser qualquer real
+    mu <- self$mu_net(x)               # tensor [batch, 1]
     
-    # Garantir σ(x) > 0
-    sigma <- nnf_softplus(sigma_raw) + 1e-4
+    sigma_raw <- self$sigma_net(x)     # qualquer real
+    sigma     <- nnf_softplus(sigma_raw) + 1e-4  # garante σ(x) > 0
     
-    # Se quiser, pode devolver a lista:
-    # list(mu = mu_raw, sigma = sigma)
-    # mas fica bem confortável guardar nomes:
-    out <- list(
-      mu    = mu_raw,
-      sigma = sigma
+    sigma2 <- sigma$pow(2)             # variância
+    
+    # IMPORTANTE: devolver com esse nome
+    list(
+      mu     = mu,
+      sigma2 = sigma2
     )
-    out
   }
 )
 
@@ -54,12 +54,41 @@ predict_quantile <- function(model, x, q) {
   out$mu + z_q * out$sigma
 }
 
-nll_normal_hetero <- function(mu, sigma, y_true, eps = 1e-6) {
-  # mu, sigma, y_true: tensores de mesma forma
-  sigma <- sigma + eps
+# NLL para Normal heteroscedástico,
+# recebendo mu(x) e sigma2(x) (variância) como tensores
+nll_normal_hetero <- function(mu, sigma2, y) {
   
-  term1 <- torch_log(sigma)
-  term2 <- (y_true - mu)$pow(2) / (2 * sigma$pow(2))
+  # Garantir que são tensores (se vier numeric, convertemos)
+  if (!inherits(mu, "torch_tensor")) {
+    mu <- torch_tensor(mu, dtype = torch_float())
+  }
+  if (!inherits(sigma2, "torch_tensor")) {
+    sigma2 <- torch_tensor(sigma2, dtype = torch_float())
+  }
+  if (!inherits(y, "torch_tensor")) {
+    y <- torch_tensor(y, dtype = torch_float())
+  }
   
-  torch_mean(term1 + term2)
+  # Segurança numérica: variância >= eps
+  eps <- 1e-6
+  sigma2_safe <- sigma2$clamp_min(eps)
+  
+  # Desvio-padrão
+  sigma <- sigma2_safe$sqrt()
+  
+  # Termos da NLL da Normal
+  term1 <- torch_log(sigma)                     # log σ(x)
+  term2 <- (y - mu)$pow(2) / (2 * sigma$pow(2)) # (y - μ)^2 / 2σ^2
+  
+  loss <- (term1 + term2)$mean()
+  loss
 }
+# nll_normal_hetero <- function(mu, sigma, y_true, eps = 1e-6) {
+#   # mu, sigma, y_true: tensores de mesma forma
+#   sigma <- sigma + eps
+#   
+#   term1 <- torch_log(sigma)
+#   term2 <- (y_true - mu)$pow(2) / (2 * sigma$pow(2))
+#   
+#   torch_mean(term1 + term2)
+# }

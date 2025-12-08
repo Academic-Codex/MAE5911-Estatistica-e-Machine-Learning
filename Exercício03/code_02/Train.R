@@ -1,154 +1,113 @@
-# Train.R
+# Train.R  ------------------------------------------------------------
+
 source("Config.R")
 library(torch)
 source("Data.R")
-source("Model.R")
-# se a nll_normal_hetero estiver em outro arquivo, algo como:
-# source("Loss.R")
+source("Model.R")   # aqui está o HeteroNormalNet
+# e a nll_normal_hetero(mu, sigma2, y)
 
-# ---- função auxiliar: quantil condicional empírico por janelas ----
-plot_conditional_quantile <- function(x, y, q, num_bins = 80,
-                                      col = "darkgreen", pch = 19, cex = 1.1) {
-  breaks <- seq(min(x), max(x), length.out = num_bins)
-  qx <- c(); qy <- c()
-  
-  for (i in 1:(length(breaks) - 1)) {
-    idx <- which(x >= breaks[i] & x < breaks[i + 1])
-    if (length(idx) > 0) {
-      qx <- c(qx, mean(x[idx]))
-      qy <- c(qy, quantile(y[idx], q))
-    }
-  }
-  
-  points(qx, qy, col = col, pch = pch, cex = cex)
-  invisible(list(x = qx, y = qy))
-}
-# -------------------------------------------------------------------
+# ------- função de treino estilo professor --------------------------
 
 treinar_normal_hetero <- function(model,
                                   epochs = config$num_epochs,
                                   lr     = config$lr,
-                                  q_plot = config$q) {
+                                  print_every = config$print_every,
+                                  plot_every  = config$plot_every) {
   
-  print_every <- config$print_every
-  plot_every  <- config$plot_every
-  num_bins    <- 80
+  optimizer <- optim_adamw(model$parameters, lr = lr)
   
-  optimizer <- optim_adamw(
-    model$parameters,
-    lr = lr,
-    weight_decay = 1e-3
-  )
+  loss_store_train <- numeric(epochs)
+  loss_store_test  <- numeric(epochs)
   
-  loss_history_train <- numeric(epochs)
-  loss_history_test  <- numeric(epochs)
-  
-  par(mfrow = c(1, 2))
+  par(mfrow = c(1, 3))  # 3 painéis: y vs x, sigma2 vs x, loss
   
   for (epoch in 1:epochs) {
     
-    # ------- TREINO -------
+    ## --------- TREINO ---------
     model$train()
     optimizer$zero_grad()
     
-    out_train <- model(X_train)
-    mu_train    <- out_train$mu
-    sigma_train <- out_train$sigma
+    out_train  <- model(X_train)
+    mu_train   <- out_train$mu
+    sigma2_tr  <- out_train$sigma2
     
-    loss_train <- nll_normal_hetero(mu_train, sigma_train, Y_train)
-    
+    loss_train <- nll_normal_hetero(mu_train, sigma2_tr, Y_train)
     loss_train$backward()
     optimizer$step()
     
-    # ------- TESTE -------
+    ## --------- TESTE ---------
     model$eval()
-    out_test <- model(X_test)
-    mu_test    <- out_test$mu
-    sigma_test <- out_test$sigma
+    out_test  <- model(X_test)
+    mu_test   <- out_test$mu
+    sigma2_te <- out_test$sigma2
     
-    loss_test <- nll_normal_hetero(mu_test, sigma_test, Y_test)
+    loss_test <- nll_normal_hetero(mu_test, sigma2_te, Y_test)
     
-    loss_history_train[epoch] <- loss_train$item()
-    loss_history_test[epoch]  <- loss_test$item()
+    loss_store_train[epoch] <- as.numeric(loss_train$item())
+    loss_store_test[epoch]  <- as.numeric(loss_test$item())
     
     if (epoch %% print_every == 0) {
-      cat("Epoch:", epoch,
-          "- Loss train:", loss_train$item(),
-          "- Loss test:",  loss_test$item(), "\n")
+      cat("Época:", epoch,
+          "- NLL train:", loss_store_train[epoch],
+          "- NLL test:",  loss_store_test[epoch], "\n")
     }
     
-    # ------- GRÁFICOS -------
+    ## --------- GRÁFICOS (debug visual) ---------
     if (epoch %% plot_every == 0 || epoch == epochs) {
       
-      # predição no grid completo
-      out_full <- model(X_full)
+      # previsão em toda a grade x (para curvas lisas)
+      out_full   <- model(X_full)
       mu_full    <- as.numeric(out_full$mu$squeeze())
-      sigma_full <- as.numeric(out_full$sigma$squeeze())
+      sigma2_hat <- as.numeric(out_full$sigma2$squeeze())
       
-      z_q <- qnorm(q_plot)
-      
-      # >>> alteração 1: quantil teórico usando a variância VERDADEIRA do simulador
-      # (sigma_true vem do Data.R)
-      q_theo <- f_x + z_q * sigma_true
-      
-      # quantil estimado pelo modelo (usa mu_full e sigma_full da rede)
-      q_hat <- mu_full + z_q * sigma_full
-      
-      # >>> alteração 2: incluir q_theo nos limites do gráfico
-      ylim_all <- range(
-        f_x,
-        q_theo,
-        q_hat,
-        y
-      )
-      
-      # 1) Gráfico principal
-      plot(x, f_x,
-           type = "n",
-           ylim = ylim_all,
-           main = paste0("NLL Normal (q=", q_plot*100, "%) - época ", epoch),
-           xlab = "x", ylab = "y")
-      
-      # f(x) sem ruído
-      lines(x, f_x, col = "black", lwd = 2)
-      
-      # quantil empírico com janelas (sobre os dados observados)
-      plot_conditional_quantile(x, y, q = q_plot,
-                                num_bins = num_bins,
-                                col = "tomato", pch = 19, cex = 1.1)
-      
-      # quantil teórico (f(x) + z_q * sigma_true)
-      lines(x, q_theo, col = "orange", lwd = 2, lty = 2)
-      
-      # quantil estimado pela rede
-      lines(x, q_hat, col = "blue", lwd = 3)
-      
+      # 1) painel 1: y vs x, f(x) e μ_hat(x)
+      plot(x, y,
+           pch = 1, col = "grey40",
+           main = paste0("Média condicional - época ", epoch),
+           xlab = "x", ylab = "y",
+           cex = 0.7)
+      lines(x, f_x, col = "black", lwd = 2)          # f(x) verdadeiro
+      lines(x, mu_full, col = "red", lwd = 2)        # μ_hat(x)
       legend("topleft",
-             legend = c("f(x)", "Quantil empírico",
-                        "Quantil teórico (f+zσ_true)", "Quantil NN"),
-             col = c("black", "tomato", "orange", "blue"),
-             lwd = c(2, NA, 2, 3),
-             lty = c(1, NA, 2, 1),
-             pch = c(NA, 19, NA, NA),
-             bty = "n")
+             legend = c("dados", "f(x) verdadeiro", "μ_hat(x)"),
+             col    = c("grey40", "black", "red"),
+             lwd    = c(NA, 2, 2),
+             pch    = c(1, NA, NA),
+             bty    = "n", cex = 0.8)
       
-      # 2) Evolução da loss
-      plot(1:epoch, loss_history_train[1:epoch], type = "l",
+      # 2) painel 2: σ²(x) verdadeiro vs estimado
+      plot(x, sigma2_true,
+           type = "l", lwd = 2, col = "black",
+           main = expression(sigma^2(x) * " - verdadeira vs estimada"),
+           xlab = "x", ylab = expression(sigma^2))
+      lines(x, sigma2_hat, col = "blue", lwd = 2)
+      legend("topright",
+             legend = c(expression(sigma[true]^2(x)),
+                        expression(hat(sigma)^2(x))),
+             col    = c("black", "blue"),
+             lwd    = 2, bty = "n", cex = 0.8)
+      
+      # 3) painel 3: evolução da NLL (train/test)
+      plot(1:epoch, loss_store_train[1:epoch],
+           type = "l", lwd = 2,
            xlab = "Época", ylab = "NLL",
-           ylim = range(c(loss_history_train[1:epoch],
-                          loss_history_test[1:epoch])),
-           main = "Evolução da NLL")
-      lines(1:epoch, loss_history_test[1:epoch], col = "tomato")
-      legend("topright", legend = c("Train", "Test"),
-             col = c("black", "tomato"), lty = 1, bty = "n")
+           main = "Evolução da NLL",
+           ylim = range(c(loss_store_train[1:epoch],
+                          loss_store_test[1:epoch])))
+      lines(1:epoch, loss_store_test[1:epoch],
+            col = "tomato", lwd = 2)
+      legend("topright",
+             legend = c("train", "test"),
+             col    = c("black", "tomato"),
+             lwd    = 2, bty = "n", cex = 0.8)
       
-      Sys.sleep(0.05)
+      Sys.sleep(0.05)  # só para conseguir ver a animação
     }
   }
   
   invisible(list(
     model      = model,
-    loss_train = loss_history_train,
-    loss_test  = loss_history_test
+    loss_train = loss_store_train,
+    loss_test  = loss_store_test
   ))
 }
