@@ -13,18 +13,14 @@ HeteroNormalNet <- nn_module(
     # rede da média μ(x)
     self$mu_net <- nn_sequential(
       nn_linear(input_dim, hidden_mu),
-      nn_relu(),
-      nn_linear(hidden_mu, hidden_mu),
-      nn_relu(),
+      nn_gelu(),
       nn_linear(hidden_mu, 1)
     )
     
     # rede da variância (na verdade algo que vira σ(x))
     self$sigma_net <- nn_sequential(
       nn_linear(input_dim, hidden_sigma),
-      nn_relu(),
-      nn_linear(hidden_sigma, hidden_sigma),
-      nn_relu(),
+      nn_gelu(),
       nn_linear(hidden_sigma, 1)
     )
   },
