@@ -1,19 +1,27 @@
-
+rm(list = ls())
+graphics.off()
 
 source("Config.R")
 library(torch)
 source("Data.R")
-source("Model.R")  
+source("Model.R")   # aqui já estão HeteroNormalNet, QuantileNormalNet, etc.
 source("Train.R")
 
-# cria o modelo
-model <- HeteroNormalNet(input_dim = 1,
-                         hidden_mu = 64,
-                         hidden_sigma = 64)
+# ------------------------------------------------------------------
+# escolhe o nível de quantil (pego do Config, mas pode ser fixo)
+q_level <- config$q  # por ex., 0.75
+
+# cria o modelo de quantil + variância heteroscedástica
+model <- QuantileNormalNet(
+  input_dim    = 1,
+  hidden_q     = 10,
+  hidden_sigma = 10
+)
 
 # treina
-res <- treinar_normal_hetero(
-  model,
-  epochs      = 3000,      # por ex.
-  lr          = 5e-3
+res <- treinar_normal_quantil(
+  model      = model,
+  q_level    = q_level,
+  epochs     = 500,
+  lr         = 5e-3
 )

@@ -1,113 +1,171 @@
-# Train.R  ------------------------------------------------------------
-
-source("Config.R")
+# Train.R
 library(torch)
-source("Data.R")
-source("Model.R")   # aqui está o HeteroNormalNet
-# e a nll_normal_hetero(mu, sigma2, y)
 
-# ------- função de treino estilo professor --------------------------
+# ---- função auxiliar: quantil condicional empírico por janelas ----
+plot_conditional_quantile <- function(x, y, q, num_bins = 80,
+                                      col = "darkgreen", pch = 19, cex = 1.1) {
+  breaks <- seq(min(x), max(x), length.out = num_bins)
+  qx <- c(); qy <- c()
+  
+  for (i in 1:(length(breaks) - 1)) {
+    idx <- which(x >= breaks[i] & x < breaks[i + 1])
+    if (length(idx) > 0) {
+      qx <- c(qx, mean(x[idx]))
+      qy <- c(qy, quantile(y[idx], q))
+    }
+  }
+  
+  points(qx, qy, col = col, pch = pch, cex = cex)
+  invisible(list(x = qx, y = qy))
+}
+# -------------------------------------------------------------------
 
-treinar_normal_hetero <- function(model,
-                                  epochs = config$num_epochs,
-                                  lr     = config$lr,
-                                  print_every = config$print_every,
-                                  plot_every  = config$plot_every) {
+treinar_normal_quantil <- function(model,
+                                   q_level = config$q,
+                                   epochs  = config$num_epochs,
+                                   lr      = config$lr) {
   
-  optimizer <- optim_adamw(model$parameters, lr = lr)
+  print_every <- config$print_every
+  plot_every  <- config$plot_every
+  num_bins    <- 80
   
-  loss_store_train <- numeric(epochs)
-  loss_store_test  <- numeric(epochs)
+  optimizer <- optim_adamw(
+    model$parameters,
+    lr = lr,
+    weight_decay = 1e-3
+  )
   
-  par(mfrow = c(1, 3))  # 3 painéis: y vs x, sigma2 vs x, loss
+  loss_history_train <- numeric(epochs)
+  loss_history_test  <- numeric(epochs)
+  
+  # 3 painéis: média/quantil, sigma2, NLL
+  par(mfrow = c(1, 3))
   
   for (epoch in 1:epochs) {
     
-    ## --------- TREINO ---------
+    ## ---------- TREINO ----------
     model$train()
     optimizer$zero_grad()
     
-    out_train  <- model(X_train)
-    mu_train   <- out_train$mu
-    sigma2_tr  <- out_train$sigma2
+    out_train <- model(X_train)
+    Qq_train  <- out_train$q
+    sigma2_tr <- out_train$sigma2
     
-    loss_train <- nll_normal_hetero(mu_train, sigma2_tr, Y_train)
+    loss_train <- nll_normal_from_quantile(
+      Qq      = Qq_train,
+      sigma2  = sigma2_tr,
+      y       = Y_train,
+      q_level = q_level
+    )
+    
     loss_train$backward()
     optimizer$step()
     
-    ## --------- TESTE ---------
+    ## ---------- TESTE ----------
     model$eval()
     out_test  <- model(X_test)
-    mu_test   <- out_test$mu
+    Qq_test   <- out_test$q
     sigma2_te <- out_test$sigma2
     
-    loss_test <- nll_normal_hetero(mu_test, sigma2_te, Y_test)
+    loss_test <- nll_normal_from_quantile(
+      Qq      = Qq_test,
+      sigma2  = sigma2_te,
+      y       = Y_test,
+      q_level = q_level
+    )
     
-    loss_store_train[epoch] <- as.numeric(loss_train$item())
-    loss_store_test[epoch]  <- as.numeric(loss_test$item())
+    loss_history_train[epoch] <- loss_train$item()
+    loss_history_test[epoch]  <- loss_test$item()
     
     if (epoch %% print_every == 0) {
       cat("Época:", epoch,
-          "- NLL train:", loss_store_train[epoch],
-          "- NLL test:",  loss_store_test[epoch], "\n")
+          "- NLL train:", loss_train$item(),
+          "- NLL test:",  loss_test$item(), "\n")
     }
     
-    ## --------- GRÁFICOS (debug visual) ---------
+    ## ---------- GRÁFICOS ----------
     if (epoch %% plot_every == 0 || epoch == epochs) {
       
-      # previsão em toda a grade x (para curvas lisas)
+      # predição no grid completo
       out_full   <- model(X_full)
-      mu_full    <- as.numeric(out_full$mu$squeeze())
+      Qq_full    <- as.numeric(out_full$q$squeeze())
       sigma2_hat <- as.numeric(out_full$sigma2$squeeze())
+      sigma_hat  <- sqrt(sigma2_hat)
       
-      # 1) painel 1: y vs x, f(x) e μ_hat(x)
+      # --- quantil teórico usando a variância verdadeira heteroscedástica ---
+      z_q        <- qnorm(q_level)
+      # sigma_true e sigma2_true vêm do Data.R
+      q_theo     <- f_x + z_q * sigma_true
+      
+      ylim_all <- range(
+        y,
+        f_x,
+        q_theo,
+        Qq_full
+      )
+      
+      ## Painel 1: f(x), dados, quantil empírico, quantil teórico, quantil NN
       plot(x, y,
-           pch = 1, col = "grey40",
-           main = paste0("Média condicional - época ", epoch),
+           pch  = 16,
+           col  = rgb(0,0,0,0.15),
+           ylim = ylim_all,
            xlab = "x", ylab = "y",
-           cex = 0.7)
-      lines(x, f_x, col = "black", lwd = 2)          # f(x) verdadeiro
-      lines(x, mu_full, col = "red", lwd = 2)        # μ_hat(x)
-      legend("topleft",
-             legend = c("dados", "f(x) verdadeiro", "μ_hat(x)"),
-             col    = c("grey40", "black", "red"),
-             lwd    = c(NA, 2, 2),
-             pch    = c(1, NA, NA),
-             bty    = "n", cex = 0.8)
+           main = paste0("Média/Quantil condicional - época ", epoch))
       
-      # 2) painel 2: σ²(x) verdadeiro vs estimado
+      # f(x) sem ruído
+      lines(x, f_x, col = "black", lwd = 2)
+      
+      # quantil condicionado empírico
+      plot_conditional_quantile(x, y,
+                                q        = q_level,
+                                num_bins = num_bins,
+                                col      = "tomato", pch = 19, cex = 1.1)
+      
+      # quantil teórico (f(x) + z_q * sigma_true(x))
+      lines(x, q_theo, col = "orange", lwd = 2, lty = 2)
+      
+      # quantil estimado pela rede
+      lines(x, Qq_full, col = "blue", lwd = 3)
+      
+      legend("topleft",
+             legend = c("dados", "f(x)", "Quantil empírico",
+                        "Quantil teórico", "Quantil NN"),
+             col    = c(rgb(0,0,0,0.3), "black", "tomato", "orange", "blue"),
+             lwd    = c(NA, 2, NA, 2, 3),
+             lty    = c(NA, 1, NA, 2, 1),
+             pch    = c(16, NA, 19, NA, NA),
+             bty    = "n")
+      
+      ## Painel 2: σ^2(x) verdadeira vs estimada (heteroscedástico)
       plot(x, sigma2_true,
-           type = "l", lwd = 2, col = "black",
-           main = expression(sigma^2(x) * " - verdadeira vs estimada"),
-           xlab = "x", ylab = expression(sigma^2))
+           type = "l", lwd = 2,
+           xlab = "x", ylab = expression(sigma^2),
+           main = expression(sigma^2(x)~": verdadeira vs estimada"))
       lines(x, sigma2_hat, col = "blue", lwd = 2)
-      legend("topright",
+      legend("topleft",
              legend = c(expression(sigma[true]^2(x)),
                         expression(hat(sigma)^2(x))),
-             col    = c("black", "blue"),
-             lwd    = 2, bty = "n", cex = 0.8)
+             col = c("black", "blue"),
+             lwd = 2, bty = "n")
       
-      # 3) painel 3: evolução da NLL (train/test)
-      plot(1:epoch, loss_store_train[1:epoch],
-           type = "l", lwd = 2,
+      ## Painel 3: evolução da NLL
+      plot(1:epoch, loss_history_train[1:epoch], type = "l",
            xlab = "Época", ylab = "NLL",
-           main = "Evolução da NLL",
-           ylim = range(c(loss_store_train[1:epoch],
-                          loss_store_test[1:epoch])))
-      lines(1:epoch, loss_store_test[1:epoch],
-            col = "tomato", lwd = 2)
-      legend("topright",
-             legend = c("train", "test"),
-             col    = c("black", "tomato"),
-             lwd    = 2, bty = "n", cex = 0.8)
+           ylim = range(c(loss_history_train[1:epoch],
+                          loss_history_test[1:epoch])),
+           main = "Evolução da NLL")
+      lines(1:epoch, loss_history_test[1:epoch], col = "tomato")
+      legend("topright", legend = c("Train", "Test"),
+             col = c("black", "tomato"),
+             lty = 1, bty = "n")
       
-      Sys.sleep(0.05)  # só para conseguir ver a animação
+      Sys.sleep(0.05)
     }
   }
   
   invisible(list(
     model      = model,
-    loss_train = loss_store_train,
-    loss_test  = loss_store_test
+    loss_train = loss_history_train,
+    loss_test  = loss_history_test
   ))
 }
