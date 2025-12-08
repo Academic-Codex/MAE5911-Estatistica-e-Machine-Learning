@@ -17,6 +17,25 @@
 \usepackage[alf]{abntex2cite} % citação ABNT autor-data
 \usepackage{tcolorbox}
 \usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+% --- TikZ básico ---
+\usepackage{tikz}
+
+% --- Bibliotecas necessárias ---
+\usetikzlibrary{positioning}   % para node distance, below=..., right=...
+\usetikzlibrary{shapes.geometric} % caixas arredondadas, shapes
+\usetikzlibrary{arrows.meta}   % setas melhores
+\usetikzlibrary{calc}          % coordenadas TikZ avançadas (útil p/ labels)
+
+% --- Tabela bonita (para top/mid/bottom rule) ---
+\usepackage{booktabs}
+
+% --- Para usar [H] ---
+\usepackage{float}
+
+% --- Fonte menor no caption e figure ---
+\usepackage{caption}
 \tcbuselibrary{breakable}
 \pagestyle{plain}
 
@@ -199,47 +218,189 @@ e construa a função de verossimilhança apropriada.
             \right].
     \end{equation}
 
-    \subsection{Caso com variância conhecida}
 
-    Se assumirmos uma variância condicional conhecida e constante,
-    $\sigma(x) \equiv \sigma_0$, o termo $\log \sigma(x_i)$ torna-se constante
-    e pode ser ignorado na minimização. Nesse caso, a perda se reduz a
-    \begin{equation}
-        \mathcal{L}_{\text{NLL}}
-        \propto
-        \sum_{i=1}^n
-        \big(
-        y_i + \sigma_0 z_q - Q_q(x_i)
-        \big)^2.
-    \end{equation}
+    \subsection*{Descrição do experimento e configuração do modelo}
+    \subsubsection*{Hiperparâmetros do modelo}
+    \subsubsection*{Arquitetura}
 
-    Definindo a variável transformada
-    \begin{equation}
-        Z_i = y_i + \sigma_0 z_q,
-    \end{equation}
-    temos
-    \begin{equation}
-        Z_i \mid X_i = x
-        \sim \mathcal{N}\big(Q_q(x),\, \sigma_0^2\big),
-    \end{equation}
-    ou seja, $Q_q(x)$ é exatamente a \emph{média condicional} de $Z_i$ dado $X_i=x$.
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+                x=1.8cm, y=1.2cm,
+                >=Stealth,
+                neuron/.style={circle,draw,minimum size=6mm},
+                unicorn/.style={diamond, draw, fill=purple!10,
+                        minimum width=18mm, minimum height=10mm},
+                actblock/.style={rectangle,draw,rounded corners,
+                        minimum width=9mm,minimum height=5mm},
+                every node/.style={font=\footnotesize}
+            ]
 
-    Assim, sob o modelo Normal com variância constante, podemos estimar o quantil
-    condicional $Q_q(x)$ minimizando um \emph{erro quadrático médio} sobre a
-    variável transformada $Z_i$:
-    \begin{equation}
-        \mathcal{L}_{\text{MSE-quantil}}
-        = \sum_{i=1}^n
-        \big(
-        Z_i - Q_q(x_i)
-        \big)^2.
-    \end{equation}
+            % ======== INPUT NODE ========
+            \node[neuron,label=left:{$x$}] (x) at (0,-1) {};
 
-\subsection*{Descrição do experimento e configuração do modelo}
-\subsubsection*{Hiperparâmetros do modelo}
-\subsubsection*{Arquitetura}
-\subsubsection*{Tamanho do modelo}
-\subsubsection*{Treinamento e métricas}
+            % =====================================================
+            % ===============  REDE DO QUANTIL  ===================
+            % =====================================================
+
+            % 10 neurônios ocultos (posicionados de y=3.5 até ~0.35)
+            \foreach \i in {1,...,10}{
+                    \node[neuron] (qh\i) at (2,{3.5 - 0.35*(\i-1)}) {};
+                }
+
+            % bloco GELU (representa ativação da camada oculta inteira)
+            \node[actblock] (geluq) at (3,1.75) {GELU};
+
+            % saída q(x)
+            \node[neuron,fill=blue!15,label={[yshift=6pt]right:{$q(x)$}}] (qout) at (3.9,1.75) {};
+
+            % input -> hidden (quantil)  [Linear(1,10): 10 pesos]
+            \foreach \i in {1,...,10}{
+                    \draw[->] (x) -- (qh\i);
+                }
+
+            % hidden -> GELU (quantil)
+            \foreach \i in {1,...,10}{
+                    \draw[->] (qh\i) -- (geluq.west);
+                }
+
+            % GELU -> saída (quantil) [Linear(10,1): 10 pesos]
+            \draw[->] (geluq.east) -- (qout.west);
+
+            % labels de parâmetros no ramo do quantil
+            % \node at (1.1,3.9) {\scriptsize Linear $(1,10)$: $10$ pesos + $10$ vieses};
+
+            \node[align=center] at (2,4.1) {%
+                \scriptsize Linear $(1,10)$:\\
+                $10$ pesos + $10$ vieses
+            };
+            % \node at (3.7,3.0) {\scriptsize Linear $(10,1)$: $10$ pesos + $1$ viés};
+            \node[align=center] at (3.8,2.4) {%
+                \scriptsize Linear $(10,1)$:\\
+                $10$ pesos + $1$ viés
+            };
+
+            % label da rede do quantil
+            \node at (3,4.7) {\textbf{Rede do Quantil } $Q_\tau(x)$};
+
+
+            % =====================================================
+            % ===============  REDE DA VARIÂNCIA  =================
+            % =====================================================
+
+            % 10 neurônios ocultos (y=-1.2 até ~-4.55)
+            \foreach \i in {1,...,10}{
+                    \node[neuron] (sh\i) at (2,{-1.2 - 0.35*(\i-1)}) {};
+                }
+
+            % bloco GELU da variância
+            \node[actblock] (gelus) at (3.3,-3.0) {GELU};
+
+            % saída sigma_raw(x)
+            \node[neuron,fill=green!15,label=right:{$\sigma_{\mathrm{raw}}(x)$}]
+            (sraw) at (3.9,-3.0) {};
+
+            % input -> hidden (variância) [Linear(1,10)]
+            \foreach \i in {1,...,10}{
+                    \draw[->] (x) -- (sh\i);
+                }
+
+            % hidden -> GELU (variância)
+            \foreach \i in {1,...,10}{
+                    \draw[->] (sh\i) -- (gelus.west);
+                }
+
+            % GELU -> saída (variância) [Linear(10,1)]
+            \draw[->] (gelus.east) -- (sraw.west);
+
+            % labels de parâmetros no ramo da variância
+            % \node at (1.4,-0.1) {\scriptsize Linear $(1,10)$: $10$ pesos + $10$ vieses};
+            % \node at (3.9,-1.2) {\scriptsize Linear $(10,1)$: $10$ pesos + $1$ viés};
+
+            \node[align=center] at (2,-0.6) {%
+                \scriptsize Linear $(10,1)$:\\
+                $10$ pesos + $1$ viés
+            };
+
+            \node[align=center] at (3.9,-2.3) {%
+                \scriptsize Linear $(10,1)$:\\
+                $10$ pesos + $1$ viés
+            };
+
+            % label da rede da variância
+            \node at (3,0.0) {\textbf{Rede da Variância}};
+
+            % ----------------  Softplus + eps  ----------------
+            \node[draw,rounded corners,minimum width=2.4cm,minimum height=0.9cm,
+                below=0.8cm of sraw] (softp)
+            {Softplus $+\;\varepsilon$};
+
+            \draw[->] (sraw) -- (softp);
+
+            % --------------------  Quadrado  -------------------
+            \node[draw,rounded corners,minimum width=2.0cm,minimum height=0.9cm,
+                below=0.8cm of softp] (square)
+            {$(\cdot)^2$};
+
+            \draw[->] (softp) -- (square);
+
+            % saída final sigma^2(x)
+            \node[neuron,fill=green!25,
+            label={[yshift=-11pt]right:{$\sigma^2(x)$}}]
+            (sfinal) at (3.9,-7) {};   % ↓ move para baixo
+
+            \draw[->] (square) -- (sfinal);
+
+
+            % =====================================================
+            % ===============  NÓ FINAL forward()  ================
+            % =====================================================
+
+            \node[unicorn, right=3cm of $(qout)!0.5!(sfinal)$] (forward)
+            {\texttt{forward()}};
+
+            % setas q(x) -> forward
+            \draw[->, thick] (qout.east) -- ++(0.8,0) |- (forward.west);
+
+            % setas sigma^2(x) -> forward
+            \draw[->, thick] (sfinal.east) -- ++(0.8,0) |- (forward.west);
+
+            % nó de saída { q(x), sigma^2(x) }
+            \node[neuron, fill=purple!20, right=1.4cm of forward,
+            label=right:{$\{\,q(x),\;\sigma^2(x)\,\}$}] (final) {};
+
+            \draw[->, thick] (forward) -- (final);
+
+        \end{tikzpicture}
+        \caption{Arquitetura completa com 10 neurônios ocultos em cada rede.
+            As anotações indicam os números de pesos e vieses em cada camada linear;
+            a função \texttt{forward()} apenas combina as saídas $q(x)$ e $\sigma^2(x)$.}
+    \end{figure}
+    \subsubsection*{Tamanho do modelo}
+
+    \begin{table}[H]
+        \centering
+        \footnotesize
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Parâmetro}  & \textbf{Dimensão} & \textbf{Nº de parâmetros} \\
+            \midrule
+            q\_net.0.weight     & $10 \times 1$     & 10                        \\
+            q\_net.0.bias       & $10$              & 10                        \\
+            q\_net.2.weight     & $1 \times 10$     & 10                        \\
+            q\_net.2.bias       & $1$               & 1                         \\
+            sigma\_net.0.weight & $10 \times 1$     & 10                        \\
+            sigma\_net.0.bias   & $10$              & 10                        \\
+            sigma\_net.2.weight & $1 \times 10$     & 10                        \\
+            sigma\_net.2.bias   & $1$               & 1                         \\
+            \midrule
+            \textbf{Total}      & ---               & \textbf{62}               \\
+            \bottomrule
+        \end{tabular}
+        \caption{Parâmetros treináveis da rede neural quantílica utilizada no experimento.}
+        \label{tab:parametros_quantil}
+    \end{table}
+    \subsubsection*{Treinamento e métricas}
 
 \end{answer}
 
