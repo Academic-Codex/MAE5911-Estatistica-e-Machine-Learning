@@ -53,6 +53,11 @@ predict_quantile_vec <- function(model, x_new) {
   as.numeric(out$q$squeeze())
 }
 
+predict_sigma2_vec <- function(model, x_new) {
+  x_t <- torch_tensor(matrix(x_new, ncol = 1), dtype = torch_float())
+  out <- model(x_t)
+  as.numeric(out$sigma2)   # sigma2 é um tensor [n,1]
+}
 
 # NLL da Normal escrita em função do quantil Q_q(x) e de σ^2(x)
 # q_level é o quantil alvo (por ex., 0.75)

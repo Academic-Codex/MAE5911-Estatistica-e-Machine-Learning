@@ -14,15 +14,15 @@ q_level <- config$q  # por ex., 0.75
 # cria o modelo de quantil + variância heteroscedástica
 model <- QuantileNormalNet(
   input_dim    = 1,
-  hidden_q     = 10,
-  hidden_sigma = 10
+  hidden_q     = 5,
+  hidden_sigma = 5
 )
 
 # treina
 res <- treinar_normal_quantil(
   model      = model,
   q_level    = q_level,
-  epochs     = 500,
+  epochs     = 2500,
   lr         = 5e-3
 )
 

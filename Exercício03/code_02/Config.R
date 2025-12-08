@@ -12,11 +12,11 @@ config <- list(
   
   # arquitetura
   input_dim   = 1L,
-  hidden_mu   = 5L,
-  hidden_sigma= 5L,
+  hidden_mu   = 10L,
+  hidden_sigma= 10L,
   
   
-  seed        = 123,
+  seed        = 2025,
   n           = 1000,
   x_min       = -4,
   x_max       =  4,
