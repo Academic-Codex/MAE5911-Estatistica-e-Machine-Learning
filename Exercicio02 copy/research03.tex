@@ -1,0 +1,211 @@
+%=========================================
+% Derivação detalhada da densidade Normal e EMV
+%=========================================
+
+\textbf{A distribuição Normal} surge como limite assintótico da soma de variáveis aleatórias independentes 
+com variância finita, conforme estabelecido pelo \textbf{Teorema Central do Limite (TCL)}.
+
+\textbf{TCL:} 
+Seja $\{X_1, X_2, \ldots, X_n\}$ uma sequência de variáveis aleatórias 
+independentes e identicamente distribuídas (i.i.d.) com média $\mu = \mathbb{E}[X_i]$
+e variância $\sigma^2 = \mathrm{Var}(X_i) < \infty$.
+Definimos a média amostral
+\[
+\bar{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i.
+\]
+
+Então, a variável associada à média amostral centralizada e reescalada para ter média 0 e variância 1
+\[
+Z_n = \frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}}
+\]
+converge em distribuição para uma Normal padrão, isto é,
+\[
+Z_n \xrightarrow{d} \mathcal{N}(0,1)
+\qquad \text{quando } n \to \infty.
+\]
+
+Em outras palavras, independentemente da distribuição original das $X_i$, 
+a média amostral tende, para amostras grandes, a seguir aproximadamente uma
+\textbf{distribuição Normal} com média $\mu$ e variância $\sigma^2 / n$.
+
+---
+
+Para modelar matematicamente a função densidade da distribuição Normal, 
+buscamos uma função contínua, que satisfaça as condições de simetria e normalização, da forma:
+
+\[
+f(z) = A \, e^{-k(z-\mu)^2},
+\]
+
+onde $A>0$ e $k>0$ são constantes a determinar. Essa escolha se justifica porque o termo $e^{-k(z-\mu)^2}$ é simétrico e decai rapidamente conforme $|z-\mu|$ aumenta, representando a concentração de probabilidade em torno de $\mu$.
+
+Impondo a condição de normalização $\int_{-\infty}^{+\infty} f(z)\,dz = 1$, temos:
+
+\[
+A \int_{-\infty}^{+\infty} e^{-k(z-\mu)^2}\,dz = 1.
+\]
+
+Usando a mudança de variável \(x = \sqrt{k}\,(z-\mu)\), obtemos \(dz = dx/\sqrt{k}\), e assim:
+
+\[
+A \int_{-\infty}^{+\infty} e^{-x^2}\frac{dx}{\sqrt{k}} = 1.
+\]
+
+Sabendo que \(\displaystyle \int_{-\infty}^{+\infty} e^{-x^2}\,dx = \sqrt{\pi}\), segue que
+
+\[
+A = \sqrt{\frac{k}{\pi}}.
+\]
+
+Chamamos $\mu$ de \textbf{média} (ou valor esperado) e associamos $k$ à \textbf{variância} $\sigma^2$ por meio da relação
+
+\[
+k = \frac{1}{2\sigma^2},
+\]
+
+que garante que $\mathrm{Var}(Z)=\sigma^2$. Substituindo $A$ e $k$, obtemos:
+
+\[
+\boxed{
+f(z\mid\mu,\sigma^2)
+= \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left\{-\frac{(z-\mu)^2}{2\sigma^2}\right\}.
+}
+\]
+
+Essa é a \textbf{função densidade de probabilidade} da distribuição Normal, denotada por $Z \sim \mathcal N(\mu,\sigma^2)$.
+
+---
+
+Agora, considerando uma amostra aleatória \( (Z_1, \dots, Z_n) \) de \( Z \sim \mathcal N(\mu,\sigma^2) \), temos a função de densidade conjunta, a \textbf{função de verossimilhança}, como produtório das densidades individuais:
+
+\[
+L(\mu,\sigma^2; z_1, \dots, z_n)
+= \prod_{i=1}^n f(z_i\mid\mu,\sigma^2)
+= (2\pi\sigma^2)^{-n/2}
+\exp\!\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n (z_i - \mu)^2\right].
+\]
+
+Calculando a função \textbf{log verossimilhança}, para simplificar a maximização:
+
+\[
+\ell(\mu,\sigma^2)
+= \log L(\mu,\sigma^2)
+= -\frac{n}{2}\log(2\pi)
+- \frac{n}{2}\log(\sigma^2)
+- \frac{1}{2\sigma^2}\sum_{i=1}^n (z_i-\mu)^2.
+\]
+
+Sabendo que 
+\(\dfrac{d}{d\mu}(z_i-\mu)^2 = -2(z_i-\mu)\)
+e que a derivada é linear em relação à soma, derivamos em relação a \textbf{$\mu$}:
+
+\[
+\frac{\partial \ell}{\partial \mu}
+= -\frac{1}{2\sigma^2}\sum_{i=1}^n [-2(z_i-\mu)]
+= \frac{1}{\sigma^2}\sum_{i=1}^n (z_i-\mu).
+\]
+
+Igualando a zero para encontrar o ponto crítico:
+
+\[
+\frac{\partial \ell}{\partial \mu}=0
+\quad\Longleftrightarrow\quad
+\sum_{i=1}^n (z_i-\mu)=0
+\quad\Longleftrightarrow\quad
+n\mu=\sum_{i=1}^n z_i.
+\]
+
+Assim, o \textbf{estimador de máxima verossimilhança} para $\mu$ é
+
+\[
+\boxed{
+\widehat\mu_{MV} = \bar{Z} = \frac{1}{n}\sum_{i=1}^n Z_i.
+}
+\]
+
+---
+
+Agora derivamos a \textbf{log-verossimilhança} em relação a \textbf{$\sigma^2$}:
+
+\[
+\frac{\partial \ell}{\partial(\sigma^2)}
+= -\frac{n}{2}\frac{1}{\sigma^2}
++ \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (z_i-\mu)^2.
+\]
+
+Igualando a zero e substituindo $\mu = \widehat{\mu}_{MV}$:
+
+\[
+0 = -\frac{n}{2\sigma^2}
++ \frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (z_i-\bar{Z})^2.
+\]
+
+Multiplicando ambos os lados por $2(\sigma^2)^2$ e rearranjando os termos:
+
+\[
+n\sigma^2 = \sum_{i=1}^n (z_i-\bar{Z})^2
+\quad\Longrightarrow\quad
+\boxed{
+\widehat{\sigma^2}_{MV} = \frac{1}{n}\sum_{i=1}^n (Z_i - \bar{Z})^2.
+}
+\]
+
+---
+
+\noindent
+Observação importante: O estimador de máxima verossimilhança da variância é \textit{viciado} para amostras finitas, pois subestima a verdadeira dispersão.  
+Calculando a esperança para o estimador obtido, tem-se que:
+\[
+E[\widehat{\sigma^2}_{MV}] = \frac{n-1}{n}\sigma^2.
+\]
+Esse viés ocorre porque a média amostral $\bar{Z}$ é calculada a partir dos próprios dados, introduzindo uma restrição linear entre os desvios $(Z_i - \bar{Z})$.  
+Assim, apenas $n - 1$ deles são linearmente independentes, o que caracteriza a perda de um grau de liberdade.
+
+\[
+\sum_{i=1}^{n}(Z_i - \bar{Z}) = 0 \quad \Longrightarrow \quad (Z_n - \bar{Z}) = -\sum_{i=1}^{n-1}(Z_i - \bar{Z}).
+\]
+
+Para eliminar o viés, multiplicamos o estimador por $\tfrac{n}{n-1}$,  
+restaurando a estimativa não viciada da variância populacional:
+\[
+S^2 = \frac{1}{n-1}\sum_{i=1}^{n}(Z_i - \bar{Z})^2, 
+\qquad \text{para o qual } \quad E[S^2] = \sigma^2.
+\]
+
+Essa correção garante que o estimador seja não viciado.  
+Quando $n$ é grande, a diferença entre os estimadores é desprezível,  
+e $\widehat{\sigma^2}_{MV}$ é assintoticamente não viciado e consistente.
+
+---
+
+Derivando novamente para confirmar que o ponto crítico é de máximo:
+
+\[
+\frac{\partial^2 \ell}{\partial \mu^2} = -\frac{n}{\sigma^2} < 0,
+\qquad
+\frac{\partial^2 \ell}{\partial(\sigma^2)^2}
+= \frac{n}{2(\sigma^2)^2} - \frac{1}{(\sigma^2)^3}\sum_{i=1}^n (z_i-\mu)^2.
+\]
+
+Substituindo $\sum (z_i-\widehat\mu_{MV})^2 = n\widehat\sigma^2_{MV}$, obtemos valores negativos, confirmando o máximo.
+
+---
+ 
+Os estimadores de máxima verossimilhança para os parâmetros da distribuição Normal são:
+
+\[
+\boxed{
+\widehat\mu_{MV} = \bar{Z},
+\qquad
+\widehat{\sigma^2}_{MV} = \frac{1}{n}\sum_{i=1}^n (Z_i - \bar{Z})^2.
+}
+\]
+
+E pela \textbf{propriedade de invariância do EMV}, para qualquer função $g(\mu,\sigma^2)$, temos:
+
+\[
+\boxed{
+\widehat{g}_{MV} = g(\widehat\mu_{MV}, \widehat\sigma^2_{MV}).
+}
+\]

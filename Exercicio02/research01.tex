@@ -1,124 +1,117 @@
-O estimador via função de máxima verossimilhança foi proposto por Fisher, que demonstrou a superioridade do deste método referente a outros métodos estimadores, como o método de momentos. 
-Este estimador é utilizado sobretudo quando a informação da distribuição de probabilidade do modelo é conhecida. 
-Ela tem propriedades como eficiência assintótica, consistência, distribuição normal e invariancia [Notas de aula pg. 60]. 
-O estimador de máxima verossimilhança representa uma estimativa para o valor do parâmetro $\theta$ que torna os dados observados o mais plausível possível. 
-\\[0.5em]
-Devido a propriedade de invariancia do EMV, basta encontrarmos EMV para a letra (a) e depois calcular a letra (b) utilizando este estimador como parâmetro.
+Podemos calcular os ítens (a) e (b) utilizando a propriedade de invariância do estimador de máxima verossimilhança (EMV).
 
-
-Seja \( (Z_1, \dots, Z_n) \) a amostra aleatória de 
+\textbf{Teorema (Invariância do EMV).}
+Seja $\hat\theta_{MV}$ o estimador de máxima verossimilhança de um parâmetro
+$\theta \in \Theta$ e seja $g:\Theta \to \mathcal{G}$ uma função.
+Então o estimador de máxima verossimilhança de
 \[
-Z_i \sim \mathrm{Bernoulli}(\theta), \quad \theta \in (0,1).
+    \tau = g(\theta)
+\]
+é dado por
+\[
+    \hat\tau_{MV} = g(\hat\theta_{MV}).
+\]
+Isto é, para obter o EMV de qualquer função de $\theta$, basta aplicar essa
+função ao EMV de $\theta$.
+
+\medskip
+
+\subsection*{Cálculo do EMV de $\theta$ ( $\hat\theta_{MV}$)}
+
+\textbf{Função de verossimilhança}
+
+Seja $Z_1,\dots,Z_n$ uma amostra aleatória de $Z \sim \mathrm{Bernoulli}(\theta), \quad \theta \in (0,1)$. Com:
+$$
+    P_\theta(Z_i = 1) = \theta,
+    \qquad
+    P_\theta(Z_i = 0) = 1 - \theta.
+$$
+
+A função de probabilidade para $Z_i$ é então:
+\[
+    f(z_i;\theta) = \theta^{z_i}(1-\theta)^{1-z_i}.
 \]
 
-A função de verossimilhança, que é a função de densidade de probabilidade conjunta do modelo, é dada por
+Como $Z_1,\dots,Z_n$ são independentes, a probabilidade conjunta, definida como a função de verossimilhança é:
 \[
-L(\theta; z_1, \dots, z_n)
-= \prod_{i=1}^n \theta^{z_i}(1-\theta)^{1-z_i}.
+    \ell(\theta)
+    = \prod_{i=1}^n \theta^{z_i}(1-\theta)^{1-z_i}.
 \]
 
-Para encontrar o estimador de máxima verossimilhança, precisamos maximizar \( L(\theta) \) em relação a \( \theta \). Mas como esta função se trata de um produtório,
-é mais fácil maximizar a função log-verossimilhança, que por ser monotonicamente crescente, preserva o valor de theta no ponto máximo \( L(\theta) \).
-
-
-\text{Tomando o logaritmo natural em ambos os lados:}
-
+\text{Juntando os expoentes, temos:}
 \[
-\ell(\theta)
-= \log L(\theta; z_1, \ldots, z_n)
-= \log\!\left(\prod_{i=1}^{n} \theta^{z_i}(1-\theta)^{1-z_i}\right).
+    \ell(\theta)
+    = \theta^{\sum_{i=1}^n z_i}\,(1-\theta)^{\sum_{i=1}^n (1-z_i)}
+    = \theta^{\sum_{i=1}^n z_i}\,(1-\theta)^{n-\sum_{i=1}^n z_i}.
 \]
 
-\text{Sabendo que } 
-\(
-\log(ab) = \log a + \log b \text{ e que } 
-\log\!\left(\prod_i a_i\right) = \sum_i \log a_i, \text{ temos:}
-\)
-
+Seja
 \[
-\ell(\theta)
-= \sum_{i=1}^{n} \log\!\big(\theta^{z_i}(1-\theta)^{1-z_i}\big).
+    S = \sum_{i=1}^n z_i,
+\]
+Podemos escrever:
+\[
+    \ell(\theta) = \theta^{S}(1-\theta)^{n-S}.
 \]
 
-\text{Aplicando novamente a propriedade do logaritmo de um produto: }
+\medskip
 
+\textbf{Função Log-verossimilhança}
+
+Podemos simplificar os cálculos trabalhando com o logaritmo desta função, mantendo o estimador de máxima verossimilhança inalterado, uma vez que este trata-se do ponto crítico desta função.
+Maximizar $\ell(\theta)$ ou
+$\mathcal{L}(\theta) = \log \ell(\theta)$ é equivalente, devido ao fato do logaritmo ser estritamente crescente. Portanto, aplicando o logaritmo, simplificamos para:
 \[
-\ell(\theta)
-= \sum_{i=1}^{n} \big[\log(\theta^{z_i}) + \log((1-\theta)^{1-z_i})\big].
+    \mathcal{L}(\theta)
+    = \log \ell(\theta)
+    = \log\big(\theta^{S}(1-\theta)^{n-S}\big)
+    = S\log\theta + (n-S)\log(1-\theta).
 \]
 
-\(
-\text{Sabendo que } \log(a^b) = b\log a, \text{ obtemos:}
-\)
+\medskip
 
+\textbf{Ponto crítico da log-verossimilhança}
+
+Calculando a derivada:
 \[
-\ell(\theta)
-= \sum_{i=1}^{n} \big[z_i \log \theta + (1 - z_i)\log(1-\theta)\big].
+    \frac{d\mathcal{L}}{d\theta}=
+    S \cdot \frac{1}{\theta}
+    + (n-S)\cdot\left(-\frac{1}{1-\theta}\right)
+    = \frac{S}{\theta} - \frac{n-S}{1-\theta}.
 \]
 
-\text{Por fim, separando as somas:}
-
+Seja a condição de máximo:
 \[
-\ell(\theta)
-= \left(\sum_{i=1}^{n} z_i\right)\log \theta
-+ \left(\sum_{i=1}^{n}(1-z_i)\right)\log(1-\theta).
+    \frac{S}{\theta} - \frac{n-S}{1-\theta} = 0.
 \]
 
-A log-verossimilhança correspondente é
 \[
-\boxed{\ell(\theta) 
-= \sum_{i=1}^n \big[z_i \log\theta + (1-z_i)\log(1-\theta)\big].}
+    \frac{S}{\theta} = \frac{n-S}{1-\theta}.
 \]
 
-Para derivar em relação a \(\theta\), sabemos que 
-\(\dfrac{d}{d\theta}\log\theta=\dfrac1\theta\) e 
-\(\dfrac{d}{d\theta}\log(1-\theta)= -\dfrac1{1-\theta}\), obtemos,
-termo a termo:
-
 \[
-\frac{d}{d\theta}\Big[z_i\log\theta\Big]
-= z_i\,\frac1\theta
-\qquad\text{e}\qquad
-\frac{d}{d\theta}\Big[(1-z_i)\log(1-\theta)\Big]
-= (1-z_i)\Big(-\frac1{1-\theta}\Big)
-= -\,\frac{1-z_i}{1-\theta}.
-\]
-Logo,
-\[
-\ell'(\theta)
-=\sum_{i=1}^n\left(\frac{z_i}{\theta}-\frac{1-z_i}{1-\theta}\right)
-= \frac{\sum_{i=1}^n z_i}{\theta} - \frac{\sum_{i=1}^n(1-z_i)}{1-\theta}
-= \frac{\sum_i z_i}{\theta} - \frac{n-\sum_i z_i}{1-\theta}.
+    S(1-\theta) = \theta(n-S).
 \]
 
-\text{Igualando a zero para encontrar o} \textbf{ponto crítico.}
 \[
-\ell'(\theta)=0
-\;\Longleftrightarrow\;
-\frac{\sum_i z_i}{\theta}
-= \frac{n-\sum_i z_i}{1-\theta}
-\;\Longleftrightarrow\;
-(1-\theta)\sum_i z_i=\theta\,(n-\sum_i z_i).
-\]
-Expandindo e rearranjando:
-\[
-\sum_i z_i - \theta\sum_i z_i = \theta n - \theta\sum_i z_i
-\;\Longleftrightarrow\;
-\sum_i z_i = \theta n
-\;\Longleftrightarrow\;
-\widehat\theta_{MV}=\frac1n\sum_{i=1}^n z_i=\overline Z.
+    S - S\theta = n\theta - S\theta.
 \]
 
-
-Obtivemos o estimador de máxima verossimilhança para a probabilidade de sucesso \(\theta\):
+Os termos $-S\theta$ cancelam em ambos os lados, restando:
 \[
-\boxed{\hat{\theta}_{MV} = \bar{Z} = \frac{1}{n}\sum_{i=1}^n Z_i.}
+    S = n\theta.
 \]
 
-O teste de hipótese, mede o quão improvável seria observar $\hat{\theta}_{MV}$ se a hipótese nula fosse verdadeira. O valor-p é esta medida de improbabilidade.
-\\[1em]
-Em condições de regularidade, o valor-$p$ segue uma distribuição uniforme em $(0,1)$.
-Isso significa que, se o seu valor é muito pequeno, por exemplo $p \leq 0{,}01$,
-então o resultado observado é um evento raro sob a hipótese nula $H_0$,
-ou, alternativamente, que a hipótese nula está incorreta.
-Nessa situação, existem evidências para rejeitar $H_0$.
+Isolando $\theta$:
+\[
+    \boxed{
+        \hat\theta_{MV} = \frac{S}{n}.
+    }
+\]
+
+Substituindo de volta em funcão da variável aleatória $Z_i$, obtemos:
+\[
+    \hat\theta_{MV}
+    = \frac{1}{n}\sum_{i=1}^n Z_i
+    = \bar Z.
+\]

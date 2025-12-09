@@ -135,22 +135,8 @@ treinar_normal_quantil <- function(model,
              lty    = c(NA, 1, NA, 2, 1),
              pch    = c(16, NA, 19, NA, NA),
              bty    = "n")
-      
-      ## Painel 2: σ^2_(x) verdadeira vs estimada (heteroscedástico)
-      # plot(x, sigma2_true,
-      #      type = "l", lwd = 2,
-      #      xlab = "x", ylab = expression(sigma^2),
-      #      main = expression(sigma(x)^2 ~ ": verdadeira vs estimada"),
-      #      ylim = c(min(sigma2_true) * 0.9, max(sigma2_true) * 1.25)
-      # )
-      # lines(x, sigma2_hat, col = "blue", lwd = 2)
-      # legend("topleft",
-      #        legend = c(expression(sigma(x)^2),
-      #                   expression(hat(sigma)(x)^2)),
-      #        col = c("black", "blue"),
-      #        lwd = 2, bty = "n")
 
-      ## Painel 3: evolução da NLL
+      ## Painel 2: evolução da NLL
       plot(1:epoch, loss_history_train[1:epoch], type = "l",
            xlab = "Época", ylab = "NLL",
            ylim = range(c(loss_history_train[1:epoch],

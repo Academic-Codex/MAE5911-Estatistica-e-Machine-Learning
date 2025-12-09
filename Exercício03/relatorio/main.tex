@@ -18,6 +18,58 @@
 \usepackage{tcolorbox}
 \usepackage{enumitem}
 \usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% --- Suporte a UTF-8 ---
+\usepackage{lmodern}           % fonte moderna compatível com T1
+
+% --- Pacotes para exibir código ---
+
+
+% --- Define o idioma R com palavras-chave e cores ---
+\lstdefinelanguage{R}{
+  keywords={function, if, else, for, in, while, repeat, return, library, require, next, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={TRUE, FALSE, NULL, NA, Inf, NaN},
+  ndkeywordstyle=\color{magenta}\bfseries,
+  comment=[l]{\#},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{orange}\ttfamily,
+  morestring=[b]",
+  morestring=[b]',
+  sensitive=true
+}
+
+% --- Mapeamento para UTF-8 (acentos, ç, etc.) ---
+% ---- estilo do listing ----
+\lstset{
+  literate=
+    {á}{{\'a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 {à}{{\`a}}1
+    {é}{{\'e}}1 {ê}{{\^e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+    {ú}{{\'u}}1 {ü}{{\"u}}1
+    {ç}{{\c{c}}}1
+    {Á}{{\'A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1
+    {É}{{\'E}}1 {Ê}{{\^E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1 {Õ}{{\~O}}1 {Ô}{{\^O}}1
+    {Ú}{{\'U}}1 {Ü}{{\"U}}1
+    {Ç}{{\c{C}}}1,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!5},
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  keepspaces=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=6pt
+}
 \usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
 % --- TikZ básico ---
 \usepackage{tikz}
@@ -150,106 +202,134 @@ Sugestão: reescreva a esperança e variância condicionais em termos do quantil
 e construa a função de verossimilhança apropriada.
 
 \begin{answer}[Ítem 1.1]
-    \subsubsection*{Encontrando a função de verossimilhança em termos do quantil condicional}
 
-    Seja
-    \begin{equation}
-        Y \mid X = x \sim \mathcal{N}\big(\mu(x), \sigma^2(x)\big).
-    \end{equation}
+    \subsection*{Definição da função de perda do modelo}
 
-    Para um nível de quantil $q \in (0,1)$, definimos o quantil condicional
-    $Q_q(x)$ de $Y \mid X=x$ como o valor $t$ que satisfaz
-    \begin{equation}
-        \mathbb{P}\!\big( Y \le t \,\big|\, X = x \big) = q.
-    \end{equation}
+    \subsubsection*{Densidade condicional }
 
-    No caso da Normal, o quantil condicional pode ser escrito em termos da média
-    e do desvio-padrão:
-    \begin{equation}
-        Q_q(x) = \mu(x) + \sigma(x)\, z_q,
-    \end{equation}
-    em que $z_q = \Phi^{-1}(q)$ é o quantil de ordem $q$ da Normal padrão
-    $\mathcal{N}(0,1)$ e $\Phi$ denota a sua função de distribuição acumulada.
+    Podemos descrever a média da Normal em função do quantil alvo $Q_q(x)$.
+    O valor crítico da Normal padrão é dado por:
+    \[
+        z_q = \Phi^{-1}(q),
+    \]
+    A média condicional pode ser escrita como:
+    \[
+        \mu(x) = Q_q(x) - \sigma(x)\, z_q.
+    \]
 
-    Podemos, então, reparametrizar o modelo em função de $Q_q(x)$, escrevendo
-    \begin{equation}
-        \mu(x) = Q_q(x) - \sigma(x)\,z_q.
-    \end{equation}
+    Assim, o modelo probabilístico é:
+    \[
+        Y \mid X = x \sim \mathcal{N}\bigl(\mu(x),\, \sigma^2(x)\bigr).
+    \]
 
-    \subsection{Verossimilhança em termos do quantil}
-
-    A densidade de $Y \mid X=x$ é
-    \begin{equation}
-        f(y \mid x) =
-        \frac{1}{\sqrt{2\pi}\,\sigma(x)}
+    A densidade condicional para uma observação $(x_i,y_i)$ é, portanto,
+    \[
+        f(y_i \mid x_i; Q_q,\sigma)
+        =
+        \frac{1}{\sqrt{2\pi}\,\sigma(x_i)}
         \exp\!\left\{
-        -\frac{\big(y-\mu(x)\big)^2}{2\sigma^2(x)}
+        -\frac{\bigl(y_i - Q_q(x_i) + \sigma(x_i) z_q \bigr)^2}{2\sigma^2(x_i)}
         \right\}.
-    \end{equation}
+    \]
 
-    Substituindo $\mu(x) = Q_q(x) - \sigma(x)z_q$, obtemos
-    \begin{equation}
-        f(y \mid x) =
-        \frac{1}{\sqrt{2\pi}\,\sigma(x)}
-        \exp\!\left\{
-        -\frac{\big(y - Q_q(x) + \sigma(x) z_q\big)^2}
-        {2\sigma^2(x)}
-        \right\}.
-    \end{equation}
+    % ---------------------------------------------------------------------
 
-    A log-verossimilhança para uma observação $(x_i,y_i)$, desprezando constantes
-    que não dependem de $Q_q$, é dada por
-    \begin{equation}
-        \ell_i\big(Q_q,\sigma\big)
-        = - \log \sigma(x_i)
-        - \frac{\big(y_i - Q_q(x_i) + \sigma(x_i) z_q\big)^2}
-        {2\sigma^2(x_i)}.
-    \end{equation}
+    \subsubsection*{Log-verossimilhança}
 
-    O correspondente negativo da log-verossimilhança (função de perda) é
-    \begin{equation}
-        \mathcal{L}_{\text{NLL}}
-        = \sum_{i=1}^n
+    Tomando log da expressão acima, obtemos a log-verossimilhança para uma única observação:
+
+    \[
+        \ell_i(Q_q,\sigma)
+        =
+        \log f(y_i \mid x_i;Q_q,\sigma)
+        =
+        -\frac{1}{2}\log(2\pi)
+        - \log \sigma(x_i)
+        -
+        \frac{
+            \bigl(y_i - Q_q(x_i) + \sigma(x_i) z_q \bigr)^2
+        }{
+            2\sigma^2(x_i)
+        }.
+    \]
+
+    Somando sobre todas as observações, a log-verossimilhança total é:
+
+    \[
+        \ell(Q_q,\sigma)
+        =
+        \sum_{i=1}^n \ell_i(Q_q,\sigma)
+        =
+        -\frac{n}{2}\log(2\pi)
+        -
+        \sum_{i=1}^n \log \sigma(x_i)
+        -
+        \sum_{i=1}^n
+        \frac{
+            \bigl(y_i - Q_q(x_i) + \sigma(x_i) z_q \bigr)^2
+        }{
+            2\sigma^2(x_i)
+        }.
+    \]
+
+    O negativo da log-verossimilhança (função de perda) é, portanto,
+
+    \[
+        \mathcal{L}_{\text{NLL}}(Q_q,\sigma)
+        =
+        -\ell(Q_q,\sigma)
+        =
+        \frac{n}{2}\log(2\pi)
+        +
+        \sum_{i=1}^n \log \sigma(x_i)
+        +
+        \sum_{i=1}^n
+        \frac{
+            \bigl(y_i - Q_q(x_i) + \sigma(x_i) z_q \bigr)^2
+        }{
+            2\sigma^2(x_i)
+        }.
+    \]
+
+    % ---------------------------------------------------------------------
+
+    O termo
+    \[
+        \frac{n}{2}\log(2\pi)
+    \]
+    não depende de $Q_q$ nem de $\sigma(x)$, e portanto não altera o ponto de mínimo
+    nem os gradientes no treinamento da rede neural. Assim, podemos descartá-lo e usar a forma simplificada da log-verossimilhança:
+
+    \[
+        \ell_i(Q_q,\sigma)
+        =
+        -\log \sigma(x_i)
+        -
+        \frac{
+            \bigl(y_i - Q_q(x_i) + \sigma(x_i) z_q \bigr)^2
+        }{
+            2\sigma^2(x_i)
+        }.
+    \]
+
+    Portanto, a função de perda que iremos usar no treinamento da rede, negativo da log-verossimilhança, é:
+
+
+    \[
+        \mathcal{L}_{\text{NLL}}(Q_q,\sigma)
+        =
+        \sum_{i=1}^n
         \left[
             \log \sigma(x_i)
             +
-            \frac{\big(y_i - Q_q(x_i) + \sigma(x_i) z_q\big)^2}
-            {2\sigma^2(x_i)}
+            \frac{
+                \bigl(y_i - Q_q(x_i) + \sigma(x_i) z_q \bigr)^2
+            }{
+                2\sigma^2(x_i)
+            }
             \right].
-    \end{equation}
-
-
-    \subsection*{Descrição do experimento e configuração do modelo}
-    \subsubsection*{Hiperparâmetros do modelo}
-    \begin{table}[H]
-        \centering
-        \caption{Hiperparâmetros utilizados no modelo de quantis.}
-        \begin{tabular}{lll}
-            \toprule
-            \textbf{Hiperparâmetro} & \textbf{Valor} & \textbf{Descrição}                                         \\
-            \midrule
-
-            \texttt{q}              & 0.75           & quantil alvo modelado pela rede.                           \\
-
-            \texttt{num\_epochs}    & 2500           & número total de épocas de treinamento.                     \\
-
-            \texttt{lr}             & $10^{-3}$      & taxa de aprendizado (learning rate).                       \\
-
-            \texttt{input\_dim}     & 1              & dimensão da entrada $x$.                                   \\
-
-            \texttt{hidden\_mu}     & 10             & número de neurônios na camada oculta da rede do quantil.   \\
-
-            \texttt{hidden\_sigma}  & 10             & número de neurônios na camada oculta da rede da variância. \\
-
-            \texttt{seed}           & 2025           & semente aleatória utilizada nos experimentos.              \\
-
-            \texttt{p\_train}       & 0.7            & proporção dos dados destinada ao treino.                   \\
-
-            \bottomrule
-        \end{tabular}
-        \label{tab:hiperparametros_quantil}
-    \end{table}
-    \subsubsection*{Definição da Arquitetura}
+    \]
+    \subsection*{Definição da Arquitetura}
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}[
@@ -448,57 +528,364 @@ e construa a função de verossimilhança apropriada.
         \caption{Parâmetros treináveis da rede neural utilizada no experimento.}
         \label{tab:parametros_quantil}
     \end{table}
-    \subsubsection*{Treinamento e métricas}
-    Para o treinamento foram utilizados dados sintéticos gerados a partir de uma 
-função $f(x)$ arbitrária com ruído que segue uma variância heteroscedástica 
-$\sigma^2(x)$, da seguinte forma:
 
-\[
-Y = f(x) + \varepsilon, 
-\qquad 
-\varepsilon \sim \mathcal{N}\!\left(0,\, \sigma^2(x)\right),
-\]
+\end{answer}
+\begin{lstlisting}[language=R, caption={Estrutura do modelo QuantileNormalNet em \texttt{torch} para R}]
+library(torch)
 
-de modo que tanto a tendência central quanto a dispersão dos dados variam 
-continuamente ao longo do domínio de $x$.
+QuantileNormalNet <- nn_module(
+  "QuantileNormalNet",
+  
+  initialize = function(input_dim,
+                        hidden_q     = config$hidden_mu,
+                        hidden_sigma = config$hidden_sigma) {
+    
+    # Rede do quantil Q_q(x)
+    self$q_net <- nn_sequential(
+      nn_linear(input_dim, hidden_q),
+      nn_gelu(),
+      nn_linear(hidden_q, 1)
+    )
+    
+    # Rede da variância sigma(x)
+    self$sigma_net <- nn_sequential(
+      nn_linear(input_dim, hidden_sigma),
+      nn_gelu(),
+      nn_linear(hidden_sigma, 1)
+    )
+  },
+  
+  forward = function(x) {
+    # x: tensor [batch_size, 1]
+    
+    # Predição do quantil Q_q(x)
+    q_pred <- self$q_net(x)
+    
+    # Predição da variância sigma(x)
+    sigma_raw <- self$sigma_net(x)
+    sigma     <- nnf_softplus(sigma_raw) + 1e-4
+    sigma2    <- sigma$pow(2)
+    
+    list(
+      q      = q_pred,
+      sigma2 = sigma2
+    )
+  }
+)
+\end{lstlisting}
 
-A média verdadeira utilizada foi definida por
+\begin{lstlisting}[language=R,
+caption={Função de perda NLL para o modelo Normal parametrizado pelo quantil $Q_q(x)$},
+label={lst:nll_normal_from_quantile}]
+nll_normal_from_quantile <- function(Qq, sigma2, y, q_level, eps = 1e-6) {
 
-\[
-f(x)
-= 
-\frac{3}{\,3 + 2|x|^3\,}
-+ e^{-x^2}
-+ \cos(x)\,\sin(x).
-\]
+  Qq     <- torch_tensor(Qq, dtype = torch_float())
+  sigma2 <- torch_tensor(sigma2, dtype = torch_float())
+  y      <- torch_tensor(y,  dtype = torch_float())
 
-A variância condicional verdadeira foi especificada por:
+  sigma <- sigma2$sqrt()
+  
+  z_q   <- qnorm(q_level)
+  z_q_t <- torch_tensor(z_q, dtype = torch_float(), device = Qq$device)
 
-\[
-\sigma^2(x)
-=
-0.3
-+ 0.8\!\left(1 + \sin(1 + 2x) + 0.2\cos(1 + 2x)\right)^2.
-\]
+  mu <- Qq - sigma * z_q_t
+  
+  term1 <- torch_log(sigma)                    
+  term2 <- (y - mu)$pow(2) / (2 * sigma$pow(2)) 
 
-A heteroscedasticidade dos dados é essencial para fornecer a capacidade do modelo em 
-aprender padrões de ruído condicional.
+  (term1 + term2)$mean()
+}
+\end{lstlisting}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{answer}[Ítem 1.2]
+    Treinando o modelo proposto na Seção anterior com os dados do enunciado, obtemos os seguintes resultados:
 
-Os dados finais utilizados no treinamento foram obtidos por:
 
-\[
-y_i = f(x_i) + \varepsilon_i,
-\qquad
-\varepsilon_i \sim \mathcal{N}\!\bigl(0,\,\sigma^2(x_i)\bigr),
-\]
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{figuras/quantil.png}
+        \caption{Quantil condicional verdadeiro vs. estimado.}
+        \label{fig:quartil}
+    \end{figure}
 
-com $n = 1000$ amostras no intervalo $[-4, 4]$, ordenadas para facilitar a 
-visualização gráfica, e divididas em proporção $70\%$ para treino e $30\%$ para 
-teste.
 
-\subsubsection*{Treino e Resultado}
+    A Figura~\ref{fig:quartil} apresenta a comparação entre o quantil
+    condicional verdadeiro, o quantil empírico observado nos dados e o quantil
+    estimado pela rede neural. A curva aprendida (em azul) acompanha o
+    comportamento oscilatório do quantil teórico.
+    Isso evidencia que a rede foi capaz de aprender a dependência não linear
+    de $Q_\tau(x)$.
+
+    A evolução da função de perda
+    (NLL), cuja trajetória está ilustrada na Figura~\ref{fig:loss} mostra que
+    as curvas de \emph{train} e \emph{test} permanecem próximas ao longo de
+    todas as épocas, indicando ausência de sobreajuste e
+    capacidade de generalização.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{figuras/loss.png}
+        \caption{Evolução da NLL durante o treinamento.}
+        \label{fig:loss}
+    \end{figure}
 
 \end{answer}
 
+\begin{lstlisting}[language=R,
+caption={Geração dos dados para o Item 1.2: modelo homoscedástico $y = f(x) + \sigma \varepsilon$.},
+label={lst:data_item12}]
+source("Config.R")
+library(torch)
+
+set.seed(config$seed)
+
+n  <- config$n
+x  <- sort(runif(n, config$x_min, config$x_max))
+
+f_x <- 3/(3 + 2*abs(x)^3) +
+  exp(-x^2) +
+  cos(x)*sin(x)
+
+sigma_true  <- rep(config$noise_sd,  length(x))
+sigma2_true <- rep(config$noise_sd^2, length(x))
+
+y <- f_x + rnorm(n, mean = 0, sd = sigma_true)
+
+X_full <- torch_tensor(matrix(x, ncol = 1), dtype = torch_float())
+Y_full <- torch_tensor(matrix(y, ncol = 1), dtype = torch_float())
+
+n_train <- round(config$p_train * n)
+idx <- sample(1:n)
+
+idx_train <- idx[1:n_train]
+idx_test  <- idx[(n_train + 1):n]
+
+x_train <- x[idx_train]
+y_train <- y[idx_train]
+
+x_test  <- x[idx_test]
+y_test  <- y[idx_test]
+
+X_train <- torch_tensor(matrix(x_train, ncol = 1), dtype = torch_float())
+Y_train <- torch_tensor(matrix(y_train, ncol = 1), dtype = torch_float())
+
+X_test  <- torch_tensor(matrix(x_test,  ncol = 1), dtype = torch_float())
+Y_test  <- torch_tensor(matrix(y_test, dtype = torch_float()))
+\end{lstlisting}
+
+\begin{lstlisting}[language=R,
+caption={Função de treinamento para o modelo Normal-Quantil no caso homoscedástico (Item 1.2).},
+label={lst:train_item12}]
+library(torch)
+
+treinar_normal_quantil <- function(model,
+                                   q_level = config$q,
+                                   epochs  = config$num_epochs,
+                                   lr      = config$lr) {
+
+  print_every <- config$print_every
+  plot_every  <- config$plot_every
+  num_bins    <- 80
+
+  optimizer <- optim_adamw(
+    model$parameters,
+    lr = lr,
+    weight_decay = 1e-3
+  )
+
+  loss_history_train <- numeric(epochs)
+  loss_history_test  <- numeric(epochs)
+
+  par(mfrow = c(1, 2))
+
+  for (epoch in 1:epochs) {
+
+    model$train()
+    optimizer$zero_grad()
+
+    out_train <- model(X_train)
+    Qq_train  <- out_train$q
+    sigma2_tr <- out_train$sigma2
+
+    loss_train <- nll_normal_from_quantile(
+      Qq      = Qq_train,
+      sigma2  = sigma2_tr,
+      y       = Y_train,
+      q_level = q_level
+    )
+
+    loss_train$backward()
+    optimizer$step()
+
+    model$eval()
+    out_test <- model(X_test)
+
+    Qq_test   <- out_test$q
+    sigma2_te <- out_test$sigma2
+
+    loss_test <- nll_normal_from_quantile(
+      Qq      = Qq_test,
+      sigma2  = sigma2_te,
+      y       = Y_test,
+      q_level = q_level
+    )
+
+    loss_history_train[epoch] <- loss_train$item()
+    loss_history_test[epoch]  <- loss_test$item()
+
+    if (epoch %% print_every == 0) {
+      cat("Época:", epoch,
+          "- NLL train:", loss_train$item(),
+          "- NLL test:",  loss_test$item(), "\n")
+    }
+
+    if (epoch %% plot_every == 0 || epoch == epochs) {
+
+      out_full   <- model(X_full)
+      Qq_full    <- as.numeric(out_full$q$squeeze())
+      sigma2_hat <- as.numeric(out_full$sigma2$squeeze())
+      sigma_hat  <- sqrt(sigma2_hat)
+
+      z_q     <- qnorm(q_level)
+      q_theo  <- f_x + z_q * sigma_true   # sigma_true é constante no item 1.2
+
+      ylim_all <- range(y, f_x, q_theo, Qq_full)
+
+      plot(x, y,
+           pch  = 16,
+           col  = rgb(0,0,0,0.15),
+           ylim = ylim_all,
+           xlab = "x", ylab = "y",
+           main = "Quantil condicional: verdadeiro vs estimado")
+
+      lines(x, f_x, col = "black", lwd = 2)
+
+      plot_conditional_quantile(
+        x, y, q_level,
+        num_bins = num_bins,
+        col = "tomato", pch = 19, cex = 1.1
+      )
+
+      lines(x, q_theo,  col = "orange", lwd = 2, lty = 2)
+      lines(x, Qq_full, col = "blue",   lwd = 3)
+
+      legend("topleft",
+             legend = c("dados", "f(x)", "Quantil empírico",
+                        "Quantil teórico", "Quantil NN"),
+             col    = c(rgb(0,0,0,0.3), "black", "tomato", "orange", "blue"),
+             lwd    = c(NA, 2, NA, 2, 3),
+             lty    = c(NA, 1, NA, 2, 1),
+             pch    = c(16, NA, 19, NA, NA),
+             bty    = "n")
+
+      plot(1:epoch, loss_history_train[1:epoch], type = "l",
+           xlab = "Época", ylab = "NLL",
+           ylim = range(c(loss_history_train[1:epoch],
+                          loss_history_test[1:epoch])),
+           main = "Evolução da Loss")
+
+      lines(1:epoch, loss_history_test[1:epoch], col = "tomato")
+
+      legend("topright",
+             legend = c("Train", "Test"),
+             col = c("black", "tomato"),
+             lty = 1, bty = "n")
+
+      Sys.sleep(0.05)
+    }
+  }
+
+  invisible(list(
+    model      = model,
+    loss_train = loss_history_train,
+    loss_test  = loss_history_test
+  ))
+}
+
+plot_conditional_quantile <- function(x, y, q, num_bins = 80,
+                                      col = "darkgreen", pch = 19, cex = 1.1) {
+
+  breaks <- seq(min(x), max(x), length.out = num_bins)
+  qx <- c(); qy <- c()
+
+  for (i in 1:(length(breaks) - 1)) {
+    idx <- which(x >= breaks[i] & x < breaks[i + 1])
+    if (length(idx) > 0) {
+      qx <- c(qx, mean(x[idx]))
+      qy <- c(qy, quantile(y[idx], q))
+    }
+  }
+
+  points(qx, qy, col = col, pch = pch, cex = cex)
+  invisible(list(x = qx, y = qy))
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=R,
+caption={Arquivo \texttt{Config.R} utilizado no Item 1.2.},
+label={lst:config_item12}]
+config <- list(
+  
+  # =====================================================
+  # Quantil alvo
+  # =====================================================
+  q = 0.75,
+  
+  # =====================================================
+  # Hiperparâmetros de treino
+  # =====================================================
+  num_epochs  = 10000,
+  lr          = 1e-3,
+  print_every = 10L,
+  plot_every  = 10L,
+  
+  # =====================================================
+  # Arquitetura da rede
+  # =====================================================
+  input_dim    = 1L,
+  hidden_mu    = 10L,   # 10 neurônios para sub-rede do quantil
+  hidden_sigma = 10L,   # 10 neurônios para sub-rede da variância
+  
+  # =====================================================
+  # Configuração dos dados
+  # =====================================================
+  seed    = 32,
+  n       = 1000,
+  x_min   = -4,
+  x_max   =  4,
+  p_train = 0.7,
+  
+  # =====================================================
+  # Variância verdadeira usada na simulação
+  # =====================================================
+  noise_sd = 0.3, 
+)
+\end{lstlisting}
+
+\begin{minipage}[c]{0.84\textwidth}
+    \hspace{2em}%
+    Os códigos desde estudo estão disponibilizados em \url{http://academic-codex.github.io/MAE5911-Estatistica-e-Machine-Learning}.
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.13\textwidth}
+    \centering
+    \includegraphics[width=0.7\linewidth]{figuras/qrcode.png}
+\end{minipage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}

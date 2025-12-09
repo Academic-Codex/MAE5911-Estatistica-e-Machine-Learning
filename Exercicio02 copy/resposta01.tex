@@ -1,0 +1,146 @@
+
+
+\paragraph{(a) \(g(\theta)=P_\theta(Z=0)\)}
+
+\begin{enumerate}
+  \item Seja \(Z \sim \mathrm{Bernoulli}(\theta)\), temos:
+  \[
+  P_\theta(Z=z)=\theta^z(1-\theta)^{1-z}, \quad z \in \{0,1\}.
+  \]
+
+  \item Substituindo \(z=0\):
+  \[
+  P_\theta(Z=0)=\theta^0(1-\theta)^{1-0}=1-\theta.
+  \]
+
+  \item Portanto,
+  \[
+  g(\theta)=1-\theta.
+  \]
+
+  \item Pela \textbf{invariância do EMV}, temos:
+  \[
+  \widehat g_{MV}=g(\widehat\theta_{MV})=1-\widehat\theta_{MV}.
+  \]
+
+  \item E como \(\widehat\theta_{MV}=\overline Z\), obtemos:
+  \[
+  \boxed{\widehat g_{MV}=1-\overline Z.}
+  \]
+\end{enumerate}
+
+
+---
+
+\paragraph{(b) \(g(\theta)=\mathrm{Var}_\theta(Z)\)}
+
+\begin{enumerate}
+  \item Para uma Bernoulli, a variância é dada por:
+  \[
+  \mathrm{Var}(Z)=E(Z^2)-E(Z)^2.
+  \]
+
+  \item Como \(E(Z)=\theta\) e \(Z^2=Z\) (pois \(Z\in\{0,1\}\)), então:
+  \[
+  \mathrm{Var}_\theta(Z)=\theta-\theta^2=\theta(1-\theta).
+  \]
+
+  \item Portanto,
+  \[
+  g(\theta)=\theta(1-\theta).
+  \]
+
+  \item Pela \textbf{invariância do EMV}:
+  \[
+  \widehat g_{MV}=g(\widehat\theta_{MV})
+  =\widehat\theta_{MV}(1-\widehat\theta_{MV}).
+  \]
+
+  \item Como \(\widehat\theta_{MV}=\overline Z\), segue:
+  \[
+  \boxed{\widehat g_{MV}=\overline Z(1-\overline Z).}
+  \]
+\end{enumerate}
+
+
+---
+
+(c) Sejam os dados observados: \( (0, 0, 1, 0, 0, 1) \)
+
+Temos \( n = 6 \) e \( \sum z_i = 2 \), portanto
+\[
+\hat{\theta}_{MV} = \bar{Z} = \frac{2}{6} = \frac{1}{3} \approx 0.3333.
+\]
+Assim:
+\[
+\widehat{P(Z=0)} = 1 - \hat{\theta}_{MV} = \frac{2}{3} \approx 0.6667,
+\]
+\[
+\widehat{\mathrm{Var}}(Z) = \hat{\theta}_{MV}(1 - \hat{\theta}_{MV})
+= \frac{1}{3} \cdot \frac{2}{3} = \frac{2}{9} \approx 0.2222.
+\]
+
+---
+
+(d) Teste de hipótese \( H_0: \theta = 0.1 \)
+
+Queremos verificar se temos evidência a partir dos dados observados para rejeitar a hipótese nula 
+de que a probabilidade de sucesso é $\theta = 0.1$.
+
+Sabemos que, sob $H_0$, a estatística
+\[
+X = \sum_{i=1}^{n} Z_i
+\]
+segue uma distribuição $\text{Binomial}(n, \theta)$.
+
+Com $n = 6$ e $x_{\text{obs}} = 2$ sucessos observados, temos:
+\[
+X \sim \text{Binomial}(6, 0.1).
+\]
+
+---
+ 
+O valor-p é a probabilidade de observar um valor da estatística $T(Z_n)$ 
+\textit{tão ou mais extremo quanto o observado}, assumindo que $H_0$ é verdadeira:
+\[
+\boxed{
+\text{valor-}p(H_0, \mathbf{z}_n)
+= \sup_{\theta \in \Theta_0}
+P^{(n)}_{\theta}\!\big(
+T_{H_0}(\mathbf{Z}_n)
+\ge
+T_{H_0}(\mathbf{z}_n)
+\big).
+}
+\]
+No contexto binomial, a estatística de teste é o número de sucessos $X$. Vamos avaliar a probabilidade de eventos
+com parâmetro de sucesso a partir da amostra observada até eventos mais extremos uma vez que a amostra observada já está acima do esperado, em relação à hipotese nula. Portanto vamos avaliar:
+\[
+p = P_{H_0}(X \ge 2).
+\]
+
+---
+\\
+Calculando o valor-p pelo seu valor complementar:
+\[
+P(X=0) = (0.9)^6 = 0.531441, \qquad 
+P(X=1) = \binom{6}{1}(0.1)(0.9)^5 = 0.354294.
+\]
+
+Logo, a probabilidade testada é o complemento da soma dessas probabilidades:
+\[
+valor-p = 1 - [P(X=0) + P(X=1)] = 1 - (0.531441 + 0.354294) = 0.114265.
+\]
+
+\[
+\boxed{\text{valor-p} = 0.114265}
+\]
+
+---
+
+Este resultado \textbf{não é improvável} sob $H_0$ (<0.05).  
+Portanto, não há evidência para rejeitar  $H_0$, isto é, não evidências de que $\theta = 0.1$ seja incompatível com os dados.
+
+\[
+\boxed{\text{Conclusão: Não há evidências suficientes para rejeitar } H_0 : \theta = 0.1.}
+\]

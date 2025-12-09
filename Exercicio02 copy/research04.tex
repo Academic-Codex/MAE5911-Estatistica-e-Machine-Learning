@@ -1,0 +1,294 @@
+
+
+%==============================================================
+% Como obter a densidade Beta(α,β) no intervalo (0,1)
+%==============================================================
+
+\textbf{Objetivo.} Procuramos uma densidade $f(x)$ em $(0,1)$, flexível o bastante
+para modelar proporções, com dois parâmetros de forma que controlem o
+comportamento perto de $0$ e $1$.
+
+%--------------------------------------------------------------
+% 1) Escolha do "núcleo" (kernel)
+%--------------------------------------------------------------
+\textbf{1) Escolha do núcleo.}
+Uma família natural em $(0,1)$ é
+\[
+f(x)\ \propto\ x^{\alpha-1}(1-x)^{\beta-1},\qquad 0<x<1,
+\]
+com $\alpha>0,\ \beta>0$.
+\emph{Justificativas:}
+(i) $x^{\alpha-1}$ controla a massa perto de $0$; 
+(ii) $(1-x)^{\beta-1}$ controla a massa perto de $1$; 
+(iii) quando $\alpha=\beta$ a forma é simétrica;
+(iv) a família é conjugada à Binomial.
+
+Logo, tomamos
+\[
+f(x)=C\,x^{\alpha-1}(1-x)^{\beta-1}\,\mathbf 1_{(0,1)}(x),
+\]
+e determinamos a constante de normalização $C$ impondo $\int_0^1 f(x)\,dx=1$.
+
+%--------------------------------------------------------------
+% 2) Normalização via integral Beta
+%--------------------------------------------------------------
+\textbf{2) Normalização (Integral Beta).}
+Defina a \emph{função Beta} de Euler
+\[
+B(\alpha,\beta)=\int_0^1 x^{\alpha-1}(1-x)^{\beta-1}\,dx,\qquad \alpha,\beta>0.
+\]
+Então
+\[
+1=\int_0^1 f(x)\,dx=C\int_0^1 x^{\alpha-1}(1-x)^{\beta-1}dx=C\,B(\alpha,\beta)
+\ \Longrightarrow\ 
+C=\frac{1}{B(\alpha,\beta)}.
+\]
+Assim, a densidade fica
+\[
+\boxed{\,f(x;\alpha,\beta)=\frac{1}{B(\alpha,\beta)}\,x^{\alpha-1}(1-x)^{\beta-1},\quad 0<x<1.\,}
+\]
+
+%--------------------------------------------------------------
+% 3) Ligação com a função Gama
+%--------------------------------------------------------------
+\textbf{3) Ligação com $\Gamma$.}
+Recorde a função Gama: $\displaystyle \Gamma(t)=\int_0^\infty u^{\,t-1}e^{-u}\,du$.
+Vale a identidade clássica
+\[
+B(\alpha,\beta)=\frac{\Gamma(\alpha)\,\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
+\]
+Logo,
+\[
+\boxed{\,f(x;\alpha,\beta)
+=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\,
+x^{\alpha-1}(1-x)^{\beta-1},\quad 0<x<1.\,}
+\]
+
+%--------------------------------------------------------------
+% 4) Construção alternativa via variáveis Gama (prova por transformação)
+%--------------------------------------------------------------
+\textbf{4) Construção alternativa (razão de Gammas).}
+Se $U\sim\mathrm{Gamma}(\alpha,1)$ e $V\sim\mathrm{Gamma}(\beta,1)$ são independentes
+e definimos
+\[
+X=\frac{U}{U+V}\in(0,1),\qquad T=U+V\in(0,\infty),
+\]
+então $X\sim\mathrm{Beta}(\alpha,\beta)$.
+
+\emph{Esboço da prova:} O jacobiano da transformação $(u,v)\mapsto(x,t)$ é
+$\left|\frac{\partial(u,v)}{\partial(x,t)}\right|=t$.
+O conjunto transformado é $\{0<x<1,\ t>0\}$. A densidade conjunta de $(X,T)$ é
+\[
+f_{X,T}(x,t)=\frac{t^{\alpha+\beta-1}}{\Gamma(\alpha)\Gamma(\beta)}\,
+x^{\alpha-1}(1-x)^{\beta-1}e^{-t}.
+\]
+Integrando $t$ em $(0,\infty)$,
+\[
+f_X(x)=\int_0^\infty f_{X,T}(x,t)\,dt
+=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\,
+x^{\alpha-1}(1-x)^{\beta-1}
+=\frac{1}{B(\alpha,\beta)}\,x^{\alpha-1}(1-x)^{\beta-1}.
+\]
+
+%--------------------------------------------------------------
+% 5) Momentos (para conferência/uso prático)
+%--------------------------------------------------------------
+\textbf{5) Momentos (fórmulas conhecidas).}
+Para $X\sim\mathrm{Beta}(\alpha,\beta)$,
+\[
+E[X]=\frac{\alpha}{\alpha+\beta},\qquad
+\mathrm{Var}(X)=\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}.
+\]
+No caso particular $\mathrm{Beta}(\theta,1)$, obtém-se
+\[
+E[X]=\frac{\theta}{\theta+1},
+\qquad
+\mathrm{Var}(X)=\frac{\theta}{(\theta+1)^2(\theta+2)}.
+\]
+
+\paragraph{Distribuição Beta.}
+A distribuição Beta é contínua no intervalo $(0,1)$, com densidade
+\[
+f(x;\alpha,\beta)
+= \frac{1}{B(\alpha,\beta)}\, x^{\alpha-1}(1-x)^{\beta-1},
+\quad
+0<x<1,
+\]
+onde $B(\alpha,\beta)=\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$ é a função Beta.
+No caso particular $\mathrm{Beta}(\theta,1)$,
+\[
+f_\theta(x)=\theta\,x^{\theta-1},\quad 0<x<1,
+\]
+e a normalização é verificada por
+\[
+\int_0^1 \theta x^{\theta-1}\,dx = 1.
+\]
+
+%==============================================================
+% E[X] e Var(X) para X ~ Beta(θ,1) — derivação detalhada
+%==============================================================
+
+\textbf{Modelo.} Se $X\sim\mathrm{Beta}(\theta,1)$, então a densidade é
+\[
+f_\theta(x)=\theta\,x^{\theta-1}\,\mathbf 1_{(0,1)}(x), \qquad \theta>0.
+\]
+
+%--------------------------------------------------------------
+% Esperança
+%--------------------------------------------------------------
+\textbf{Esperança} $E[X]$.
+Usamos a definição (caso contínuo) e regras elementares de integração:
+
+\[
+E[X]=\int_0^1 x\,f_\theta(x)\,dx
+=\int_0^1 x\,\theta\,x^{\theta-1}\,dx
+=\theta\int_0^1 x^{\theta}\,dx.
+\]
+
+\emph{Propriedade usada:} $\displaystyle \int_0^1 x^{a}\,dx=\frac{1}{a+1}$ para $a>-1$.
+
+Como $\theta>0$, segue que
+\[
+E[X]=\theta\cdot\frac{1}{\theta+1}
+=\boxed{\;\frac{\theta}{\theta+1}\;}.
+\]
+
+%--------------------------------------------------------------
+% Segundo momento
+%--------------------------------------------------------------
+\textbf{Segundo momento} $E[X^2]$.
+De modo análogo,
+\[
+E[X^2]=\int_0^1 x^2 f_\theta(x)\,dx
+=\int_0^1 x^2\,\theta\,x^{\theta-1}\,dx
+=\theta\int_0^1 x^{\theta+1}\,dx
+=\theta\cdot\frac{1}{\theta+2}
+=\boxed{\;\frac{\theta}{\theta+2}\;}.
+\]
+
+%--------------------------------------------------------------
+% Variância
+%--------------------------------------------------------------
+\textbf{Variância} $\mathrm{Var}(X)$.
+Pela definição, $\mathrm{Var}(X)=E[X^2]-(E[X])^2$:
+\[
+\mathrm{Var}(X)
+=\frac{\theta}{\theta+2}-\left(\frac{\theta}{\theta+1}\right)^2
+=\frac{\theta(\theta+1)^2-\theta^2(\theta+2)}{(\theta+2)(\theta+1)^2}.
+\]
+
+\emph{Álgebra no numerador:}
+\[
+\theta(\theta+1)^2-\theta^2(\theta+2)
+=\theta\big(\theta^2+2\theta+1\big)-\theta^2(\theta+2)
+= \theta^3+2\theta^2+\theta - \theta^3 - 2\theta^2
+= \theta.
+\]
+
+Logo,
+\[
+\mathrm{Var}(X)
+=\boxed{\;\frac{\theta}{(\theta+1)^2(\theta+2)}\;}.
+\]
+
+
+O parâmetro $\theta$ controla a concentração:
+valores $\theta<1$ favorecem $x$ próximos de $0$,
+$\theta>1$ favorecem $x$ próximos de $1$,
+e $\theta=1$ dá a distribuição uniforme.
+
+
+\textbf{Função de verossimilhança.}
+Como as observações são independentes e identicamente distribuídas, 
+a densidade conjunta é o produto das individuais:
+
+\[
+L(\theta; x_1,\ldots,x_n)
+= \prod_{i=1}^n f_\theta(x_i)
+= \prod_{i=1}^n \theta x_i^{\theta-1}.
+\]
+
+Aplicando a propriedade distributiva do produto:
+\[
+L(\theta;x) 
+= \theta^n \prod_{i=1}^n x_i^{\theta-1}
+= \theta^n \exp\!\left\{(\theta-1)\sum_{i=1}^n \log x_i\right\}.
+\]
+
+---
+
+\textbf{Função log-verossimilhança.}
+Usando as propriedades dos logaritmos:
+\begin{align*}
+\text{(i)}&\ \log(ab)=\log a+\log b, \\
+\text{(ii)}&\ \log(a^b)=b\log a, \\
+\text{(iii)}&\ \log\Big(\prod_i a_i\Big)=\sum_i \log a_i,
+\end{align*}
+temos:
+\[
+\ell(\theta) = \log L(\theta;x)
+= n\log\theta + (\theta - 1)\sum_{i=1}^n \log x_i.
+\]
+
+---
+
+\textbf{Derivada primeira.}
+Aplicando as propriedades diferenciais:
+\[
+\frac{d}{d\theta}\log\theta = \frac{1}{\theta},
+\qquad 
+\frac{d}{d\theta}\big[(\theta-1)c\big]=c,
+\]
+obtemos:
+\[
+\ell'(\theta) 
+= \frac{n}{\theta} + \sum_{i=1}^n \log x_i.
+\]
+
+---
+
+\textbf{Ponto crítico (máxima verossimilhança).}
+Igualando a derivada a zero:
+\[
+\ell'(\theta)=0 
+\iff 
+\frac{n}{\theta} + \sum_{i=1}^n \log x_i = 0
+\iff 
+\boxed{\ \widehat{\theta}_{MV} = -\,\frac{n}{\displaystyle\sum_{i=1}^n \log x_i}\ }.
+\]
+
+Como $0 < x_i < 1$, temos $\log x_i < 0$, logo o estimador é positivo.
+
+---
+
+\textbf{Segunda derivada.}
+\[
+\ell''(\theta) = \frac{d}{d\theta}\!\left(\frac{n}{\theta}\right)
+= -\frac{n}{\theta^2} < 0,
+\]
+garantindo que o ponto crítico é um \textit{máximo}.
+
+---
+
+\textbf{Resultado final (EMV).}
+\[
+\boxed{\ \widehat{\theta}_{MV}
+= -\,\frac{n}{\displaystyle\sum_{i=1}^n \log X_i}\ },
+\qquad X_i\in(0,1).
+\]
+
+---
+
+\textbf{Observações.}
+\begin{itemize}
+  \item O estimador de máxima verossimilhança é sempre positivo, pois $\log X_i < 0$.
+  \item A estatística suficiente é $T = -\sum_{i=1}^n \log X_i$, que segue uma distribuição $\mathrm{Gamma}(n,\text{taxa}=\theta)$.
+  \item Pela \textit{invariância do EMV}, para qualquer função $g(\theta)$,
+  \[
+  \widehat g_{MV} = g(\widehat{\theta}_{MV}).
+  \]
+  Por exemplo, para $g(\theta)=P_\theta(X>c)=1-c^\theta$, tem-se
+  \[
+  \widehat g_{MV}=1-c^{\,\widehat{\theta}_{MV}}.
+  \]
+\end{itemize}

@@ -1,150 +1,150 @@
-\paragraph{(a) \(g(\theta)=P_\theta(Z>1)\).}
+% \paragraph{(a) \(g(\theta)=P_\theta(Z>1)\).}
 
-\begin{enumerate}
-  \item Pela fórmula da cauda,
-  \[
-  g(\theta)=P_\theta(Z>1)=e^{-\theta\cdot 1}=e^{-\theta}.
-  \]
-  \item Pela \textbf{invariância do EMV},
-  \[
-  \widehat g_{MV}=g(\widehat\theta_{MV})=e^{-\widehat\theta_{MV}}.
-  \]
-  \item Usando \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\),
-  \[
-  \boxed{\;\widehat g_{(a)}=e^{-\widehat\theta_{MV}}
-        =\exp\!\Big(-\frac{1}{\overline Z}\Big).\;}
-  \]
-\end{enumerate}
+% \begin{enumerate}
+%   \item Pela fórmula da cauda,
+%   \[
+%   g(\theta)=P_\theta(Z>1)=e^{-\theta\cdot 1}=e^{-\theta}.
+%   \]
+%   \item Pela \textbf{invariância do EMV},
+%   \[
+%   \widehat g_{MV}=g(\widehat\theta_{MV})=e^{-\widehat\theta_{MV}}.
+%   \]
+%   \item Usando \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\),
+%   \[
+%   \boxed{\;\widehat g_{(a)}=e^{-\widehat\theta_{MV}}
+%         =\exp\!\Big(-\frac{1}{\overline Z}\Big).\;}
+%   \]
+% \end{enumerate}
 
-\bigskip
-\paragraph{(b) \(g(\theta)=P_\theta(0.1<Z<1)\).}
+% \bigskip
+% \paragraph{(b) \(g(\theta)=P_\theta(0.1<Z<1)\).}
 
-\begin{enumerate}
-  \item Para \(0<a<b\), utilizando a expressão para função de distribuição acumulada já calculada,
-  \[
-  P_\theta(a<Z<b)=F(b)-F(a)=(1-e^{-\theta b})-(1-e^{-\theta a})
-                 =e^{-\theta a}-e^{-\theta b}.
-  \]
-  \item Com \(a=0.1\) e \(b=1\),
-  \[
-  g(\theta)=e^{-0.1\,\theta}-e^{-\theta}.
-  \]
-  \item Pela invariância,
-  \[
-  \;\widehat g_{(b)}=e^{-0.1\,\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}
-        =\exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;
-  \]
-  \[
-  \boxed{\;\widehat g_{(b)}=
-        \exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;}
-  \]
-\end{enumerate}
+% \begin{enumerate}
+%   \item Para \(0<a<b\), utilizando a expressão para função de distribuição acumulada já calculada,
+%   \[
+%   P_\theta(a<Z<b)=F(b)-F(a)=(1-e^{-\theta b})-(1-e^{-\theta a})
+%                  =e^{-\theta a}-e^{-\theta b}.
+%   \]
+%   \item Com \(a=0.1\) e \(b=1\),
+%   \[
+%   g(\theta)=e^{-0.1\,\theta}-e^{-\theta}.
+%   \]
+%   \item Pela invariância,
+%   \[
+%   \;\widehat g_{(b)}=e^{-0.1\,\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}
+%         =\exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;
+%   \]
+%   \[
+%   \boxed{\;\widehat g_{(b)}=
+%         \exp\!\Big(-\frac{0.1}{\overline Z}\Big)-\exp\!\Big(-\frac{1}{\overline Z}\Big).\;}
+%   \]
+% \end{enumerate}
 
-\bigskip
-\paragraph{(c) \(g(\theta)=\mathrm{Var}_\theta(Z)\).}
+% \bigskip
+% \paragraph{(c) \(g(\theta)=\mathrm{Var}_\theta(Z)\).}
 
-\begin{enumerate}
-  \item Para \(Z\sim\mathrm{Exp}(\theta)\), \(E(Z)=\dfrac{1}{\theta}\) e
-        \(E(Z^2)=\displaystyle\int_0^\infty z^2\theta e^{-\theta z}dz
-                 =\frac{2}{\theta^2}\).
-        Assim,
-        \[
-        \mathrm{Var}_\theta(Z)=E(Z^2)-E(Z)^2=\frac{2}{\theta^2}-\frac{1}{\theta^2}
-        =\frac{1}{\theta^2}.
-        \]
-  \item Logo \(g(\theta)=\theta^{-2}\) e, por invariância,
-        \[
-        \widehat g_{MV}=g(\widehat\theta_{MV})=\frac{1}{\widehat\theta_{MV}^{\,2}}.
-        \]
-  \item Como \(\widehat\theta_{MV}=1/\overline Z\),
-        \[
-        \boxed{\;\widehat g_{(c)}=\frac{1}{(1/\overline Z)^2}=\overline Z^{\,2}. \;}
-        \]
-\end{enumerate}
+% \begin{enumerate}
+%   \item Para \(Z\sim\mathrm{Exp}(\theta)\), \(E(Z)=\dfrac{1}{\theta}\) e
+%         \(E(Z^2)=\displaystyle\int_0^\infty z^2\theta e^{-\theta z}dz
+%                  =\frac{2}{\theta^2}\).
+%         Assim,
+%         \[
+%         \mathrm{Var}_\theta(Z)=E(Z^2)-E(Z)^2=\frac{2}{\theta^2}-\frac{1}{\theta^2}
+%         =\frac{1}{\theta^2}.
+%         \]
+%   \item Logo \(g(\theta)=\theta^{-2}\) e, por invariância,
+%         \[
+%         \widehat g_{MV}=g(\widehat\theta_{MV})=\frac{1}{\widehat\theta_{MV}^{\,2}}.
+%         \]
+%   \item Como \(\widehat\theta_{MV}=1/\overline Z\),
+%         \[
+%         \boxed{\;\widehat g_{(c)}=\frac{1}{(1/\overline Z)^2}=\overline Z^{\,2}. \;}
+%         \]
+% \end{enumerate}
 
 
-\bigskip
-\textbf{(d) ICs aproximados de 95\% para $g(\theta)$ (usando o método delta).}
-Para a Exponencial, a informação de Fisher é $I(\theta)=\tfrac{n}{\theta^2}$,
-de modo que
-\[
-\widehat\theta_{MV}\ \dot\sim\ N\!\left(\theta,\ \frac{\theta^2}{n}\right).
-\]
-Pelo método delta, para $g$ diferenciável:
-\[
-\widehat g\ \dot\sim\ N\!\left(g(\theta),\ \frac{\theta^2}{n}\,[g'(\theta)]^2\right),
-\quad\text{e usamos } \theta\leftarrow\widehat\theta_{MV}.
-\]
-Assim:
+% \bigskip
+% \textbf{(d) ICs aproximados de 95\% para $g(\theta)$ (usando o método delta).}
+% Para a Exponencial, a informação de Fisher é $I(\theta)=\tfrac{n}{\theta^2}$,
+% de modo que
+% \[
+% \widehat\theta_{MV}\ \dot\sim\ N\!\left(\theta,\ \frac{\theta^2}{n}\right).
+% \]
+% Pelo método delta, para $g$ diferenciável:
+% \[
+% \widehat g\ \dot\sim\ N\!\left(g(\theta),\ \frac{\theta^2}{n}\,[g'(\theta)]^2\right),
+% \quad\text{e usamos } \theta\leftarrow\widehat\theta_{MV}.
+% \]
+% Assim:
 
-\smallskip
-\begin{itemize}
-\item[(a)] $g(\theta)=e^{-\theta}$, $g'(\theta)=-e^{-\theta}$. Então
-\[
-\widehat{\mathrm{Var}}(\widehat g_{(a)})
-=\frac{\widehat\theta_{MV}^2}{n}\,e^{-2\widehat\theta_{MV}},
-\qquad
-\text{IC}_{95\%}:\ \widehat g_{(a)}\ \pm\ 1.96\,
-\sqrt{\frac{\widehat\theta_{MV}^2}{n}\,e^{-2\widehat\theta_{MV}}}.
-\]
-\item[(b)] $g(\theta)=e^{-0.1\theta}-e^{-\theta}$,
-\(
-g'(\theta)=-0.1\,e^{-0.1\theta}+e^{-\theta}.
-\)
-Então
-\[
-\widehat{\mathrm{Var}}(\widehat g_{(b)})
-=\frac{\widehat\theta_{MV}^2}{n}\,\bigl[-0.1\,e^{-0.1\widehat\theta_{MV}}+e^{-\widehat\theta_{MV}}\bigr]^2,
-\]
-\[
-\text{IC}_{95\%}:\ \widehat g_{(b)}\ \pm\ 1.96\,
-\sqrt{\frac{\widehat\theta_{MV}^2}{n}\,\bigl[-0.1\,e^{-0.1\widehat\theta_{MV}}+e^{-\widehat\theta_{MV}}\bigr]^2}.
-\]
-\item[(c)] $g(\theta)=1/\theta^2$, $g'(\theta)=-2/\theta^3$. Então
-\[
-\widehat{\mathrm{Var}}(\widehat g_{(c)})
-=\frac{4}{n\,\widehat\theta_{MV}^{\,4}},
-\qquad
-\text{IC}_{95\%}:\ \widehat g_{(c)}\ \pm\ 1.96\,\sqrt{\frac{4}{n\,\widehat\theta_{MV}^{\,4}}}.
-\]
-\end{itemize}
+% \smallskip
+% \begin{itemize}
+% \item[(a)] $g(\theta)=e^{-\theta}$, $g'(\theta)=-e^{-\theta}$. Então
+% \[
+% \widehat{\mathrm{Var}}(\widehat g_{(a)})
+% =\frac{\widehat\theta_{MV}^2}{n}\,e^{-2\widehat\theta_{MV}},
+% \qquad
+% \text{IC}_{95\%}:\ \widehat g_{(a)}\ \pm\ 1.96\,
+% \sqrt{\frac{\widehat\theta_{MV}^2}{n}\,e^{-2\widehat\theta_{MV}}}.
+% \]
+% \item[(b)] $g(\theta)=e^{-0.1\theta}-e^{-\theta}$,
+% \(
+% g'(\theta)=-0.1\,e^{-0.1\theta}+e^{-\theta}.
+% \)
+% Então
+% \[
+% \widehat{\mathrm{Var}}(\widehat g_{(b)})
+% =\frac{\widehat\theta_{MV}^2}{n}\,\bigl[-0.1\,e^{-0.1\widehat\theta_{MV}}+e^{-\widehat\theta_{MV}}\bigr]^2,
+% \]
+% \[
+% \text{IC}_{95\%}:\ \widehat g_{(b)}\ \pm\ 1.96\,
+% \sqrt{\frac{\widehat\theta_{MV}^2}{n}\,\bigl[-0.1\,e^{-0.1\widehat\theta_{MV}}+e^{-\widehat\theta_{MV}}\bigr]^2}.
+% \]
+% \item[(c)] $g(\theta)=1/\theta^2$, $g'(\theta)=-2/\theta^3$. Então
+% \[
+% \widehat{\mathrm{Var}}(\widehat g_{(c)})
+% =\frac{4}{n\,\widehat\theta_{MV}^{\,4}},
+% \qquad
+% \text{IC}_{95\%}:\ \widehat g_{(c)}\ \pm\ 1.96\,\sqrt{\frac{4}{n\,\widehat\theta_{MV}^{\,4}}}.
+% \]
+% \end{itemize}
 
-\medskip
-\textbf{Aplicando aos dados} $(0.2,0.6,0.3,0.2,0.8,0.12)$:
-\[
-n=6,\quad \textstyle\sum z_i=2.22,\quad \overline Z=0.37,\quad
-\widehat\theta_{MV}=\frac{n}{\sum z_i}=\frac{6}{2.22}\approx 2.7027.
-\]
-\emph{Estimativas plug-in:}
-\[
-\widehat g_{(a)}=e^{-\widehat\theta_{MV}}\approx 0.0668,\qquad
-\widehat g_{(b)}=e^{-0.1\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}\approx 0.6963,\qquad
-\widehat g_{(c)}=\overline Z^{\,2}=0.1369.
-\]
-\emph{ICs (delta, 95\%):}
-\[
-\text{(a)}\ \ [0,\ 0.211]\ \ (\text{truncado a }[0,1]),
-\qquad
-\text{(b)}\ \ [0.676,\ 0.717],
-\qquad
-\text{(c)}\ \ [0,\ 0.356]\ \ (\text{truncado a }[0,\infty)).
-\]
-\textit{Obs.:} Com $n=6$ o delta pode produzir limites fora do espaço paramétrico; é
-padrão truncar aos limites naturais.
+% \medskip
+% \textbf{Aplicando aos dados} $(0.2,0.6,0.3,0.2,0.8,0.12)$:
+% \[
+% n=6,\quad \textstyle\sum z_i=2.22,\quad \overline Z=0.37,\quad
+% \widehat\theta_{MV}=\frac{n}{\sum z_i}=\frac{6}{2.22}\approx 2.7027.
+% \]
+% \emph{Estimativas plug-in:}
+% \[
+% \widehat g_{(a)}=e^{-\widehat\theta_{MV}}\approx 0.0668,\qquad
+% \widehat g_{(b)}=e^{-0.1\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}\approx 0.6963,\qquad
+% \widehat g_{(c)}=\overline Z^{\,2}=0.1369.
+% \]
+% \emph{ICs (delta, 95\%):}
+% \[
+% \text{(a)}\ \ [0,\ 0.211]\ \ (\text{truncado a }[0,1]),
+% \qquad
+% \text{(b)}\ \ [0.676,\ 0.717],
+% \qquad
+% \text{(c)}\ \ [0,\ 0.356]\ \ (\text{truncado a }[0,\infty)).
+% \]
+% \textit{Obs.:} Com $n=6$ o delta pode produzir limites fora do espaço paramétrico; é
+% padrão truncar aos limites naturais.
 
-\bigskip
-\textbf{(e) Cobertura por Monte Carlo (plano de simulação).}
-Para verificar a cobertura empírica dos ICs acima:
-\begin{enumerate}
-\item Fixe um valor de $\theta$ (por ex., $\theta=\widehat\theta_{MV}=2.7027$) e tamanhos $n\in\{6,10,20,30,50\}$.
-\item Para cada par $(\theta,n)$, repita $B$ vezes (ex.: $B=10{,}000$):
-\begin{enumerate}
-\item Gere $Z_1,\ldots,Z_n\overset{iid}\sim \mathrm{Exp}(\theta)$.
-\item Calcule $\widehat\theta_{MV}$, as estimativas $\widehat g$ e os ICs (delta) de (a)--(c).
-\item Registre se o verdadeiro $g(\theta)$ caiu dentro do IC.
-\end{enumerate}
-\item Estime a cobertura como a frequência relativa de acertos. Compare com 95\%.
-\item Se a cobertura ficar abaixo de 95\%, aumente $n$ até estabilizar próximo de 95\%.
-\end{enumerate}
-\textit{Expectativa:} Para $n=6$, (a) e (c) tendem a cobertura abaixo de 95\% (assimetria/limites fora do espaço).
-Cobertura melhora sensivelmente para $n\gtrsim 30$. 
+% \bigskip
+% \textbf{(e) Cobertura por Monte Carlo (plano de simulação).}
+% Para verificar a cobertura empírica dos ICs acima:
+% \begin{enumerate}
+% \item Fixe um valor de $\theta$ (por ex., $\theta=\widehat\theta_{MV}=2.7027$) e tamanhos $n\in\{6,10,20,30,50\}$.
+% \item Para cada par $(\theta,n)$, repita $B$ vezes (ex.: $B=10{,}000$):
+% \begin{enumerate}
+% \item Gere $Z_1,\ldots,Z_n\overset{iid}\sim \mathrm{Exp}(\theta)$.
+% \item Calcule $\widehat\theta_{MV}$, as estimativas $\widehat g$ e os ICs (delta) de (a)--(c).
+% \item Registre se o verdadeiro $g(\theta)$ caiu dentro do IC.
+% \end{enumerate}
+% \item Estime a cobertura como a frequência relativa de acertos. Compare com 95\%.
+% \item Se a cobertura ficar abaixo de 95\%, aumente $n$ até estabilizar próximo de 95\%.
+% \end{enumerate}
+% \textit{Expectativa:} Para $n=6$, (a) e (c) tendem a cobertura abaixo de 95\% (assimetria/limites fora do espaço).
+% Cobertura melhora sensivelmente para $n\gtrsim 30$. 

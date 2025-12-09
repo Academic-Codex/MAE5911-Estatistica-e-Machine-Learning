@@ -1,0 +1,124 @@
+O estimador via função de máxima verossimilhança foi proposto por Fisher, que demonstrou a superioridade do deste método referente a outros métodos estimadores, como o método de momentos. 
+Este estimador é utilizado sobretudo quando a informação da distribuição de probabilidade do modelo é conhecida. 
+Ela tem propriedades como eficiência assintótica, consistência, distribuição normal e invariancia [Notas de aula pg. 60]. 
+O estimador de máxima verossimilhança representa uma estimativa para o valor do parâmetro $\theta$ que torna os dados observados o mais plausível possível. 
+\\[0.5em]
+Devido a propriedade de invariancia do EMV, basta encontrarmos EMV para a letra (a) e depois calcular a letra (b) utilizando este estimador como parâmetro.
+
+
+Seja \( (Z_1, \dots, Z_n) \) a amostra aleatória de 
+\[
+Z_i \sim \mathrm{Bernoulli}(\theta), \quad \theta \in (0,1).
+\]
+
+A função de verossimilhança, que é a função de densidade de probabilidade conjunta do modelo, é dada por
+\[
+L(\theta; z_1, \dots, z_n)
+= \prod_{i=1}^n \theta^{z_i}(1-\theta)^{1-z_i}.
+\]
+
+Para encontrar o estimador de máxima verossimilhança, precisamos maximizar \( L(\theta) \) em relação a \( \theta \). Mas como esta função se trata de um produtório,
+é mais fácil maximizar a função log-verossimilhança, que por ser monotonicamente crescente, preserva o valor de theta no ponto máximo \( L(\theta) \).
+
+
+\text{Tomando o logaritmo natural em ambos os lados:}
+
+\[
+\ell(\theta)
+= \log L(\theta; z_1, \ldots, z_n)
+= \log\!\left(\prod_{i=1}^{n} \theta^{z_i}(1-\theta)^{1-z_i}\right).
+\]
+
+\text{Sabendo que } 
+\(
+\log(ab) = \log a + \log b \text{ e que } 
+\log\!\left(\prod_i a_i\right) = \sum_i \log a_i, \text{ temos:}
+\)
+
+\[
+\ell(\theta)
+= \sum_{i=1}^{n} \log\!\big(\theta^{z_i}(1-\theta)^{1-z_i}\big).
+\]
+
+\text{Aplicando novamente a propriedade do logaritmo de um produto: }
+
+\[
+\ell(\theta)
+= \sum_{i=1}^{n} \big[\log(\theta^{z_i}) + \log((1-\theta)^{1-z_i})\big].
+\]
+
+\(
+\text{Sabendo que } \log(a^b) = b\log a, \text{ obtemos:}
+\)
+
+\[
+\ell(\theta)
+= \sum_{i=1}^{n} \big[z_i \log \theta + (1 - z_i)\log(1-\theta)\big].
+\]
+
+\text{Por fim, separando as somas:}
+
+\[
+\ell(\theta)
+= \left(\sum_{i=1}^{n} z_i\right)\log \theta
++ \left(\sum_{i=1}^{n}(1-z_i)\right)\log(1-\theta).
+\]
+
+A log-verossimilhança correspondente é
+\[
+\boxed{\ell(\theta) 
+= \sum_{i=1}^n \big[z_i \log\theta + (1-z_i)\log(1-\theta)\big].}
+\]
+
+Para derivar em relação a \(\theta\), sabemos que 
+\(\dfrac{d}{d\theta}\log\theta=\dfrac1\theta\) e 
+\(\dfrac{d}{d\theta}\log(1-\theta)= -\dfrac1{1-\theta}\), obtemos,
+termo a termo:
+
+\[
+\frac{d}{d\theta}\Big[z_i\log\theta\Big]
+= z_i\,\frac1\theta
+\qquad\text{e}\qquad
+\frac{d}{d\theta}\Big[(1-z_i)\log(1-\theta)\Big]
+= (1-z_i)\Big(-\frac1{1-\theta}\Big)
+= -\,\frac{1-z_i}{1-\theta}.
+\]
+Logo,
+\[
+\ell'(\theta)
+=\sum_{i=1}^n\left(\frac{z_i}{\theta}-\frac{1-z_i}{1-\theta}\right)
+= \frac{\sum_{i=1}^n z_i}{\theta} - \frac{\sum_{i=1}^n(1-z_i)}{1-\theta}
+= \frac{\sum_i z_i}{\theta} - \frac{n-\sum_i z_i}{1-\theta}.
+\]
+
+\text{Igualando a zero para encontrar o} \textbf{ponto crítico.}
+\[
+\ell'(\theta)=0
+\;\Longleftrightarrow\;
+\frac{\sum_i z_i}{\theta}
+= \frac{n-\sum_i z_i}{1-\theta}
+\;\Longleftrightarrow\;
+(1-\theta)\sum_i z_i=\theta\,(n-\sum_i z_i).
+\]
+Expandindo e rearranjando:
+\[
+\sum_i z_i - \theta\sum_i z_i = \theta n - \theta\sum_i z_i
+\;\Longleftrightarrow\;
+\sum_i z_i = \theta n
+\;\Longleftrightarrow\;
+\widehat\theta_{MV}=\frac1n\sum_{i=1}^n z_i=\overline Z.
+\]
+
+
+Obtivemos o estimador de máxima verossimilhança para a probabilidade de sucesso \(\theta\):
+\[
+\boxed{\hat{\theta}_{MV} = \bar{Z} = \frac{1}{n}\sum_{i=1}^n Z_i.}
+\]
+
+O teste de hipótese, mede o quão improvável seria observar $\hat{\theta}_{MV}$ se a hipótese nula fosse verdadeira. O valor-p é esta medida de improbabilidade.
+\\[1em]
+Em condições de regularidade, o valor-$p$ segue uma distribuição uniforme em $(0,1)$.
+Isso significa que, se o seu valor é muito pequeno, por exemplo $p \leq 0{,}01$,
+então o resultado observado é um evento raro sob a hipótese nula $H_0$,
+ou, alternativamente, que a hipótese nula está incorreta.
+Nessa situação, existem evidências para rejeitar $H_0$.
