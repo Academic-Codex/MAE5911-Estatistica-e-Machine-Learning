@@ -39,51 +39,94 @@ Seja
 \]
 Podemos escrever:
 
-
 \[
-    \ell(\mu,\sigma^2;S,Q)
-    = .
+    \ell(\mu,\sigma^2;z_1,\ldots,z_n)
+    = \left( \frac{1}{\sqrt{2\pi}\,\sigma} \right)^n
+    \exp\!\left(
+    Q - 2\mu S + n\mu^2
+    \right).
 \]
 
-
+Para simplificar os cálculos, trabalhamos com a função logaritmo da verossimilhança $\mathcal{L}(\mu,\sigma^2,S,Q)$:
 
 
 \[
-    \ell(\mu,\sigma^2;S,Q)
-    = \log L(\mu,\sigma^2;z)
+    \mathcal{L}(\mu,\sigma^2,S,Q)
+    = \log \ell(\mu,\sigma^2,S,Q)
+    =
+    \log\left[
+        \left( \frac{1}{\sqrt{2\pi}\,\sigma} \right)^n\right]+ \log\left[
+        \exp\!\left( -\frac{1}{2\sigma^2}
+        (Q - 2\mu S + n\mu^2)
+        \right)
+        \right],
+\]
+
+\[
+    \mathcal{L}(\mu,\sigma^2,S,Q)
     = -\frac{n}{2}\log(2\pi)
     -\frac{n}{2}\log(\sigma^2)
     -\frac{1}{2\sigma^2}\bigl(Q - 2\mu S + n\mu^2\bigr).
 \]
 
 
-Para simplificar os cálculos, trabalhamos com a função
-de **log-verossimilhança**:
-\[
-    \ell(\mu,\sigma^2)
-    = \log L(\mu,\sigma^2;z)
-    = -\frac{n}{2}\log(2\pi)
-    - n\log\sigma
-    - \frac{1}{2\sigma^2}\sum_{i=1}^n (z_i-\mu)^2.
-\]
+% Para simplificar os cálculos, trabalhamos com a função
+% de **log-verossimilhança**:
+% \[
+%     \ell(\mu,\sigma^2)
+%     = \log L(\mu,\sigma^2;z)
+%     = -\frac{n}{2}\log(2\pi)
+%     - n\log\sigma
+%     - \frac{1}{2\sigma^2}\sum_{i=1}^n (z_i-\mu)^2.
+% \]
 
 %--------------------------- Derivada em relação a \mu
 
-Calculando a derivada em relação a $\mu$:
+Calculando a derivada de $\mathcal{L}(\mu,\sigma^2,S,Q)$ em relação a $\mu$:
 \[
-    \frac{\partial \ell}{\partial\mu}
+    \frac{\partial \mathcal{L}(\mu,\sigma^2,S,Q)}{\partial\mu}
     = -\frac{1}{2\sigma^2}\,
-    \frac{\partial}{\partial\mu}
-    \sum_{i=1}^n (z_i-\mu)^2
-    = -\frac{1}{2\sigma^2}\,
-    \sum_{i=1}^n 2(z_i-\mu)(-1)
-    = \frac{1}{\sigma^2}
-    \sum_{i=1}^n (z_i-\mu).
+    \frac{\partial}{\partial\mu}\left[
+        Q - 2\mu S + n\mu^2\right]
+    = -\frac{1}{2\sigma^2}\left(-2S + 2n\mu\right)= \frac{S - n\mu}{\sigma^2}.
 \]
 
-Igualando a zero para encontrar o ponto crítico:
+Seja a condição de máximo onde está definido $\hat\mu_{MV}$:
+
 \[
-    \frac{\partial \ell}{\partial\mu}=0
+    \frac{\partial \mathcal{L}(\mu,\sigma^2,S,Q)}{\partial\mu} = 0
+    \;\Longleftrightarrow\;
+    \frac{S - n\hat\mu_{MV}}{\sigma^2} = 0
+    \;\Longleftrightarrow\;
+    S - n\hat\mu_{MV} = 0
+    \;\Longleftrightarrow\;
+    \widehat{\mu}_{MV} = \frac{S}{n}.
+\]
+
+
+Isolando $\hat\theta_{MV}$:
+
+%%
+
+Agora, igualando a zero para encontrar o ponto crítico:
+
+
+
+Como \( S = \sum_{i=1}^n z_i \), isso é exatamente
+
+\[
+    \widehat{\mu}_{MV} = \bar Z = \frac{1}{n}\sum_{i=1}^n z_i.
+\]
+%%
+
+
+
+
+
+
+
+\[
+    \frac{\partial \mathcal{L}(\mu,\sigma^2,S,Q)}{\partial\mu}=0
     \;\Longleftrightarrow\;
     \sum_{i=1}^n (z_i-\mu)=0
     \;\Longleftrightarrow\;
