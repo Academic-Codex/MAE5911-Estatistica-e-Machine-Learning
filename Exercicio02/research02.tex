@@ -1,129 +1,103 @@
-Seja $Z_1,\ldots,Z_n \stackrel{\text{iid}}{\sim}\mathrm{Exp}(\theta)$, com $\theta>0$.
-A função densidade de probabilidade é
-\[
-f(z\mid\theta)=\theta\,e^{-\theta z}\,\mathbf 1_{\{z\ge 0\}},
-\]
-onde $\mathbf 1_{\{z\ge 0\}}$ é a função indicadora (vale 1 se $z\ge 0$ e 0 caso contrário).
+Podemos calcular os ítens (a), (b) e (c) utilizando a propriedade de invariância do estimador de máxima verossimilhança (EMV), calculando uma única vez $\hat\theta_{MV}$.
 
-Como as observações são independentes e identicamente distribuídas,
-a \textbf{função de verossimilhança}, que é a função de densidade de probabilidade conjunta, é o produto das densidades individuais:
+\subsection*{Cálculo do EMV de $\theta$ ( $\hat\theta_{MV}$)}
+
+\textbf{Função de verossimilhança}
+
+Seja $(z_1,\dots,z_n)$ uma amostra aleatória de $Z \sim \text{Exp}(\theta)$, com $ \theta \in (0,\infty)$, a função densidade de probabilidade para $z_i$ é então:
 \[
-L(\theta;z_1,\ldots,z_n)
-=\prod_{i=1}^n f(z_i\mid\theta)
-=\prod_{i=1}^n \theta\,e^{-\theta z_i}\,\mathbf 1_{\{z_i\ge 0\}}.
+      f(z_i;\theta) = \theta e^{-\theta z_i}, \qquad z_i>0.
 \]
 
-Aplicando a propriedade distributiva do produto, separamos os fatores:
+Como $z_1,\dots,z_n$ são independentes, a probabilidade conjunta, definida como a função de verossimilhança é o produto das densidades individuais:
 \[
-L(\theta;z)
-=\Big(\prod_{i=1}^n \mathbf 1_{\{z_i\ge 0\}}\Big)
-\Big(\prod_{i=1}^n \theta e^{-\theta z_i}\Big).
+      \ell(\theta;z_1,\dots,z_n)
+      = \prod_{i=1}^n f(z_i\mid \theta)
+      = \prod_{i=1}^n \theta e^{-\theta z_i} \mathbf 1_{\{z_i>0\}}.
 \]
 
-Como o termo indicador $\prod \mathbf 1_{\{z_i\ge 0\}}$ não depende de $\theta$,
-ele não influencia a maximização e pode ser ignorado. Assim:
+O termo indicador $\prod_{i=1}^n \mathbf 1_{\{z_i>0\}}$ não depende de $\theta$, logo
+não influencia a maximização e pode ser ignorado. Assim,
 \[
-L(\theta;z)
-=\prod_{i=1}^n (\theta e^{-\theta z_i}).
+      \ell(\theta;z_1,\dots,z_n)
+      = \prod_{i=1}^n \theta e^{-\theta z_i}.
 \]
 
-Usando a propriedade $\prod(ab)=\prod a \cdot \prod b$, obtemos:
+Aplicando a propriedade distributiva do produto e de produto de exponenciais, obtemos:
 \[
-L(\theta;z)
-=\Big(\prod_{i=1}^n \theta\Big)
-\Big(\prod_{i=1}^n e^{-\theta z_i}\Big).
+      \ell(\theta;z_1,\dots,z_n)
+      = \biggl(\prod_{i=1}^n \theta\biggr)
+      \biggl(\prod_{i=1}^n e^{-\theta z_i}\biggr)
+      = \theta^n \exp\!\left(-\theta\sum_{i=1}^n z_i\right).
 \]
 
-Aplicando:
-1. $\prod_{i=1}^n \theta = \theta^n$ (produto de n fatores iguais),  
-2. $\prod e^{a_i} = e^{\sum a_i}$ (exponencial do somatório),  segue que a função de verossimilhança é da forma:
+Seja
 \[
-\boxed{
-L(\theta;z)
-=\theta^n \exp\!\left(-\theta \sum_{i=1}^n z_i\right).}
+      S = \sum_{i=1}^n z_i,
+\]
+Podemos escrever:
+\[
+      \ell(\theta,S) = \theta^n \exp(-\theta S).
 \]
 
----
+\textbf{Função log-verossimilhança}
 
-Para encontrar a função \textbf{Log-verossimilhança}, aplicamos $\log$ em ambos os lados, e usamos as propriedades do logaritmo:
-
-1. $\log(ab)=\log a+\log b$  
-2. $\log(a^b)=b\log a$  
-3. $\log(e^x)=x$  
-4. $\log(\prod a_i)=\sum \log a_i$
-
+Para simplificar os cálculos, trabalhamos com a função logaritmo da verossimilhança $\mathcal{L}(\theta, S)$:
 \[
-\ell(\theta)=\log L(\theta;z)
-=\log(\theta^n)+\log\!\left(\exp\!\left[-\theta\sum_{i=1}^n z_i\right]\right).
+      \mathcal{L}(\theta, S) = \log \ell(\theta,S)
+      = \log(\theta^n) + \log\!\left(\exp(-\theta S)\right).
 \]
 
-Aplicando $\log(a^b)=b\log a$ no primeiro termo
-e $\log(e^x)=x$ no segundo termo, obtemos:
+Usando as propriedades $\log(a^b)=b\log a$ e $\log(e^x)=x$, obtemos
 \[
-\ell(\theta)=n\log\theta-\theta\sum_{i=1}^n z_i.
+      \mathcal{L}(\theta, S) = n\log\theta - \theta S.
 \]
 
-Para maximizar, derivamos em relação a $\theta$, aplicando as regras de derivação:
+\textbf{Ponto crítico da log-verossimilhança}
+
+Calculando a derivada de $\mathcal{L}(\theta, S)$ em relação a $\theta$:
 \[
-\frac{d}{d\theta}\log\theta=\frac{1}{\theta}, \qquad
-\frac{d}{d\theta}(a\theta)=a.
+      \frac{d\mathcal{L}}{d\theta}
+      = \frac{d}{d\theta}\bigl[n\log\theta - \theta S\bigr]
+      = n\cdot\frac{1}{\theta} - S\cdot 1
+      = \frac{n}{\theta} - S.
 \]
 
+Seja a condição de máximo onde está definido $\hat\theta_{MV}$:
 \[
-\ell'(\theta)
-=\frac{d}{d\theta}[n\log\theta-\theta\sum_{i=1}^n z_i]
-=n\frac{1}{\theta}-\sum_{i=1}^n z_i
-=\frac{n}{\theta}-\sum_{i=1}^n z_i.
+      \frac{d\mathcal{L}}{d\theta} = 0
+      \iff
+      \frac{n}{\hat\theta_{MV}} - S = 0
+      \iff
+      \frac{n}{\hat\theta_{MV}} = S.
 \]
 
-Logo:
-\[
-\boxed{
-\ell'(\theta)
-=\frac{n}{\theta}-\sum_{i=1}^n z_i.}
-\]
-
-Igualamos a zero para encontrar o \textbf{ponto crítico} que maximiza a função. 
-\[
-\ell'(\theta)=0
-\;\Longleftrightarrow\;
-\frac{n}{\theta}-\sum_{i=1}^n z_i=0
-\;\Longleftrightarrow\;
-\frac{n}{\theta}=\sum_{i=1}^n z_i
-\;\Longleftrightarrow\;
-\widehat\theta_{MV}=\frac{n}{\sum_{i=1}^n z_i}
-=\frac{1}{\overline Z}.
-\]
-
----
-
-Para assegurar que se trata de um ponto de máximo, derivamos novamente:
+Isolando $\hat\theta_{MV}$:
 
 \[
-\ell''(\theta)
-=\frac{d}{d\theta}\!\left(\frac{n}{\theta}-\sum_{i=1}^n z_i\right)
-=-\frac{n}{\theta^2}.
+      \boxed{
+            \hat{\theta_{MV}}
+            = \frac{n}{S},
+      }
 \]
 
-Como $\ell''(\theta)<0$ para $\theta>0$,
-o ponto crítico corresponde a um máximo.
+\textbf{Estimador de máxima verossimilhança}
 
----
-
-O \textbf{estimador de máxima verossimilhança} (EMV) é, portanto:
+Substituindo de volta em funcão da variável aleatória $Z_i$, obtemos:
 \[
-\boxed{\widehat\theta_{MV}=\frac{n}{\sum_{i=1}^n z_i}
-=\frac{1}{\overline Z}},
+      \hat\theta_{MV}
+      = \frac{n}{\sum_{i=1}^n z_i}
+      = \frac{1}{\bar Z},
 \]
 
-\medskip
-É válido a propriedade da \textbf{Invariância do EMV}: para $g(\theta)$, o EMV é $\widehat g=g(\widehat\theta_{MV})$.
+
+
 
 \paragraph{Composição da distribuição Exponencial contínua acumulada.}
 \vspace{1em}
-Separando a distribuição exponencial em função de distribuição acumulada até a observação de interesse e 
+Separando a distribuição exponencial em função de distribuição acumulada até a observação de interesse e
 o restante da distribuição acumulada denominada a cauda da distribuição, temos:
- \\[1em]
+\\[1em]
 Expressão para densidade total: \[f(z\mid\theta)=\theta e^{-\theta z}\mathbf 1_{\{z\ge0\}}.\] \\
 Função de distribuição acumulada: \[F(z)=P_\theta(Z\le z)=\int_0^z \theta e^{-\theta t}\,dt
       =\big[-e^{-\theta t}\big]_0^z=1-e^{-\theta z}.\] \\

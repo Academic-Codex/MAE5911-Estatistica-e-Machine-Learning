@@ -20,27 +20,27 @@ função ao EMV de $\theta$.
 
 \textbf{Função de verossimilhança}
 
-Seja $Z_1,\dots,Z_n$ uma amostra aleatória de $Z \sim \mathrm{Bernoulli}(\theta), \quad \theta \in (0,1)$. Com:
+Seja $z_1,\dots,z_n$ uma amostra aleatória de $Z \sim \mathrm{Bernoulli}(\theta), \quad \theta \in (0,1)$. Com:
 $$
-    P_\theta(Z_i = 1) = \theta,
+    P_\theta(z_i = 1) = \theta,
     \qquad
-    P_\theta(Z_i = 0) = 1 - \theta.
+    P_\theta(z_i = 0) = 1 - \theta.
 $$
 
-A função de probabilidade para $Z_i$ é então:
+A função de probabilidade para Z = $z_i$ é então:
 \[
     f(z_i;\theta) = \theta^{z_i}(1-\theta)^{1-z_i}.
 \]
 
-Como $Z_1,\dots,Z_n$ são independentes, a probabilidade conjunta, definida como a função de verossimilhança é:
+Como $z_1,\dots,z_n$ são independentes, a probabilidade conjunta, definida como a função de verossimilhança é o produto das densidades individuais:
 \[
-    \ell(\theta)
+    \ell(\theta, z_1,\dots,z_n)
     = \prod_{i=1}^n \theta^{z_i}(1-\theta)^{1-z_i}.
 \]
 
-\text{Juntando os expoentes, temos:}
+\text{Utilizando a propriedade de produto de exponenciais, temos:}
 \[
-    \ell(\theta)
+    \ell(\theta, z_1,\dots,z_n)
     = \theta^{\sum_{i=1}^n z_i}\,(1-\theta)^{\sum_{i=1}^n (1-z_i)}
     = \theta^{\sum_{i=1}^n z_i}\,(1-\theta)^{n-\sum_{i=1}^n z_i}.
 \]
@@ -51,7 +51,7 @@ Seja
 \]
 Podemos escrever:
 \[
-    \ell(\theta) = \theta^{S}(1-\theta)^{n-S}.
+    \ell(\theta, S) = \theta^{S}(1-\theta)^{n-S}.
 \]
 
 \medskip
@@ -62,8 +62,8 @@ Podemos simplificar os cálculos trabalhando com o logaritmo desta função, man
 Maximizar $\ell(\theta)$ ou
 $\mathcal{L}(\theta) = \log \ell(\theta)$ é equivalente, devido ao fato do logaritmo ser estritamente crescente. Portanto, aplicando o logaritmo, simplificamos para:
 \[
-    \mathcal{L}(\theta)
-    = \log \ell(\theta)
+    \mathcal{L}(\theta, S)
+    = \log \ell(\theta, S)
     = \log\big(\theta^{S}(1-\theta)^{n-S}\big)
     = S\log\theta + (n-S)\log(1-\theta).
 \]
@@ -72,7 +72,7 @@ $\mathcal{L}(\theta) = \log \ell(\theta)$ é equivalente, devido ao fato do loga
 
 \textbf{Ponto crítico da log-verossimilhança}
 
-Calculando a derivada:
+Calculando a derivada de $\mathcal{L}(\theta, S)$ em relação a $\theta$:
 \[
     \frac{d\mathcal{L}}{d\theta}=
     S \cdot \frac{1}{\theta}
@@ -80,38 +80,54 @@ Calculando a derivada:
     = \frac{S}{\theta} - \frac{n-S}{1-\theta}.
 \]
 
-Seja a condição de máximo:
+Seja a condição de máximo onde está definido $\hat\theta_{MV}$:
 \[
-    \frac{S}{\theta} - \frac{n-S}{1-\theta} = 0.
+    \frac{d\mathcal{L}}{d\theta} = 0
+    \iff \frac{S}{\hat\theta_{MV}} - \frac{n-S}{1-\hat\theta_{MV}} = 0.
 \]
 
 \[
-    \frac{S}{\theta} = \frac{n-S}{1-\theta}.
+    \frac{S}{\hat\theta_{MV}} = \frac{n-S}{1-\hat\theta_{MV}}.
 \]
 
 \[
-    S(1-\theta) = \theta(n-S).
+    S(1-\hat\theta_{MV}) = \hat\theta_{MV}(n-S).
 \]
 
 \[
-    S - S\theta = n\theta - S\theta.
+    S - S\hat\theta_{MV} = n\hat\theta_{MV} - S\hat\theta_{MV}.
 \]
 
-Os termos $-S\theta$ cancelam em ambos os lados, restando:
+Os termos $-S\hat\theta_{MV}$ cancelam em ambos os lados, restando:
 \[
-    S = n\theta.
+    S = n\hat\theta_{MV}.
 \]
 
-Isolando $\theta$:
+Isolando $\hat\theta_{MV}$:
 \[
     \boxed{
-        \hat\theta_{MV} = \frac{S}{n}.
+        \hat\hat\theta_{MV} = \frac{S}{n}.
     }
 \]
 
-Substituindo de volta em funcão da variável aleatória $Z_i$, obtemos:
+\textbf{Estimador de máxima verossimilhança}
+
+Substituindo de volta em funcão da variável aleatória $z_i$, obtemos:
 \[
     \hat\theta_{MV}
-    = \frac{1}{n}\sum_{i=1}^n Z_i
+    = \frac{1}{n}\sum_{i=1}^n z_i
     = \bar Z.
 \]
+
+\subsubsection*{Teste de hipótese}
+
+O teste de hipótese é fomulado como um framework de decisão. No processo de decisão existem dois possíveis cenários de enganos,
+sendo que ambos não podem ser reduzidos simultaneamente, a menos do aumento da amostra, e se um cenário de engano diminui o seu complementar aumenta.
+Escolhe-se por arbitrariedade priorizar a mitigação do erro \textbf{falso positivo}, em detrimento do erro \textbf{falso negativo}.
+Desta forma a hipótese nula é definida como a hipótese que se deseja refutar. Entretanto, o teste é construído para que
+haja apenas uma baixa probabilidade, comumente $5\%$, de que H0 seja refutada, ou seja, a sua rejeição é definida como um evento raro.
+Consequentemente, quando ela é rejeitada, considera-se que o processo de decisão está com uma margem de erro suficientemente reduzida, de acordo com o
+nível de significância escolhido, que reflete a magnitude do erro tolerado.
+
+Deste framework, o valor-p é a métrica que caracteriza a amostra observada no cenário em que a hipótese nula é verdadeira. O valor-p então calculado é
+comparado com o nível de significância escolhido para que a decisão de rejeitar ou não a hipótese nula seja tomada.
