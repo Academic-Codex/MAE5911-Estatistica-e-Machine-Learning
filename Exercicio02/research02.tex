@@ -1,6 +1,6 @@
 Podemos calcular os ítens (a), (b) e (c) utilizando a propriedade de invariância do estimador de máxima verossimilhança (EMV), calculando uma única vez $\hat\theta_{MV}$.
 
-\subsection*{Cálculo do EMV de $\theta$ ( $\hat\theta_{MV}$)}
+\subsection*{Cálculo do EMV de $\theta$ ( $\hat\theta_{MV}$) para a distribuição Exponencial}
 
 \textbf{Função de verossimilhança}
 
@@ -57,15 +57,15 @@ Usando as propriedades $\log(a^b)=b\log a$ e $\log(e^x)=x$, obtemos
 
 Calculando a derivada de $\mathcal{L}(\theta, S)$ em relação a $\theta$:
 \[
-      \frac{d\mathcal{L}}{d\theta}
-      = \frac{d}{d\theta}\bigl[n\log\theta - \theta S\bigr]
+      \frac{\partial\mathcal{L}(\theta, S)}{\partial\theta}
+      = \frac{\partial}{\partial\theta}\bigl[n\log\theta - \theta S\bigr]
       = n\cdot\frac{1}{\theta} - S\cdot 1
       = \frac{n}{\theta} - S.
 \]
 
 Seja a condição de máximo onde está definido $\hat\theta_{MV}$:
 \[
-      \frac{d\mathcal{L}}{d\theta} = 0
+      \frac{\partial\mathcal{L}(\theta, S)}{\partial\theta} = 0
       \iff
       \frac{n}{\hat\theta_{MV}} - S = 0
       \iff
@@ -76,14 +76,14 @@ Isolando $\hat\theta_{MV}$:
 
 \[
       \boxed{
-            \hat{\theta_{MV}}
+            \hat\theta_{MV}
             = \frac{n}{S},
       }
 \]
 
 \textbf{Estimador de máxima verossimilhança}
 
-Substituindo de volta em funcão da variável aleatória $Z_i$, obtemos:
+Substituindo de volta em funcão da variável aleatória $z_i$, obtemos:
 \[
       \hat\theta_{MV}
       = \frac{n}{\sum_{i=1}^n z_i}
@@ -98,7 +98,7 @@ Substituindo de volta em funcão da variável aleatória $Z_i$, obtemos:
 Separando a distribuição exponencial em função de distribuição acumulada até a observação de interesse e
 o restante da distribuição acumulada denominada a cauda da distribuição, temos:
 \\[1em]
-Expressão para densidade total: \[f(z\mid\theta)=\theta e^{-\theta z}\mathbf 1_{\{z\ge0\}}.\] \\
+Expressão para densidade total: \[f(z_i\mid\theta)=\theta e^{-\theta z_i}\mathbf 1_{\{z_i\ge0\}}.\] \\
 Função de distribuição acumulada: \[F(z)=P_\theta(Z\le z)=\int_0^z \theta e^{-\theta t}\,dt
       =\big[-e^{-\theta t}\big]_0^z=1-e^{-\theta z}.\] \\
 Cauda: \[P_\theta(Z>z)=1-F(z)=e^{-\theta z}.\]

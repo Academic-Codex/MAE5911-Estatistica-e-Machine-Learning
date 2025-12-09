@@ -74,7 +74,8 @@ $\mathcal{L}(\theta) = \log \ell(\theta)$ é equivalente, devido ao fato do loga
 
 Calculando a derivada de $\mathcal{L}(\theta, S)$ em relação a $\theta$:
 \[
-    \frac{d\mathcal{L}}{d\theta}=
+    \frac{\partial\mathcal{L}(\theta, S)}{\partial\theta}=
+    \frac{\partial}{\partial\theta}\bigl[S\log\theta + (n-S)\log(1-\theta)\bigr] =
     S \cdot \frac{1}{\theta}
     + (n-S)\cdot\left(-\frac{1}{1-\theta}\right)
     = \frac{S}{\theta} - \frac{n-S}{1-\theta}.
@@ -82,7 +83,7 @@ Calculando a derivada de $\mathcal{L}(\theta, S)$ em relação a $\theta$:
 
 Seja a condição de máximo onde está definido $\hat\theta_{MV}$:
 \[
-    \frac{d\mathcal{L}}{d\theta} = 0
+    \frac{\partial\mathcal{L}(\theta, S)}{\partial\theta} = 0
     \iff \frac{S}{\hat\theta_{MV}} - \frac{n-S}{1-\hat\theta_{MV}} = 0.
 \]
 

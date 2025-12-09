@@ -1,3 +1,136 @@
+\paragraph{(a) \(g(\theta)=P_\theta(Z>1)\)}
+\[\]
+Integrando a função densidade de probabilidade $f(z_i,\theta)$ para encontrar $P_\theta(Z>1)$:
+\[
+    g(\theta)=P_\theta(Z>1)
+    =\int_{1}^{\infty} f(z,\theta)\,dz
+    =\int_{1}^{\infty} \theta e^{-\theta z}\,dz.
+\]
+
+Calculando a integral:
+\[
+    \int_{1}^{\infty} \theta e^{-\theta z}\,dz
+    =\Big[-e^{-\theta z}\Big]_{z=1}^{\infty}
+    =0-(-e^{-\theta})=e^{-\theta}.
+\]
+
+Portanto,
+\[
+    g(\theta)=e^{-\theta}.
+\]
+
+Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(g(\theta)\) é
+\[
+    \widehat g_{MV}=g(\widehat\theta_{MV}).
+\]
+
+Já encontramos que \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\) para distribuição Exponencial, então:
+\[
+    \boxed{\widehat g_{MV}
+        = e^{-\widehat\theta_{MV}}
+        = \exp\!\left(-\frac{1}{\overline Z}\right)}.
+\]
+
+%------------------------------------------------------------
+
+\paragraph{(b) \(g(\theta)=P_\theta(0.1<Z<1)\)}
+\[\]
+Integrando a função densidade de probabilidade $f(z_i,\theta)$ para encontrar $P_\theta(0.1<Z<1)$:
+\[
+    g(\theta)
+    =P_\theta(0.1<Z<1)
+    =\int_{0.1}^{1} f(z,\theta)\,dz
+    =\int_{0.1}^{1} \theta e^{-\theta z}\,dz.
+\]
+
+Calculando a integral:
+\[
+    \int_{0.1}^{1} \theta e^{-\theta z}\,dz
+    =\Big[-e^{-\theta z}\Big]_{z=0.1}^{1}
+    =-e^{-\theta}\;-\big(-e^{-0.1\theta}\big)
+    =e^{-0.1\theta}-e^{-\theta}.
+\]
+
+Logo,
+\[
+    g(\theta)=e^{-0.1\theta}-e^{-\theta}.
+\]
+
+Pela \textbf{invariância do EMV},
+\[
+    \widehat g_{MV}=g(\widehat\theta_{MV})
+    =e^{-0.1\widehat\theta_{MV}}-e^{-\widehat\theta_{MV}}.
+\]
+
+Substituindo \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\), obtemos:
+\[
+    \boxed{\widehat g_{MV}
+        = \exp\!\left(-\frac{0.1}{\overline Z}\right)
+        - \exp\!\left(-\frac{1}{\overline Z}\right)}.
+\]
+
+%------------------------------------------------------------
+
+\paragraph{(c) \(g(\theta)=\mathrm{Var}_\theta(Z)\)}
+\[\]
+A variância é encontrada por:
+
+\[
+    \mathrm{Var}(Z) = E_\theta(Z^2) - \bigl(E_\theta(Z)\bigr)^2.
+\]
+
+Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a função de interesse:
+\[
+    E_\theta(h(Z)) = \int_{-\infty}^{\infty} h(z)\, f(z;\theta)\,dz.
+\]
+
+Em particular, a esperança do primeiro e segundo momentos de $Z$, são:
+\[
+    E_\theta(Z) = \int_0^\infty z \, \theta e^{-\theta z}\,dz,
+    = \left[ -z e^{-\theta z} \right]_{0}^{\infty}
+    + \int_{0}^{\infty} e^{-\theta z}\,dz
+    = 0
+    + \left[ -\frac{1}{\theta} e^{-\theta z} \right]_{0}^{\infty}
+    = 0 + \left( 0 - \left(-\frac{1}{\theta}\right) \right)
+    = \frac{1}{\theta}.
+\]
+e
+\[
+    E_\theta(Z^2)= \int_0^\infty z^2 \,\theta e^{-\theta z}\,dz
+    = \int_0^\infty \left(\frac{y}{\theta}\right)^2 \theta e^{-y}\,\frac{dy}{\theta}
+    = \frac{1}{\theta^2}\int_0^\infty y^2 e^{-y}\,dy
+    = \frac{1}{\theta^2}\cdot 2!
+    = \frac{2}{\theta^2}.
+\]
+
+Então:
+
+\[
+    \mathrm{Var}_\theta(Z)
+    = E(Z^{2}) - [E(Z)]^{2}
+    = \frac{2}{\theta^{2}} - \left(\frac{1}{\theta}\right)^{2}
+    = \frac{1}{\theta^{2}}.
+\]
+
+Portanto:
+\[
+    g(\theta)=\mathrm{Var}_\theta(Z)
+    = \frac{1}{\theta^{2}}.
+\]
+
+Pela \textbf{invariância do EMV},
+\[
+    \widehat g_{MV}=g(\widehat\theta_{MV})
+    =\frac{1}{\hat\theta_{MV}^{2}}.
+\]
+
+Substituindo \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\), obtemos:
+\[
+    \boxed{\widehat g_{MV}=\bar{Z}^{2}}.
+\]
+
+
+
 % \paragraph{(a) \(g(\theta)=P_\theta(Z>1)\).}
 
 % \begin{enumerate}
