@@ -358,13 +358,13 @@ INPUT ./research03.tex
 INPUT ./research03.tex
 INPUT ./research03.tex
 INPUT research03.tex
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecti1000.tfm
 INPUT ./resposta03.tex
 INPUT ./resposta03.tex
 INPUT ./resposta03.tex
 INPUT ./resposta03.tex
 INPUT resposta03.tex
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecti1000.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT ./research04.tex
 INPUT ./research04.tex

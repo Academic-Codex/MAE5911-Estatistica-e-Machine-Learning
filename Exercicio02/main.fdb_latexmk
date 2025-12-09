@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1765319939.84353 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765319940.75614 0
+["pdflatex"] 1765321513.32321 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765321514.2431 0
   "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
@@ -214,11 +214,11 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765319940.63214 3454 aa5f4218e0abe29d150eb0534d58fd53 "pdflatex"
+  "main.aux" 1765321514.14901 3454 b66d686944f541140da960ac980fd833 "pdflatex"
   "main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "research01.tex" 1765311379.61521 4610 693571286d4e2be83a3b1444f6d0bc39 ""
   "research02.tex" 1765319840.42976 3381 cd17b0a6b9e917e9bcdf648a26f2d2f3 ""
-  "research03.tex" 1765319939.93607 11637 88432762dc4895450011f59139d63e45 ""
+  "research03.tex" 1765321512.73157 11199 c6b17081e31d02186c80ead88908b558 ""
   "research04.tex" 1762815976.83441 8620 69f6a43ff661ccd32b37040d12d9dc5c ""
   "resposta01.tex" 1765314046.75532 4332 3d81c92ae1278f6bfbd52c2d754c2046 ""
   "resposta02.tex" 1765316368.86819 8805 d099c40e89689efd4c31076c270f571f ""
