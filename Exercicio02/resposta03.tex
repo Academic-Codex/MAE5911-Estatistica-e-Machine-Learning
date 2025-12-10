@@ -86,8 +86,7 @@ Assim, expressamos o resultado em termos de \(\Phi\):
   \right).
 \]
 
-Pela invariância do EMV, o estimador de máxima verossimilhança de
-$g(\theta)$ é
+Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de $g(\theta)$ é:
 \[
   \widehat g_{MV}
   = g(\widehat\mu_{MV},\widehat\sigma^2_{MV})
@@ -96,22 +95,22 @@ $g(\theta)$ é
   \right)
   = \Phi\!\left(
   \frac{2-\overline Z}{\sqrt{\widehat\sigma^2_{MV}}}
-  \right),
-\]
-com
-\[
-  \widehat\sigma^2_{MV}
-  = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
+  \right)
+  = \Phi\!\left(
+  \frac{(2-\overline Z)\sqrt n}{
+      \sqrt{\sum_{i=1}^n (z_i-\overline Z)^2}
+    }
+  \right)
 \]
 
-Portanto,
 \[
   \boxed{
     \widehat g_{MV}
     = \Phi\!\left(
-    \frac{2-\overline Z}{\sqrt{\widehat\sigma^2_{MV}}}
-    \right).
-  }
+    \frac{(2-\overline Z)\sqrt n}{
+        \sqrt{\sum_{i=1}^n (z_i-\overline Z)^2}
+      }
+    \right)}
 \]
 
 %--------------------------- (c)
