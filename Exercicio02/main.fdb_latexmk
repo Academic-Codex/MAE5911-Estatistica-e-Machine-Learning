@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1765378691.48089 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765378692.37573 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
+["pdflatex"] 1765379791.28743 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765379792.13849 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765379697.82259 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1000.tfm" 1136768653 3584 2d666ecf6d466d8b007246bc2f94d9da ""
@@ -213,16 +213,16 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765378692.28787 2392 681182e913f88e99c2d81b695d572acf "pdflatex"
-  "main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
-  "research01.tex" 1765336561.84856 4606 84a3af9e6b4e8906fe4fbd0ba4eb2e95 ""
+  "main.aux" 1765379792.04383 2392 e0698c78d9f2d05e09f8d970dd3d81c7 "pdflatex"
+  "main.tex" 1765379697.82259 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
+  "research01.tex" 1765378924.12997 4608 f2b9bdbe4a8a86d755fc6996e14d14b1 ""
   "research02.tex" 1765377797.02478 3399 cb6bd0102bc944bb5d7e9e062e2db55e ""
   "research03.tex" 1765344928.61698 11872 14047b95b5234ae736dec3a8ead4d80e ""
   "research04.tex" 1765377930.57408 11997 906ca8d040ec207d71d18844420dd29c ""
-  "resposta01.tex" 1765345972.96551 4370 4ac1862a3133776d8a9ee4b1ae3ca9e2 ""
-  "resposta02.tex" 1765316368.86819 8805 d099c40e89689efd4c31076c270f571f ""
-  "resposta03.tex" 1765346161.81468 7254 08329ff5f18babd0ca1cb86eb17d2784 ""
-  "resposta04.tex" 1765378690.57039 4122 ff615d8d2fd3a22cd6ccddb9cbee4382 ""
+  "resposta01.tex" 1765379791.36088 4368 50ff538fdb906db652627277958fb89a ""
+  "resposta02.tex" 1765379781.46855 8803 a4ab7ae08ac378f0dd044aad94452b06 ""
+  "resposta03.tex" 1765379773.05133 7252 1cae8eba0b1f3910b1f4a5d976a3d424 ""
+  "resposta04.tex" 1765379763.44589 5356 cd77892bb03546d54041650fe93f901f ""
   "student.sty" 1765245097.94527 2462 958c110c9b0b01ab3ed37bfabb65fbc4 ""
   (generated)
   "main.aux"

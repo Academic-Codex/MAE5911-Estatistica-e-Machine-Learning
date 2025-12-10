@@ -1,9 +1,61 @@
 \paragraph{(a) $g(\theta)=\mathbb E_\theta(Z)$.}
+\[\]
+A variância é definida por:
+
 \[
-    \mathbb E_\theta(Z)=\frac{\theta}{\theta+1}
-    \quad\Longrightarrow\quad
-    \boxed{\ \widehat g_{(a)}=\frac{\widehat\theta_{MV}}{\widehat\theta_{MV}+1}\ }.
+    \mathrm{Var}(Z) = E_\theta(Z^2) - \bigl(E_\theta(Z)\bigr)^2.
 \]
+
+Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a função de interesse:
+\[
+    E_\theta(h(Z)) = \int_{-\infty}^{\infty} h(z)\, f(z;\theta)\,dz.
+\]
+
+Em particular, a esperança do primeiro e segundo momentos de $Z$, para a Beta$(\theta,1)$, são:
+\[
+    E_\theta(Z)
+    = \int_0^1 z \,\theta z^{\theta-1} dz
+    = \theta \int_0^1 z^{\theta} dz
+    = \theta \left[\frac{z^{\theta+1}}{\theta+1}\right]_0^1
+    = \frac{\theta}{\theta+1},
+\]
+e
+\[
+    E_\theta(Z^2)
+    = \int_0^1 z^{2}\,\theta z^{\theta-1} dz
+    = \theta \int_0^1 z^{\theta+1} dz
+    = \theta \left[\frac{z^{\theta+2}}{\theta+2}\right]_0^1
+    = \frac{\theta}{\theta+2}.
+\]
+
+
+Então:
+\[
+    \mathrm{Var}\theta(Z)
+    = E_\theta(Z^2) - \bigl(E_\theta(Z)\bigr)^2
+    = \frac{\theta}{\theta+2}
+    - \left(\frac{\theta}{\theta+1}\right)^2
+    = \frac{\theta}{(\theta+1)^2(\theta+2)}.
+\]
+
+Portanto,
+\[
+    g(\theta)=\frac{\theta}{(\theta+1)^2(\theta+2)}.
+\]
+
+Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(g(\theta)\) é:
+\[
+    \widehat g_{MV}(\theta) = g(\hat\theta_{MV}) = \frac{\hat\theta_{MV}}{(\hat\theta_{MV}+1)^2(\hat\theta_{MV}+2)} .
+\]
+
+\[
+    \boxed{
+        \widehat g_{MV}
+        = \frac{\hat\theta_{MV}}{(\hat\theta_{MV}+1)^2(\hat\theta_{MV}+2).
+        }}
+\]
+
+
 
 \paragraph{(b) $g(\theta)=P_\theta(Z>0.3)$.}
 \[
