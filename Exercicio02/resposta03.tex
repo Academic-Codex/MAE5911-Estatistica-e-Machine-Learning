@@ -165,6 +165,19 @@ Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(
 %--------------------------- (d)
 
 \paragraph{(d) $g(\theta)=\mathrm{Var}_\theta(Z)$}
+\[\]
+A variância é encontrada por:
+
+\[
+  \mathrm{Var}(Z) = E_\theta(Z^2) - \bigl(E_\theta(Z)\bigr)^2.
+\]
+
+Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a função de interesse:
+\[
+  E_\theta(h(Z)) = \int_{-\infty}^{\infty} h(z)\, f(z;\theta)\,dz.
+\]
+
+Em particular, a esperança do primeiro e segundo momentos de $Z$, são:
 
 Para a Normal $N(\mu,\sigma^2)$,
 \[
