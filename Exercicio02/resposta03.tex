@@ -3,12 +3,40 @@
 %------------------------------------------------------------
 
 \paragraph{(a) $g(\theta)=E_\theta(Z)$}
-
-Para a Normal $N(\mu,\sigma^2)$, a esperança é
+\[\]
+Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a função de interesse:
 \[
-  E_\theta(Z) = \mu.
+  E_\theta(h(Z)) = \int_{-\infty}^{\infty} h(z)\, f(z;\theta)\,dz.
 \]
-Logo,
+
+Em particular, a esperança do primeiro momento de $Z$, é:
+\[
+  E_\theta(Z)
+  = \int_{-\infty}^{\infty} z\,\frac{1}{\sqrt{2\pi\sigma^2}}
+  e^{-\frac{(z-\mu)^2}{2\sigma^2}}\,dz
+  = \int_{-\infty}^{\infty} (\mu + y)\,
+  \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{y^2}{2\sigma^2}}\,dy
+  = \mu,
+\]
+
+\[
+  E_\theta(Z)
+  = \mu \int_{-\infty}^{\infty}
+  \frac{1}{\sqrt{2\pi\sigma^{2}}}\,e^{-\frac{y^{2}}{2\sigma^{2}}} \, dy
+  \;+\;
+  \int_{-\infty}^{\infty}
+  y\,\frac{1}{\sqrt{2\pi\sigma^{2}}}\,e^{-\frac{y^{2}}{2\sigma^{2}}}\,dy
+\]
+
+\[
+  = \mu \int_{-\infty}^{\infty} \phi_\sigma(y)\,dy
+  \;+\;
+  \int_{-\infty}^{\infty} y\,\phi_\sigma(y)\,dy
+  = \mu \cdot 1 + 0
+  = \mu.
+\]
+
+Então:
 \[
   g(\mu,\sigma^2) = \mu.
 \]
