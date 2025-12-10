@@ -171,7 +171,7 @@ Seja $(Z_1, \ldots, Z_n)$ uma amostra aleatória de $Z \sim \text{Exp}(\theta)$,
 \begin{answer}[]
     \input{resposta02}
 \end{answer}
-\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança encontrado para a letra (a)}]
+\begin{lstlisting}[language=R, caption={"Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (a), $g(\theta)=P_{\theta}(Z>1)$.}]
 set.seed(123)
 
 # Parâmetros do experimento
@@ -209,7 +209,7 @@ for (m in 1:M) {
 mean(covered)
 \end{lstlisting}
 
-\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança encontrado para a letra (b)}]
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (b), $g(\theta)=P_{\theta}(0.1<Z<1)$.}]
 set.seed(123)
 
 # Parâmetros do experimento
