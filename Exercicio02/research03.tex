@@ -125,7 +125,7 @@ Calculando a derivada de $\mathcal{L}(\mu,\sigma^2,S,Q)$ em relação a $\sigma^
     \frac{ -n(\sigma^2) + (Q - 2\mu S + n\mu^2) }{2(\sigma^2)^2}.
 \]
 
-Seja a condição de máximo onde está definido $\hat\sigma_{MV}$:
+Seja a condição de máximo onde está definido $\hat\sigma_{MV}^2$:
 
 \[
     \frac{\partial \mathcal{L}(\hat\mu_{MV},\sigma^2,S,Q))}{\partial \sigma^2} = 0
@@ -160,17 +160,41 @@ Finalmente:
 Substituindo de volta em funcão da variável aleatória $z_i$, obtemos:
 
 \[
+    \widehat\mu_{MV}
+    = \frac{S}{n}
+    = \frac{1}{n}\sum_{i=1}^n z_i
+    = \overline Z
+\]
+
+\[
     \boxed{
-        \widehat\mu_{MV} = \overline Z
-    } \qquad e \qquad
-    \boxed{
-    \widehat\sigma^2_{MV}
-    = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
+        \widehat\mu_{MV}
+        = \overline Z
     }
 \]
 
+\[
+    \widehat\sigma^2_{MV}
+    = \frac{1}{n}\left(Q - \frac{S^2}{n}\right)
+    = \frac{1}{n}\left(\sum_{i=1}^n z_i^2
+    - \frac{(n\bar{Z})^2}{n}\right)
+    = \frac{1}{n}\left(\sum_{i=1}^n z_i^2
+    - n\bar{Z}^2\right)
+    = \frac{1}{n}\left(\sum_{i=1}^n z_i^2 - 2\bar{Z}n\bar{Z}
+    + n\bar{Z}^2\right)
+\]
 
+\[
+    \widehat\sigma^2_{MV} = \frac{1}{n}\!\left(\sum_{i=1}^n z_i^{2} - 2\overline Z \sum_{i=1}^n z_i + n\overline Z^{2}\right)
+    = \frac{1}{n}\sum_{i=1}^n\!\left(z_i^{2}-2 z_i\overline Z+\overline Z^{2}\right)
+    = \frac{1}{n}\sum_{i=1}^n (z_i - \overline Z)^2
+\]
 
+\[
+    \boxed{
+    \widehat\sigma^2_{MV} = \frac{1}{n}\sum_{i=1}^n (z_i - \overline Z)^2
+    }
+\]
 
 
 
