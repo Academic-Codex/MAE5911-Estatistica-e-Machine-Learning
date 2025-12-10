@@ -57,23 +57,29 @@ Portanto,
 %--------------------------- (b)
 
 \paragraph{(b) $g(\theta)=P_\theta(Z<2)$}
+\[\]
 
-Para uma Normal $N(\mu,\sigma^2)$, podemos padronizar:
+Seja a função distribuição acumulada da Normal padrão \(N(0,1)\) definida por:
+\[
+  \Phi(x)=\frac{1}{\sqrt{2\pi}}
+  \int_{-\infty}^{x} e^{-t^{2}/2}\,dt.
+\]
+
+Integrando a função densidade de probabilidade $f(z_i;\mu,\sigma^2)$ para encontrar $P_\theta(Z<2)$, obtemos:
 \[
   P_\theta(Z<2)
-  = P\!\left(
-  \frac{Z-\mu}{\sigma}
-  < \frac{2-\mu}{\sigma}
-  \right)
-  = \Phi\!\left(
-  \frac{2-\mu}{\sigma}
-  \right),
+  = \int_{-\infty}^{2} \frac{1}{\sqrt{2\pi\sigma^2}}
+  e^{-(z-\mu)^2/(2\sigma^2)}dz
+  = \int_{-\infty}^{\frac{2-\mu}{\sqrt{\sigma^2}}}
+  \frac{1}{\sqrt{2\pi}}\,
+  e^{-y^{2}/2}\,dy
+  = \Phi\!\left(\frac{2-\mu}{\sqrt{\sigma^2}}\right),
 \]
-onde $\Phi(\cdot)$ é a função de distribuição da Normal padrão $N(0,1)$
-e $\sigma=\sqrt{\sigma^2}$.
 
-Assim,
+
+Assim, expressamos o resultado em termos de \(\Phi\):
 \[
+  g(\theta) =
   g(\mu,\sigma^2)
   = \Phi\!\left(
   \frac{2-\mu}{\sqrt{\sigma^2}}
