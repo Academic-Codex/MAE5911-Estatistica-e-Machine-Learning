@@ -117,7 +117,7 @@ Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de $g
 
 \paragraph{(c) $g(\theta)=P_\theta(2.6<Z<4)$}
 \[\]
-De forma similar, decompomos a probabilidade em termos da função de distribuição acumulada da Normal padrão \(N(0,1)\) :
+De forma similar, podemos decompor a probabilidade em termos da função de distribuição acumulada da Normal padrão \(N(0,1)\) :
 \[
   P_\theta(2.6<Z<4)
   = P_\theta(Z<4) - P_\theta(Z\le 2.6)
@@ -178,6 +178,68 @@ Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a funç�
 \]
 
 Em particular, a esperança do primeiro e segundo momentos de $Z$, são:
+
+\[
+  E_\theta(Z)
+  = \mu.
+\]
+
+e
+
+\[
+  E_\theta(Z^2)
+  = \int_{-\infty}^{\infty}
+  z^{2} \,\frac{1}{\sqrt{2\pi\sigma^{2}}}
+  \exp\!\left(-\frac{(z-\mu)^{2}}{2\sigma^{2}}\right)\,dz.
+\]
+
+Usando a mesma mudança de variável
+\(y = (z-\mu)/\sigma\), \(z = \mu + \sigma y\), \(dz = \sigma dy\), temos
+\[
+  E_\theta(Z^2)
+  = \int_{-\infty}^{\infty}
+  (\mu + \sigma y)^{2}\,
+  \frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy.
+\]
+
+Expandindo o quadrado,
+\[
+  (\mu + \sigma y)^{2}
+  = \mu^{2} + 2\mu\sigma y + \sigma^{2}y^{2},
+\]
+então
+\[
+  E_\theta(Z^2)
+  = \mu^{2}\int_{-\infty}^{\infty}
+  \frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy
+  + 2\mu\sigma\int_{-\infty}^{\infty}
+  y\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy
+  + \sigma^{2}\int_{-\infty}^{\infty}
+  y^{2}\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy.
+\]
+
+Sabemos que
+\[
+  \int_{-\infty}^{\infty}
+  \frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy = 1,\qquad
+  \int_{-\infty}^{\infty}
+  y\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy = 0,
+\]
+e, pela definição de variância da Normal padrão \(N(0,1)\),
+\[
+  \int_{-\infty}^{\infty}
+  y^{2}\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy = 1.
+\]
+
+Portanto,
+\[
+  E_\theta(Z^2)
+  = \mu^{2}\cdot 1
+  + 2\mu\sigma\cdot 0
+  + \sigma^{2}\cdot 1
+  = \mu^{2} + \sigma^{2}.
+\]
+
 
 Para a Normal $N(\mu,\sigma^2)$,
 \[
