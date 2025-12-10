@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1765381445.24714 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765381446.16113 0
+["pdflatex"] 1765381590.84743 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765381591.77894 0
   "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765379697.82259 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -211,16 +211,16 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765381446.06927 2394 2e5dfacd203dbf5e8a6c22807ad96b48 "pdflatex"
+  "main.aux" 1765381591.68769 2292 b8fcdaad9552c02c424c5170d5b6db0f "pdflatex"
   "main.tex" 1765379697.82259 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "research01.tex" 1765378924.12997 4608 f2b9bdbe4a8a86d755fc6996e14d14b1 ""
-  "research02.tex" 1765377797.02478 3399 cb6bd0102bc944bb5d7e9e062e2db55e ""
-  "research03.tex" 1765344928.61698 11872 14047b95b5234ae736dec3a8ead4d80e ""
+  "research02.tex" 1765381568.65944 3396 158988d00a6c19ab0e1a9d600f245819 ""
+  "research03.tex" 1765381560.29759 11870 2051efebca85ac77992041d132c2b8e4 ""
   "research04.tex" 1765380138.93013 11999 9a6f90d1add8fc9d997d85fa4a30346d ""
-  "resposta01.tex" 1765379791.36088 4368 50ff538fdb906db652627277958fb89a ""
+  "resposta01.tex" 1765381573.23088 4366 1af4a2f97e66be1617acb915d4d158b8 ""
   "resposta02.tex" 1765379781.46855 8803 a4ab7ae08ac378f0dd044aad94452b06 ""
-  "resposta03.tex" 1765379773.05133 7252 1cae8eba0b1f3910b1f4a5d976a3d424 ""
-  "resposta04.tex" 1765381445.16249 6140 57f76ba9fd3354157b1843470bef1dc7 ""
+  "resposta03.tex" 1765381590.75729 7244 262d4ff29747d240615a5c30360e8112 ""
+  "resposta04.tex" 1765381526.28536 5136 b96fcee1c0542d7b4e61e95c0c0b8cef ""
   "student.sty" 1765245097.94527 2462 958c110c9b0b01ab3ed37bfabb65fbc4 ""
   (generated)
   "main.aux"
