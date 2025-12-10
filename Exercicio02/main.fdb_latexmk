@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1765343970.20174 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765343971.05813 0
+["pdflatex"] 1765344102.81912 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765344103.67679 0
   "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
@@ -215,7 +215,7 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765343970.96722 3454 cc8f116fa00633c6d1ee995373fcd52c "pdflatex"
+  "main.aux" 1765344103.58504 2510 b3373b60d8f1ef50c6fb8ca39a65a619 "pdflatex"
   "main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "research01.tex" 1765336561.84856 4606 84a3af9e6b4e8906fe4fbd0ba4eb2e95 ""
   "research02.tex" 1765319840.42976 3381 cd17b0a6b9e917e9bcdf648a26f2d2f3 ""
@@ -223,7 +223,7 @@
   "research04.tex" 1762815976.83441 8620 69f6a43ff661ccd32b37040d12d9dc5c ""
   "resposta01.tex" 1765336636.91354 4328 bc2949efc1df2bc63ec032d09bfcfb3b ""
   "resposta02.tex" 1765316368.86819 8805 d099c40e89689efd4c31076c270f571f ""
-  "resposta03.tex" 1765343970.12149 11688 aeb0702721fe3fea97264b23ad0e7a3b ""
+  "resposta03.tex" 1765344102.71253 5432 f71dcb89bb90bffb630077ff4b972eeb ""
   "resposta04.tex" 1762815976.83497 3383 09d701e6d912e0dbca4e37817dd5d6e9 ""
   "student.sty" 1765245097.94527 2462 958c110c9b0b01ab3ed37bfabb65fbc4 ""
   (generated)
