@@ -624,30 +624,55 @@ Portanto, o intervalo de confiança aproximado de 95\% para a variância é
 \paragraph{(e) Teste de confiança do IC's via simulação Monte Carlo}
 
 \begin{itemize}
-    \item[(a)] O experimento de Monte Carlo com $M = 1000$ repetições produziu uma
-          estimativa de cobertura igual a $0.962$. Ou seja, em
-          $96.2\%$ das simulações, o intervalo de confiança
-          aproximado para $g(\theta)=e^{-\theta}$ conteve o verdadeiro valor
-          $g(\theta_0)$. Como o nível
-          nominal do IC é de $95\%$, o resultado está ótimo,
-          indicando que a aproximação Normal para o estimador de máxima
-          verossimilhança funciona bem mesmo com uma amostra pequena ($n=6$),
-          fornecendo intervalos com cobertura adequada.
-    \item[(b)] O experimento de Monte Carlo retornou uma taxa de cobertura estimada de
-          $\widehat{C} = 0.981$.
-          Esse valor está muito próximo do nível nominal de $95\%$, indicando que o
-          intervalo de confiança aproximado obtido pelo método assintótico apresenta
-          excelente desempenho para o funcional $g(\theta)=P_{\theta}(0.1<Z<1)$ mesmo com
-          amostras pequenas ($n=6$).
-          A pequena supercobertura observada (98.1\%) é esperada, pois o intervalo para
-          $g(\theta)$ é construído a partir do intervalo para $\theta$ via uma função não
-          monótona, o que tende a torná-lo ligeiramente mais conservador.
+
+    \item[(a)] No experimento de Monte Carlo associado ao Listing~\ref{lst:a},
+          com $M=1000$ simulações, a taxa de cobertura obtida foi $0.962$.
+          Assim, o métod utilizado para encontrar o intervalo aproximado para $g(\theta)=e^{-\theta}$ cobriu o valor
+          verdadeiro em $96.2\%$ das repetições, desempenho compatível com o nível
+          nominal de $95\%$ mesmo para $n=6$.
+
+    \item[(b)] Para o intervalo construído no Listing~\ref{lst:b},
+          a cobertura obtida foi $0.981$.
+          O intervalo aproximado para $g(\theta)=P_\theta(0.1<Z<1)$ apresentou
+          desempenho compatível com a cobertura de $95\%$, mesmo para amostra pequena.
+
+    \item[(c)] No experimento correspondente ao Listing~\ref{lst:c},
+          referente a $g(\theta)=\mathrm{Var}_\theta(Z)=1/\theta^{2}$,
+          a taxa de cobertura obtida foi $0.962$.
+          O método aproximado forneceu um intervalo com desempenho acima
+          do nível nominal de $95\%$, mesmo sob amostra pequena.
+
 \end{itemize}
 
-
-
-\[\]
-
+% \begin{itemize}
+%     \item[(a)] O experimento de Monte Carlo com $M = 1000$ repetições produziu uma
+%           estimativa de cobertura igual a $0.962$. Ou seja, em
+%           $96.2\%$ das simulações, o intervalo de confiança
+%           aproximado para $g(\theta)=e^{-\theta}$ conteve o verdadeiro valor
+%           $g(\theta_0)$. Como o nível
+%           nominal do IC é de $95\%$, o resultado está ótimo,
+%           indicando que a aproximação Normal para o estimador de máxima
+%           verossimilhança funciona bem mesmo com uma amostra pequena ($n=6$),
+%           fornecendo intervalos com cobertura adequada.
+%     \item[(b)] O experimento de Monte Carlo retornou uma taxa de cobertura estimada de
+%           $\widehat{C} = 0.981$.
+%           Esse valor está muito próximo do nível nominal de $95\%$, indicando que o
+%           intervalo de confiança aproximado obtido pelo método assintótico apresenta
+%           excelente desempenho para o funcional $g(\theta)=P_{\theta}(0.1<Z<1)$ mesmo com
+%           amostras pequenas ($n=6$).
+%           A pequena supercobertura observada (98.1\%) é esperada, pois o intervalo para
+%           $g(\theta)$ é construído a partir do intervalo para $\theta$ via uma função não
+%           monótona, o que tende a torná-lo ligeiramente mais conservador.
+%     \item[(c)]Para o item (c), em que $g(\theta) = \mathrm{Var}_\theta(Z) = 1/\theta^{2}$, a simulação de Monte Carlo
+%           produziu uma taxa de cobertura empírica igual a $0.962$ para o intervalo de confiança aproximado
+%           obtido via método delta. Esse valor está muito próximo do nível nominal de $95\%$, indicando que,
+%           apesar de o método delta ser uma aproximação de primeira ordem e de a amostra ser relativamente pequena
+%           ($n = 6$), a linearização utilizada para $g(\theta)$ fornece um intervalo suficientemente correto.
+%           Em particular, mesmo se tratando de uma transformação fortemente não linear em $\theta$, o uso de
+%           $\widehat{\theta}_{MV}$ na avaliação das derivadas e da variância assintótica melhora a performance do
+%           estimador, resultando em um intervalo cuja cobertura efetiva é ligeiramente superior ao nível desejado,
+%           mas ainda dentro da variação esperada por erro Monte Carlo.
+% \end{itemize}
 % \paragraph{(a) \(g(\theta)=P_\theta(Z>1)\).}
 
 % \begin{enumerate}

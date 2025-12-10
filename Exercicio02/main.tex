@@ -171,7 +171,7 @@ Seja $(Z_1, \ldots, Z_n)$ uma amostra aleatória de $Z \sim \text{Exp}(\theta)$,
 \begin{answer}[]
     \input{resposta02}
 \end{answer}
-\begin{lstlisting}[language=R, caption={"Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (a), $g(\theta)=P_{\theta}(Z>1)$.}]
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (a), $g(\theta)=P_{\theta}(Z>1)$.},label={lst:a}]
 set.seed(123)
 
 # Parâmetros do experimento
@@ -209,7 +209,7 @@ for (m in 1:M) {
 mean(covered)
 \end{lstlisting}
 
-\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (b), $g(\theta)=P_{\theta}(0.1<Z<1)$.}]
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (b), $g(\theta)=P_{\theta}(0.1<Z<1)$.},label={lst:b}]
 set.seed(123)
 
 # Parâmetros do experimento
@@ -258,6 +258,44 @@ for (m in 1:M) {
 }
 
 # Estimativa da cobertura
+mean(covered)
+\end{lstlisting}
+
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança aproximado obtido para o item (c), $g(\theta)=\mathrm{Var}\theta(Z)$},label={lst:c}]
+set.seed(123)
+
+# Parametros do experimento
+theta0 <- 2.703      # "verdadeiro" valor de theta
+n      <- 6          # tamanho da amostra
+M      <- 1000       # numero de simulacoes
+z_0975 <- 1.96       # quantil 0.975 da N(0,1)
+
+# valor verdadeiro de g(theta) = Var(Z) = 1/theta^2
+g_true <- 1 / theta0^2
+
+# vetor logico: se o IC cobriu (TRUE) ou nao (FALSE)
+covered <- logical(M)
+
+for (m in 1:M) {
+  # 1) gera uma amostra Z_1,...,Z_n ~ Exp(theta0)
+  z <- rexp(n, rate = theta0)
+  
+  # 2) EMV de theta: 1 / media
+  theta_hat <- 1 / mean(z)
+  
+  # 3) IC aproximado para theta (mesma formula usada na letra (a))
+  L_theta <- theta_hat * (1 - z_0975 / sqrt(n))
+  U_theta <- theta_hat * (1 + z_0975 / sqrt(n))
+  
+  # 4) transforma o IC de theta para g(theta)=1/theta^2
+  L_g <- 1 / (U_theta^2)   # menor valor de Var(Z)
+  U_g <- 1 / (L_theta^2)   # maior valor de Var(Z)
+  
+  # 5) verifica se o verdadeiro g_true esta no intervalo
+  covered[m] <- (L_g <= g_true) && (g_true <= U_g)
+}
+
+# Estimativa da cobertura do IC aproximado
 mean(covered)
 \end{lstlisting}
 
