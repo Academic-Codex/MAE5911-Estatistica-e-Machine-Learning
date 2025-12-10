@@ -1,7 +1,3 @@
-%------------------------------------------------------------
-% Questão 03 – Itens (a)–(d)
-%------------------------------------------------------------
-
 \paragraph{(a) $g(\theta)=E_\theta(Z)$}
 \[\]
 Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a função de interesse:
@@ -42,14 +38,13 @@ Então:
   g(\theta) = g(\mu,\sigma^2) = E_\theta(Z) = \mu.
 \]
 
-Pela invariância do EMV,
+Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(g(\theta)\) é:
 \[
   \widehat g_{MV} = g(\widehat\mu_{MV},\widehat\sigma^2_{MV})
   = \widehat\mu_{MV}
   = \overline Z.
 \]
 
-Portanto,
 \[
   \boxed{\widehat g_{MV} = \overline Z.}
 \]
@@ -177,7 +172,7 @@ Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a funç�
   E_\theta(h(Z)) = \int_{-\infty}^{\infty} h(z)\, f(z;\theta)\,dz.
 \]
 
-Em particular, a esperança do primeiro momento, e segundo momento de $Z$, para a distribuição Normal, são:
+Em particular, a esperança do primeiro e segundo momentos de $Z$, para a distribuição Normal, são:
 
 \[
   E_\theta(Z)
@@ -212,6 +207,14 @@ e
   = \mu^{2} + \sigma^{2}.
 \]
 
+Então:
+
+\[
+  \mathrm{Var}_\theta(Z)
+  = E(Z^{2}) - [E(Z)]^{2}
+  = \mu^{2} + \sigma^{2} - \mu^{2}
+  = \sigma^{2}.
+\]
 
 Portanto,
 \[
