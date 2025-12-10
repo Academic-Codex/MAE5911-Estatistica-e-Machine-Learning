@@ -129,9 +129,400 @@ Substituindo \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\), obtemos:
     \boxed{\widehat g_{MV}=\bar{Z}^{2}}.
 \]
 
-\paragraph{(d) Sejam os dados observados: $(0{,}2,\,0{,}6,\,0{,}3,\,0{,}2,\,0{,}8,\,0{,}12)$}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{(d) Sejam os dados observados: $(0{,}2,\,0{,}6,\,0{,}3,\,0{,}2,\,0{,}8,\,0{,}12)$, encontrar IC para ítens (a), (b) e (c)}
+\[\]
+Para a distribuição exponencial é possível encontrar o intervalo de confiança exato para $\theta$ utilizando $\chi^2$, já que
+
+\[
+    S \sim \text{Gamma}(n,\theta),
+\]
+E portanto podemos expressar o intervalo de confiança em termos de $\chi^2_{2n}$:
+\[
+    2\theta S \sim \chi^2_{2n}.
+\]
+Chegando a:
+\[
+    P\!\left( \chi^2_{2n,\alpha/2} \le 2\theta S \le \chi^2_{2n,1-\alpha/2} \right)=1-\alpha.
+\]
+
+Dividindo tudo por $2S>0$:
+\[
+    P\!\left(
+    \frac{\chi^2_{2n,\alpha/2}}{2S}
+    \le \theta \le
+    \frac{\chi^2_{2n,1-\alpha/2}}{2S}
+    \right)
+    =1-\alpha.
+\]
+Mas vamos utilizar o método aproximado que é útil na maior parte das aplicações onde a distribuição não
+terá possibilidade de cálculo do intervalo de confiança exato. Segue o desenvolvimento assintótico do EMV para a distribuição Exponencial.
+%%%%%%%%%%%%%<
+
+\subsection*{Distribuição aproximada de $\hat\theta_{MV}$}
+
+Para um modelo paramétrico com densidade $f(z,\theta)$, a informação de Fisher é:
+\[
+    I(\theta)
+    =
+    \mathbb{E}_\theta \!\left[
+        \left(
+        \frac{\partial}{\partial \theta} \log f(z,\theta)
+        \right)^2
+        \right]
+    =
+    -\,\mathbb{E}_\theta \!\left[
+        \frac{\partial^2}{\partial \theta^2} \log f(z,\theta)
+        \right].
+\]
+A segunda derivada da função log-verossimilhança $\mathcal{L}(\theta, S)$ é
+\[
+    -\mathcal{L}''(\theta, S) = \frac{n}{\theta^2},
+\]
+logo a Informação de Fisher é
+\[
+    I(\theta)=\frac{n}{\theta^2}.
+\]
+
+Assintoticamente:
+\[
+    \hat\theta_{MV} \approx N\!\left(\theta,\,\frac{1}{nI(\theta)}\right) \iff
+    \hat\theta_{MV} \approx N\!\left(\theta,\,\frac{\theta^2}{n}\right) \iff
+    \frac{\hat\theta_{MV}-\theta}{\theta/\sqrt{n}}
+    \approx N(0,1).
+\]
+
+Como $\theta$ é desconhecido, podemos utilizar o valor de Máxima Verossimilhança $\hat\theta_{MV}$ que é um parâmetro consistente e se aproxima de $\theta$
+quando n é grande. Então substituímos $\theta$ por $\hat\theta_{MV}$ no denominador:
+\[
+    \frac{\hat\theta_{MV}-\theta}{\hat\theta_{MV}/\sqrt{n}}
+    \approx N(0,1).
+\]
+
+Para um nível de confiança $1-\alpha$, o intervalo de confiança da Normal Padrão \(N(0, 1)\) é:
+\[
+    P\!\left( -z_{1-\alpha/2}
+    \le
+    \frac{\hat\theta_{MV}-\theta}{\hat\theta_{MV}/\sqrt{n}}
+    \le
+    z_{1-\alpha/2}
+    \right)\approx 1-\alpha.
+\]
+
+\[
+    P\!\left(
+    -z_{1-\alpha/2}\,\frac{\hat{\theta}_{MV}}{\sqrt{n}}
+    \;\le\;
+    \hat{\theta}_{MV}-\theta
+    \;\le\;
+    z_{1-\alpha/2}\,\frac{\hat{\theta}_{MV}}{\sqrt{n}}
+    \right)
+    \approx 1-\alpha.
+\]
+
+\[
+    P\!\left(
+    -z_{1-\alpha/2}\,\frac{\hat{\theta}_{MV}}{\sqrt{n}}
+    -
+    \hat{\theta}_{MV}
+    \;\le\;
+    -\theta
+    \;\le\;
+    z_{1-\alpha/2}\,\frac{\hat{\theta}_{MV}}{\sqrt{n}}
+    -
+    \hat{\theta}_{MV}
+    \right)
+    \approx 1-\alpha.
+\]
+
+\[
+    P\!\left(
+    \hat{\theta}_{MV}
+    -
+    z_{1-\alpha/2}\,\frac{\hat{\theta}_{MV}}{\sqrt{n}}
+    \;\le\;
+    \theta
+    \;\le\;
+    \hat{\theta}_{MV}
+    +
+    z_{1-\alpha/2}\,\frac{\hat{\theta}_{MV}}{\sqrt{n}}
+    \right)
+    \approx 1-\alpha.
+\]
+
+\[
+    P\!\left(
+    \hat{\theta}_{MV}\!\left(1-\frac{z_{1-\alpha/2}}{\sqrt{n}}\right)
+    \;\le\;
+    \theta
+    \;\le\;
+    \hat{\theta}_{MV}\!\left(1+\frac{z_{1-\alpha/2}}{\sqrt{n}}\right)
+    \right)
+    \approx 1-\alpha.
+\]
+
+\[
+    \boxed{
+        \theta \in
+        \left[
+            \hat{\theta}_{MV}\!\left(1-\frac{z_{1-\alpha/2}}{\sqrt{n}}\right),
+            \;\;
+            \hat{\theta}_{MV}\!\left(1+\frac{z_{1-\alpha/2}}{\sqrt{n}}\right)
+            \right]
+    }
+\]
+
+
+É útil nomear os limites inferior e superior para referência:
+\[
+    L_\theta =
+    \hat\theta_{MV}\!\left(1-\frac{z_{1-\alpha/2}}{\sqrt{n}}\right),
+    \qquad
+    U_\theta =
+    \hat\theta_{MV}\!\left(1+\frac{z_{1-\alpha/2}}{\sqrt{n}}\right).
+\]
+%%%%%%%%%%%%%<
+\subsubsection*{Cálculo do intervalo aproximado para o Item (a):  $g(\theta)=P_\theta(Z>1)$}
+
+Para a Exponencial, temos:
+\[
+    g(\theta)=P_\theta(Z>1)
+    =\int_{1}^{\infty}\theta e^{-\theta z}\,dz
+    = e^{-\theta}.
+\]
+
+A função $g(\theta)=e^{-\theta}$ é estritamente decrescente em $\theta$. Para $L_\theta \le \theta \le U_\theta$,
+como $g$ é decrescente,
+
+%%%
+\[
+    g(L_\theta) \;\ge\; g(\theta) \;\ge\; g(U_\theta).
+\]
+
+Substituímos $g(x) = e^{-x}$:
+\[
+    e^{-L_\theta} \;\ge\; e^{-\theta} \;\ge\; e^{-U_\theta} \iff
+    e^{-U_\theta} \;\le\; g(\theta) \;\le\; e^{-L_\theta}.
+\]
+
+Logo, o IC aproximado para $g(\theta)$ é:
+\[
+    \boxed{
+    g(\theta)\in
+    \bigl[e^{-U_\theta},\,e^{-L_\theta}\bigr].}
+\]
+
+Para os dados amostrados:
+\[
+    (0.2,\; 0.6,\; 0.3,\; 0.2,\; 0.8,\; 0.12).
+\]
+
+\[
+    n=6, \qquad
+    S=\sum z_i = 2.22, \qquad
+    \bar Z = \frac{S}{6}=0.37.
+\]
+
+\[
+    \hat\theta_{MV}=\frac{1}{\bar Z}=\frac{1}{0.37}\approx 2.703.
+\]
+
+Com $z_{0.975}=1.96$ e $n=6$:
+\[
+    \frac{z_{0.975}}{\sqrt{n}}
+    = \frac{1.96}{\sqrt{6}}
+    \approx 0.800.
+\]
+
+\[
+    L_\theta
+    =2.703(1-0.800)
+    \approx 0.541,
+    \qquad
+    U_\theta
+    =2.703(1+0.800)
+    \approx 4.864.
+\]
+
+Portanto, o IC aproximado de 95\% para $\theta$ é:
+\[
+    \theta\in[0.541,\;4.864]
+\]
+
+\[
+    g_{\min}=e^{-U_\theta}=e^{-4.864}\approx 0.0077,
+    \qquad
+    g_{\max}=e^{-L_\theta}=e^{-0.541}\approx 0.583.
+\]
+
+\[
+    \boxed{
+        g(\theta)=P_\theta(Z>1)\in[0.0077,\;0.583].
+    }
+\]
+
+
+
+
+
+
+
+\subsubsection*{Cálculo do intervalo aproximado para o Item (b): $g(\theta)=P_\theta(0{,}1<Z<1)$}
+
+Para a Exponencial, temos
+\[
+    f(z;\theta)=\theta e^{-\theta z},\qquad z>0,\ \theta>0.
+\]
+
+Então
+\[
+    g(\theta)=P_\theta(0{,}1<Z<1)
+    =\int_{0.1}^{1}\theta e^{-\theta z}\,dz
+    =\Bigl[-e^{-\theta z}\Bigr]_{z=0.1}^{z=1}
+    =e^{-0.1\theta}-e^{-\theta}.
+\]
+Do item (a), usando a teoria assintótica do EMV e a Informação de Fisher
+(obtendo $\widehat\theta_{MV}\approx N\!\left(\theta,\theta^2/n\right)$),
+para um nível de confiança $1-\alpha$ temos
+\[
+    P\!\left(
+    -z_{1-\alpha/2}
+    \;\le\;
+    \frac{\widehat\theta_{MV}-\theta}{\widehat\theta_{MV}/\sqrt{n}}
+    \;\le\;
+    z_{1-\alpha/2}
+    \right)\approx 1-\alpha.
+\]
+
+Manipulando a inequação, obtemos o IC aproximado
+\[
+    \theta\in\biggl[
+        \widehat\theta_{MV}\Bigl(1-\frac{z_{1-\alpha/2}}{\sqrt{n}}\Bigr),
+        \;
+        \widehat\theta_{MV}\Bigl(1+\frac{z_{1-\alpha/2}}{\sqrt{n}}\Bigr)
+        \biggr]
+    =: [L_\theta,U_\theta].
+\]
+
+\paragraph{Análise de $g(\theta)$}. Derivando,
+\[
+    g'(\theta)
+    = -0{,}1\,e^{-0.1\theta}+e^{-\theta}.
+\]
+
+O ponto crítico é dado por $g'(\theta^\ast)=0$:
+\[
+    -0{,}1\,e^{-0.1\theta^\ast}+e^{-\theta^\ast}=0
+    \iff;
+    e^{-\theta^\ast}=0{,}1\,e^{-0.1\theta^\ast}
+    \iff;
+    e^{-0.9\theta^\ast}=0{,}1
+    \iff\;
+    \theta^\ast=\frac{\log 10}{0.9}.
+\]
+
+Logo, $g(\theta)$ cresce em $0\le\theta\le\theta^\ast$ e decresce em
+$\theta\ge\theta^\ast$ (único máximo em $\theta^\ast$).
+
+\paragraph{Intervalo para $g(\theta)$ a partir do IC de $\theta$}
+\[\]
+Dado o IC $[L_\theta,U_\theta]$ para $\theta$, o intervalo correspondente para
+$g(\theta)$ é o intervalo que contém todos os valores
+\[
+    \{g(\theta):\theta\in[L_\theta,U_\theta]\}.
+\]
+
+Como $g$ é crescente até $\theta^\ast$ e decrescente depois, se
+$\theta^\ast\in[L_\theta,U_\theta]$ temos
+\[
+    g_{\min} = \min\{g(L_\theta),g(U_\theta)\},
+    \qquad
+    g_{\max} = g(\theta^\ast),
+\]
+e, portanto,
+\[
+    g(\theta)\in[g_{\min},g_{\max}].
+\]
+
+Os dados observados são $(0{,}2,\ 0{,}6,\ 0{,}3,\ 0{,}2,\ 0{,}8,\ 0{,}12) $, para os quais já havíamos obtido, no item (a):
+\[
+    n=6,\qquad
+    \widehat\theta_{MV}=\frac{1}{\bar Z}\approx 2{,}703,
+\]
+e, com $z_{0.975}=1{,}96$,
+\[
+    L_\theta=\widehat\theta_{MV}\Bigl(1-\frac{z_{0.975}}{\sqrt{n}}\Bigr)
+    \approx 0{,}541,\qquad
+    U_\theta=\widehat\theta_{MV}\Bigl(1+\frac{z_{0.975}}{\sqrt{n}}\Bigr)
+    \approx 4{,}864.
+\]
+
+O ponto de máximo é
+\[
+    \theta^\ast=\frac{\log 10}{0.9}\approx 2{,}558,
+\]
+que de fato pertence ao intervalo $[L_\theta,U_\theta]$.
+
+Calculando:
+\[
+    g(L_\theta)=e^{-0.1 L_\theta}-e^{-L_\theta}
+    \approx 0{,}365,
+\]
+\[
+    g(U_\theta)=e^{-0.1 U_\theta}-e^{-U_\theta}
+    \approx 0{,}607,
+\]
+\[
+    g(\theta^\ast)=e^{-0.1\theta^\ast}-e^{-\theta^\ast}
+    \approx 0{,}697.
+\]
+
+Logo,
+\[
+    g_{\min}=\min\{g(L_\theta),g(U_\theta)\}\approx 0{,}365,\qquad
+    g_{\max}=g(\theta^\ast)\approx 0{,}697.
+\]
+
+Portanto, o \textbf{intervalo de confiança aproximado de 95\%} para
+\[
+    g(\theta)=P_\theta(0{,}1<Z<1)
+\]
+é
+\[
+    \boxed{
+        g(\theta)=P_\theta(0{,}1<Z<1)\in[0{,}365,\ 0{,}697].
+    }
+\]
 
 \paragraph{(e) Teste de confiança do IC's via simulação Monte Carlo}
+
+\begin{itemize}
+    \item[(a)] O experimento de Monte Carlo com $M = 1000$ repetições produziu uma
+          estimativa de cobertura igual a $0.962$. Ou seja, em
+          $96.2\%$ das simulações, o intervalo de confiança
+          aproximado para $g(\theta)=e^{-\theta}$ conteve o verdadeiro valor
+          $g(\theta_0)$. Como o nível
+          nominal do IC é de $95\%$, o resultado está ótimo,
+          indicando que a aproximação Normal para o estimador de máxima
+          verossimilhança funciona bem mesmo com uma amostra pequena ($n=6$),
+          fornecendo intervalos com cobertura adequada.
+    \item[(b)] O experimento de Monte Carlo retornou uma taxa de cobertura estimada de
+          $\widehat{C} = 0.981$.
+          Esse valor está muito próximo do nível nominal de $95\%$, indicando que o
+          intervalo de confiança aproximado obtido pelo método assintótico apresenta
+          excelente desempenho para o funcional $g(\theta)=P_{\theta}(0.1<Z<1)$ mesmo com
+          amostras pequenas ($n=6$).
+          A pequena supercobertura observada (98.1\%) é esperada, pois o intervalo para
+          $g(\theta)$ é construído a partir do intervalo para $\theta$ via uma função não
+          monótona, o que tende a torná-lo ligeiramente mais conservador.
+\end{itemize}
+
+
 
 \[\]
 
@@ -285,3 +676,126 @@ Substituindo \(\widehat\theta_{MV}=\dfrac{1}{\overline Z}\), obtemos:
 % \end{enumerate}
 % \textit{Expectativa:} Para $n=6$, (a) e (c) tendem a cobertura abaixo de 95\% (assimetria/limites fora do espaço).
 % Cobertura melhora sensivelmente para $n\gtrsim 30$. 
+
+
+
+
+
+% Então vamos encontrar o intervalo de confiança exato para $\theta$ usando $\chi^2$.
+
+% Da propriedade
+% \[
+%     2\theta S \sim \chi^2_{2n},
+% \]
+% obtemos, para nível de confiança $1-\alpha$ (aqui $0{,}95$):
+% \[
+%     P\!\left( \chi^2_{2n,\alpha/2} \le 2\theta S \le \chi^2_{2n,1-\alpha/2} \right)=1-\alpha.
+% \]
+
+% Dividindo tudo por $2S>0$:
+% \[
+%     P\!\left(
+%     \frac{\chi^2_{2n,\alpha/2}}{2S}
+%     \le \theta \le
+%     \frac{\chi^2_{2n,1-\alpha/2}}{2S}
+%     \right)
+%     =1-\alpha.
+% \]
+
+% Logo, o intervalo de confiança de 95\% para $\theta$ é
+% \[
+%     \boxed{
+%     \theta \in
+%     \left[
+%     \frac{\chi^2_{2n,0.025}}{2S},\
+%     \frac{\chi^2_{2n,0.975}}{2S}
+%     \right].
+%     }
+% \]
+
+% \bigskip
+
+% \subsection*{3. Relacionando $\theta$ e $g(\theta)$}
+
+% Para a Exponencial,
+% \[
+%     g(\theta)=P_\theta(Z>1)=\int_1^\infty \theta e^{-\theta z}dz = e^{-\theta}.
+% \]
+
+% Note que $g(\theta)=e^{-\theta}$ é \textbf{monótona decrescente} em $\theta$.
+
+% Se $\theta \in [L_\theta,U_\theta]$, então:
+% \[
+%     L_\theta \le \theta \le U_\theta
+%     \quad\Longrightarrow\quad
+%     e^{-U_\theta} \le e^{-\theta} \le e^{-L_\theta}.
+% \]
+
+% Logo, o IC de 95\% para $g(\theta)$ é:
+% \[
+%     \boxed{
+%         g(\theta)\in
+%         \left[ e^{-U_\theta}, \ e^{-L_\theta} \right].
+%     }
+% \]
+% onde
+% \[
+%     L_\theta=\frac{\chi^2_{2n,0.025}}{2S},
+%     \qquad
+%     U_\theta=\frac{\chi^2_{2n,0.975}}{2S}.
+% \]
+
+% \bigskip
+
+% \subsection*{4. Aplicando aos dados observados}
+
+% Os dados fornecidos são:
+% \[
+%     (0.2,\ 0.6,\ 0.3,\ 0.2,\ 0.8,\ 0.12),
+% \]
+% logo
+% \[
+%     n=6,\qquad
+%     S=\sum_{i=1}^6 z_i = 2.22.
+% \]
+
+% Para $1-\alpha=0.95$ e $2n=12$ graus de liberdade:
+
+% \[
+%     \chi^2_{12,0.025}\approx 4.404,
+%     \qquad
+%     \chi^2_{12,0.975}\approx 23.337.
+% \]
+
+% Então,
+% \[
+%     L_\theta=\frac{4.404}{2\cdot 2.22}\approx 0.992,
+%     \qquad
+%     U_\theta=\frac{23.337}{2\cdot 2.22}\approx 5.256.
+% \]
+
+% O intervalo de 95\% para $\theta$ é:
+% \[
+%     \theta\in [\,0.992,\ 5.256\,].
+% \]
+
+% Transformando para $g(\theta)=e^{-\theta}$:
+% \[
+%     g_{\min}=e^{-U_\theta}\approx e^{-5.256}\approx 0.0052,
+% \]
+% \[
+%     g_{\max}=e^{-L_\theta}\approx e^{-0.992}\approx 0.371.
+% \]
+
+% \bigskip
+
+% \subsection*{5. Resultado final}
+
+% \[
+%     \boxed{
+%         g(\theta)=P_\theta(Z>1)\in [0.0052,\ 0.371].
+%     }
+% \]
+
+% Este é o intervalo de confiança de 95\% solicitado.
+

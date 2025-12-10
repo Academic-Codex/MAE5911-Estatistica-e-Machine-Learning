@@ -16,6 +16,59 @@
 \usepackage[numbers,sort&compress]{natbib} % ou [authoryear]
 \usepackage[alf]{abntex2cite} % citação ABNT autor-data
 \usepackage{enumerate}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% --- Suporte a UTF-8 ---
+\usepackage{lmodern}           % fonte moderna compatível com T1
+
+% --- Pacotes para exibir código ---
+
+
+% --- Define o idioma R com palavras-chave e cores ---
+\lstdefinelanguage{R}{
+  keywords={function, if, else, for, in, while, repeat, return, library, require, next, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={TRUE, FALSE, NULL, NA, Inf, NaN},
+  ndkeywordstyle=\color{magenta}\bfseries,
+  comment=[l]{\#},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{orange}\ttfamily,
+  morestring=[b]",
+  morestring=[b]',
+  sensitive=true
+}
+
+% --- Mapeamento para UTF-8 (acentos, ç, etc.) ---
+% ---- estilo do listing ----
+\lstset{
+  literate=
+    {á}{{\'a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 {à}{{\`a}}1
+    {é}{{\'e}}1 {ê}{{\^e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+    {ú}{{\'u}}1 {ü}{{\"u}}1
+    {ç}{{\c{c}}}1
+    {Á}{{\'A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1
+    {É}{{\'E}}1 {Ê}{{\^E}}1
+    {Í}{{\'I}}1
+    {Ó}{{\'O}}1 {Õ}{{\~O}}1 {Ô}{{\^O}}1
+    {Ú}{{\'U}}1 {Ü}{{\"U}}1
+    {Ç}{{\c{C}}}1,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!5},
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  columns=flexible,
+  showstringspaces=false,
+  keepspaces=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=6pt
+}
 
 \pagestyle{plain}
 
@@ -118,6 +171,95 @@ Seja $(Z_1, \ldots, Z_n)$ uma amostra aleatória de $Z \sim \text{Exp}(\theta)$,
 \begin{answer}[]
     \input{resposta02}
 \end{answer}
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança encontrado para a letra (a)}]
+set.seed(123)
+
+# Parâmetros do experimento
+theta0   <- 2.703     # "verdadeiro" theta
+n        <- 6         # tamanho da amostra
+M        <- 1000      # número de simulações
+z_0975   <- 1.96      # quantil 0.975 da N(0,1)
+
+# valor verdadeiro de g(theta) = P(Z > 1)
+g_true <- exp(-theta0)
+
+# vetor para guardar se o IC cobriu ou não
+covered <- logical(M)
+
+for (m in 1:M) {
+  # 1) cria uma amostra com distribuição Exponencial(theta0)
+  z <- rexp(n, theta0)
+  
+  # 2) EMV de theta: 1 / media
+  theta_hat <- 1 / mean(z)
+  
+  # 3) IC aproximado para theta
+  L_theta <- theta_hat * (1 - z_0975 / sqrt(n))
+  U_theta <- theta_hat * (1 + z_0975 / sqrt(n))
+  
+  # 4) transforma para g(theta) = e^{-theta}
+  L_g <- exp(-U_theta)
+  U_g <- exp(-L_theta)
+  
+  # 5) verifica se g_true está no intervalo
+  covered[m] <- (L_g <= g_true) && (g_true <= U_g)
+}
+
+# Estimativa da cobertura
+mean(covered)
+\end{lstlisting}
+
+\begin{lstlisting}[language=R, caption={Simulação de Monte Carlo para testar o intervalo de confiança encontrado para a letra (b)}]
+set.seed(123)
+
+# Parâmetros do experimento
+theta0  <- 2.703        # "verdadeiro" theta (mesmo do item a)
+n       <- 6            # tamanho da amostra
+M       <- 10000        # número de simulações
+z_0975  <- 1.96         # quantil 0.975 da N(0,1)
+
+# Função g(theta) do item (b):
+# g(theta) = P(0.1 < Z < 1) = exp(-0.1*theta) - exp(-theta)
+g_fun  <- function(theta) exp(-0.1 * theta) - exp(-theta)
+g_true <- g_fun(theta0)
+
+# Ponto onde g(theta) atinge seu máximo
+theta_star <- log(10) / 0.9
+
+covered <- logical(M)
+
+for (m in 1:M) {
+  
+  # 1) Amostra Z_1,...,Z_n ~ Exponencial(theta0)
+  z <- rexp(n, rate = theta0)
+  
+  # 2) EMV de theta: 1 / media
+  theta_hat <- 1 / mean(z)
+  
+  # 3) IC aproximado para theta
+  L_theta <- theta_hat * (1 - z_0975 / sqrt(n))
+  U_theta <- theta_hat * (1 + z_0975 / sqrt(n))
+  
+  # 4) Intervalo para g(theta)
+  g_L <- g_fun(L_theta)
+  g_U <- g_fun(U_theta)
+  
+  # Como g(theta) NÂO é monotona, verificamos se o máximo está no intervalo
+  if (L_theta <= theta_star && theta_star <= U_theta) {
+    g_max <- g_fun(theta_star)
+    g_min <- min(g_L, g_U)
+  } else {
+    g_min <- min(g_L, g_U)
+    g_max <- max(g_L, g_U)
+  }
+  
+  # 5) Verifica cobertura
+  covered[m] <- (g_min <= g_true) && (g_true <= g_max)
+}
+
+# Estimativa da cobertura
+mean(covered)
+\end{lstlisting}
 
 \textbf{Questão 03:}
 Seja $(Z_1, \ldots, Z_n)$ uma amostra aleatória de $Z \sim N(\mu, \sigma^2)$, $\theta = (\mu, \sigma^2) \in (-\infty,\infty) \times (0,\infty)$.
@@ -159,8 +301,8 @@ e $f_\theta(x) = 0$, caso contrário.
     \input{resposta04}
 \end{answer}
 
-\nocite{fonseca2008curso}
 \nocite{patriota2025notas}
+\nocite{fonseca2008curso}
 \bibliographystyle{plain}
 \bibliography{refs}
 \end{document}
