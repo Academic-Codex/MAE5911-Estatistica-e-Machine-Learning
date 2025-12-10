@@ -116,23 +116,23 @@ Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de $g
 %--------------------------- (c)
 
 \paragraph{(c) $g(\theta)=P_\theta(2.6<Z<4)$}
-
-De forma análoga, escrevemos a probabilidade em termos da Normal padrão:
+\[\]
+De forma similar, decompomos a probabilidade em termos da função de distribuição acumulada da Normal padrão \(N(0,1)\) :
 \[
   P_\theta(2.6<Z<4)
   = P_\theta(Z<4) - P_\theta(Z\le 2.6)
-  = \Phi\!\left(\frac{4-\mu}{\sigma}\right)
-  - \Phi\!\left(\frac{2.6-\mu}{\sigma}\right).
-\]
-
-Logo,
-\[
-  g(\mu,\sigma^2)
   = \Phi\!\left(\frac{4-\mu}{\sqrt{\sigma^2}}\right)
   - \Phi\!\left(\frac{2.6-\mu}{\sqrt{\sigma^2}}\right).
 \]
 
-Pela invariância do EMV,
+Logo,
+\[
+  g(\theta) = g(\mu,\sigma^2)
+  = \Phi\!\left(\frac{4-\mu}{\sqrt{\sigma^2}}\right)
+  - \Phi\!\left(\frac{2.6-\mu}{\sqrt{\sigma^2}}\right).
+\]
+
+Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(g(\theta)\) é
 \[
   \widehat g_{MV}
   = g(\widehat\mu_{MV},\widehat\sigma^2_{MV})
@@ -143,23 +143,23 @@ Pela invariância do EMV,
   \frac{2.6-\overline Z}{\sqrt{\widehat\sigma^2_{MV}}}
   \right),
 \]
-onde novamente
-\[
-  \widehat\sigma^2_{MV}
-  = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
-\]
 
-Portanto,
+
 \[
   \boxed{
     \widehat g_{MV}
     = \Phi\!\left(
-    \frac{4-\overline Z}{\sqrt{\widehat\sigma^2_{MV}}}
+    \frac{(4 - \overline Z)\sqrt n}{
+        \sqrt{\sum_{i=1}^n (z_i - \overline Z)^2}
+      }
     \right)
-    - \Phi\!\left(
-    \frac{2.6-\overline Z}{\sqrt{\widehat\sigma^2_{MV}}}
-    \right).
-  }
+    -
+    \Phi\!\left(
+    \frac{(2.6 - \overline Z)\sqrt n}{
+        \sqrt{\sum_{i=1}^n (z_i - \overline Z)^2}
+      }
+    \right)
+  }.
 \]
 
 %--------------------------- (d)
