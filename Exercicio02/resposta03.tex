@@ -177,7 +177,7 @@ Pela definição de esperança para variáveis contínuas, sendo $h(z)$ a funç�
   E_\theta(h(Z)) = \int_{-\infty}^{\infty} h(z)\, f(z;\theta)\,dz.
 \]
 
-Em particular, a esperança do primeiro e segundo momentos de $Z$, são:
+Em particular, a esperança do primeiro momento, e segundo momento de $Z$, para a distribuição Normal, são:
 
 \[
   E_\theta(Z)
@@ -190,24 +190,11 @@ e
   E_\theta(Z^2)
   = \int_{-\infty}^{\infty}
   z^{2} \,\frac{1}{\sqrt{2\pi\sigma^{2}}}
-  \exp\!\left(-\frac{(z-\mu)^{2}}{2\sigma^{2}}\right)\,dz.
-\]
-
-Usando a mesma mudança de variável
-\(y = (z-\mu)/\sigma\), \(z = \mu + \sigma y\), \(dz = \sigma dy\), temos
-\[
-  E_\theta(Z^2)
+  \exp\!\left(-\frac{(z-\mu)^{2}}{2\sigma^{2}}\right)\,dz
   = \int_{-\infty}^{\infty}
   (\mu + \sigma y)^{2}\,
   \frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy.
 \]
-
-Expandindo o quadrado,
-\[
-  (\mu + \sigma y)^{2}
-  = \mu^{2} + 2\mu\sigma y + \sigma^{2}y^{2},
-\]
-então
 \[
   E_\theta(Z^2)
   = \mu^{2}\int_{-\infty}^{\infty}
@@ -217,21 +204,6 @@ então
   + \sigma^{2}\int_{-\infty}^{\infty}
   y^{2}\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy.
 \]
-
-Sabemos que
-\[
-  \int_{-\infty}^{\infty}
-  \frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy = 1,\qquad
-  \int_{-\infty}^{\infty}
-  y\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy = 0,
-\]
-e, pela definição de variância da Normal padrão \(N(0,1)\),
-\[
-  \int_{-\infty}^{\infty}
-  y^{2}\,\frac{1}{\sqrt{2\pi}}e^{-y^{2}/2}\,dy = 1.
-\]
-
-Portanto,
 \[
   E_\theta(Z^2)
   = \mu^{2}\cdot 1
@@ -241,16 +213,12 @@ Portanto,
 \]
 
 
-Para a Normal $N(\mu,\sigma^2)$,
-\[
-  \mathrm{Var}_\theta(Z) = \sigma^2.
-\]
 Portanto,
 \[
-  g(\mu,\sigma^2) = \sigma^2.
+  g(\theta)=g(\mu,\sigma^2) = \sigma^2.
 \]
 
-Pela invariância do EMV,
+Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(g(\theta)\) é:
 \[
   \widehat g_{MV}
   = g(\widehat\mu_{MV},\widehat\sigma^2_{MV})
@@ -258,12 +226,10 @@ Pela invariância do EMV,
   = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
 \]
 
-Assim,
 \[
   \boxed{
-  \widehat g_{MV}
-  = \widehat\sigma^2_{MV}
-  = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
+    \widehat g_{MV}
+    = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
   }
 \]
 
