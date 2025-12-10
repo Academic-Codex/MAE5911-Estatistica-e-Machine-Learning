@@ -235,3 +235,68 @@ Pela \textbf{invariância do EMV}, o estimador de máxima verossimilhança de \(
     = \frac{1}{n}\sum_{i=1}^n (z_i-\overline Z)^2.
   }
 \]
+
+
+\paragraph{(e) Sejam os dados observados: $(0{,}12,\,0{,}50,\,0{,}20,\,0{,}23,\,0{,}30,\,0{,}11)$}
+\[\]
+Para o cálculo da média: $\quad n = 6\quad$ e $ \quad\sum_{i=1}^n z_i = 0{,}12 + 0{,}50 + 0{,}20 + 0{,}23 + 0{,}30 + 0{,}11 = 1{,}46.\quad$ Portanto:
+\[
+  \widehat\mu_{MV} = \overline Z = \frac{1{,}46}{6} \approx 0{,}2433.
+\]
+\[
+  \boxed{
+    \widehat\mu_{MV} \approx 0{,}2433}
+\]
+
+Para a variância de máxima verossimilhança:
+\[
+  \widehat\sigma^2_{MV} = \frac{1}{n}\sum_{i=1}^n (z_i - \overline Z)^2
+\]
+
+\[
+  \widehat\sigma^2_{MV} = (0{,}12 - 0{,}2433)^2 + (0{,}50 - 0{,}2433)^2 + (0{,}20 - 0{,}2433)^2 + (0{,}23 - 0{,}2433)^2 + (0{,}30 - 0{,}2433)^2 + (0{,}11 - 0{,}2433)^2
+\]
+
+\[
+  \boxed{
+  \widehat\sigma^2_{MV} \approx 0{,}01736}
+  % \qquad
+  % \widehat\sigma_{MV} \approx 0{,}1317.
+\]
+
+
+
+Por fim, o desvio-padrão de máxima verossimilhança é
+\[
+  \widehat\sigma_{MV}
+  = \sqrt{\widehat\sigma^2_{MV}}
+  \approx \sqrt{0{,}01736}
+  \approx 0{,}1317.
+\]
+%
+Assim:
+
+\begin{itemize}
+  \item[(a)] $\displaystyle \widehat g_{MV}
+          = \widehat{E_\theta(Z)} = \widehat\mu_{MV}
+          = \overline Z \approx 0{,}2433.$
+
+  \item[(b)] $\displaystyle \widehat g_{MV}
+          = \widehat{P_\theta(Z<2)}
+          = \Phi\!\left(\frac{2 - \widehat\mu_{MV}}{\widehat\sigma_{MV}}\right)
+          = \Phi\!\left(\frac{2 - \overline Z}{\widehat\sigma_{MV}}\right)
+          \approx \Phi(13{,}33) \approx 1.$
+
+  \item[(c)] $\displaystyle \widehat g_{MV}
+          = \widehat{P_\theta(2{,}6 < Z < 4)}
+          = \Phi\!\left(\frac{4 - \overline Z}{\widehat\sigma_{MV}}\right)
+          - \Phi\!\left(\frac{2{,}6 - \overline Z}{\widehat\sigma_{MV}}\right)
+          \approx \Phi(28{,}52) - \Phi(17{,}89) \approx 0.$
+
+  \item[(d)] $\displaystyle \widehat g_{MV} = \widehat{\mathrm{Var}\theta(Z)} = \widehat\sigma^2_{MV} \approx 0{,}01736.$
+\end{itemize}
+
+
+
+
+\[\]
