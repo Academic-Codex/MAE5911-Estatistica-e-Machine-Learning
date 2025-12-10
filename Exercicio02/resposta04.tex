@@ -1,6 +1,3 @@
-\paragraph{(a) $g(\theta)=P_\theta(Z>0{,}3)$}
-\[\]
-
 \paragraph{(a) $g(\theta)=\mathbb E_\theta(Z)$.}
 \[
     \mathbb E_\theta(Z)=\frac{\theta}{\theta+1}
@@ -31,8 +28,8 @@
 \]
 
 %---------------------------------------------------
-\paragraph{(e) Estimativas numéricas.}
-Dados: $(0.12,\,0.50,\,0.20,\,0.23,\,0.30,\,0.11)$.
+\paragraph{(e) Sejam os dados observados: $(0.12,\,0.50,\,0.20,\,0.23,\,0.30,\,0.11)$}
+\[\]
 Com $n=6$,
 \[
     \sum_{i=1}^n\log z_i
@@ -44,23 +41,22 @@ Logo,
     \widehat\theta_{MV}
     =-\frac{6}{-9.3038}\approx 0.6449.
 \]
-Então,
-\[
-    \widehat g_{(a)}=\frac{\widehat\theta}{1+\widehat\theta}
-    \approx \frac{0.6449}{1.6449}\approx 0.3921,
-\]
-\[
-    \widehat g_{(b)}=1-(0.3)^{\widehat\theta}
-    \approx 1-(0.3)^{0.6449}\approx 0.5400,
-\]
-\[
-    \widehat g_{(c)}=(0.1)^{\widehat\theta}
-    \approx (0.1)^{0.6449}\approx 0.2265,
-\]
-\[
-    \widehat g_{(d)}=\frac{\widehat\theta}{(\widehat\theta+1)^2(\widehat\theta+2)}
-    \approx \frac{0.6449}{(1.6449)^2(2.6449)}\approx 0.0901.
-\]
+
+Assim:
+
+\begin{itemize}
+    \item[(a)] $\displaystyle \widehat g_{MV}=\frac{\widehat\theta_{MV}}{1+\widehat\theta_{MV}}
+              \approx \frac{0.6449}{1.6449}\approx 0.3921$
+
+    \item[(b)] $\displaystyle \widehat g_{MV}=1-(0.3)^{\widehat\theta_{MV}}
+              \approx 1-(0.3)^{0.6449}\approx 0.5400$
+
+    \item[(c)] $\displaystyle \widehat g_{MV}=(0.1)^{\widehat\theta_{MV}}
+              \approx (0.1)^{0.6449}\approx 0.2265$
+
+    \item[(d)] $\displaystyle \widehat g_{MV}=\frac{\widehat\theta_{MV}}{(\widehat\theta_{MV}+1)^2(\widehat\theta_{MV}+2)}
+              \approx \frac{0.6449}{(1.6449)^2(2.6449)}\approx 0.0901$
+\end{itemize}
 
 \medskip
 \noindent
@@ -138,35 +134,6 @@ Logo,
     f_\theta(x)=\theta\,x^{\theta-1},\qquad x\in(0,1),\ \ \theta>0,
 \]
 e $f_\theta(x)=0$ caso contrário. (Trata-se de uma Beta$(\theta,1)$.)
-
-%---------------------------------------------------
-\paragraph{EMV de $\theta$.}
-A verossimilhança é
-\[
-    L(\theta;\mathbf z)=\prod_{i=1}^n \theta\,z_i^{\theta-1}
-    =\theta^n\prod_{i=1}^n z_i^{\theta-1}
-    =\theta^n\Big(\prod_{i=1}^n z_i\Big)^{\theta-1}.
-\]
-A log-verossimilhança é
-\[
-    \ell(\theta)=\log L(\theta;\mathbf z)
-    =n\log\theta+(\theta-1)\sum_{i=1}^n\log z_i .
-\]
-Derivando e igualando a zero,
-\[
-    \ell'(\theta)=\frac{n}{\theta}+\sum_{i=1}^n\log z_i=0
-    \quad\Longrightarrow\quad
-    \widehat\theta_{MV}=-\,\frac{n}{\sum_{i=1}^n\log Z_i}.
-\]
-A segunda derivada é
-\[
-    \ell''(\theta)=-\,\frac{n}{\theta^2}<0\quad(\theta>0),
-\]
-logo o ponto crítico é máximo global. Assim,
-\[
-    \boxed{\ \widehat\theta_{MV}=-\,\dfrac{n}{\sum_{i=1}^n\log Z_i}\ }.
-\]
-
 %---------------------------------------------------
 \paragraph{Momentos e probabilidades.}
 Para $X\sim f_\theta$, para $a>- \theta$,
