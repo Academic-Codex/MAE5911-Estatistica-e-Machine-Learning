@@ -499,6 +499,128 @@ Portanto, o \textbf{intervalo de confiança aproximado de 95\%} para
     }
 \]
 
+
+
+
+
+
+
+
+
+\subsubsection*{Cálculo do intervalo aproximado para o Item (c): $g(\theta) = \mathrm{Var}\theta(Z)$}
+\[\]
+Para $Z \sim \mathrm{Exp}(\theta)$ com $\theta>0$, sabe-se que
+\[
+    g(\theta) = \mathrm{Var}\theta(Z) = \frac{1}{\theta^2}.
+\]
+
+Na letra (d) queremos um IC aproximado de 95\% para $g(\theta)$ usando os
+dados
+\[
+    (0{,}2,\;0{,}6,\;0{,}3,\;0{,}2,\;0{,}8,\;0{,}12).
+\]
+
+Primeiro, relembramos o IC aproximado para $\theta$ obtido pela
+assintótica Normal do EMV.
+
+A média amostral é
+\[
+    \bar Z = \frac{1}{6}\sum_{i=1}^6 z_i = \frac{2{,}22}{6} \approx 0{,}37,
+\]
+e o EMV de $\theta$ é
+\[
+    \hat\theta_{MV} = \frac{1}{\bar Z} \approx \frac{1}{0{,}37} \approx 2{,}703.
+\]
+
+Pela teoria assintótica do EMV,
+\[
+    \hat\theta_{MV} \approx N\!\left(\theta,\;\frac{\theta^2}{n}\right),
+\]
+e, substituindo $\theta$ por $\hat\theta_{MV}$ no desvio-padrão,
+obtemos o IC aproximado de 95\% para $\theta$:
+\[
+    P\!\left(
+    -z_{0{,}975}
+    \le
+    \frac{\hat\theta_{MV} - \theta}{\hat\theta_{MV}/\sqrt{n}}
+    \le
+    z_{0{,}975}
+    \right)
+    \approx 0{,}95,
+\]
+o que é equivalente a
+\[
+    \theta \in
+    \Bigl[
+        \hat\theta_{MV}\!\left(1 - \frac{z_{0{,}975}}{\sqrt{n}}\right),
+        \;
+        \hat\theta_{MV}\!\left(1 + \frac{z_{0{,}975}}{\sqrt{n}}\right)
+        \Bigr].
+\]
+
+Com $z_{0{,}975} = 1{,}96$ e $n = 6$,
+\[
+    \frac{z_{0{,}975}}{\sqrt{n}}
+    =
+    \frac{1{,}96}{\sqrt{6}}
+    \approx 0{,}800,
+\]
+logo
+\[
+    L_\theta = \hat\theta_{MV}(1 - 0{,}800) \approx 2{,}703 \times 0{,}200 \approx 0{,}541,
+\]
+\[
+    U_\theta = \hat\theta_{MV}(1 + 0{,}800) \approx 2{,}703 \times 1{,}800 \approx 4{,}864.
+\]
+
+Portanto, o IC aproximado de 95\% para $\theta$ é
+\[
+    \theta \in [\,0{,}541,\;4{,}864\,].
+\]
+
+\medskip
+
+Agora transformamos esse intervalo para $g(\theta)=\mathrm{Var}\theta(Z)=1/\theta^2$. Analisando $g(\theta)$:
+\[
+    g(\theta) = \frac{1}{\theta^2}, \qquad \theta>0,
+\]
+é estritamente decrescente em $\theta$. Assim, se
+\[
+    L_\theta \le \theta \le U_\theta,
+\]
+então, aplicando $g$ e invertendo a ordem das desigualdades,
+\[
+    g(U_\theta) \le g(\theta) \le g(L_\theta),
+\]
+isto é,
+\[
+    \frac{1}{U_\theta^2} \le \mathrm{Var}\theta(Z) \le \frac{1}{L_\theta^2}.
+\]
+
+Logo, um IC aproximado de 95\% para $g(\theta)=\mathrm{Var}\theta(Z)$ é
+\[
+    g(\theta) = \mathrm{Var}\theta(Z) \in
+    \left[
+        \frac{1}{U_\theta^2},\;
+        \frac{1}{L_\theta^2}
+        \right].
+\]
+
+Substituindo os valores numéricos $L_\theta \approx 0{,}541$ e
+$U_\theta \approx 4{,}864$,
+\[
+    \frac{1}{U_\theta^2} \approx \frac{1}{4{,}864^2} \approx 0{,}042,
+    \qquad
+    \frac{1}{L_\theta^2} \approx \frac{1}{0{,}541^2} \approx 3{,}42.
+\]
+
+Portanto, o intervalo de confiança aproximado de 95\% para a variância é
+\[
+    \boxed{
+    \mathrm{Var}\theta(Z) \in [\,0{,}042,\;3{,}42\,].}
+\]
+
+
 \paragraph{(e) Teste de confiança do IC's via simulação Monte Carlo}
 
 \begin{itemize}

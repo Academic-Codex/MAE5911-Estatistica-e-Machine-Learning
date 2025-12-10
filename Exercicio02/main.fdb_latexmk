@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex main"] 1765394072.02585 "main.aux" "main.bbl" "main" 1765394073.32554 0
+["bibtex main"] 1765394778.30007 "main.aux" "main.bbl" "main" 1765394819.2479 0
   "./refs.bib" 1765383319.37807 610 d5e5d0beb7055a93f82372f4ef7531f0 ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bib/abntex2/abntex2-options.bib" 1357081713 5396 4eb260dac60f150ae608d45252853090 ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "main.aux" 1765394072.97732 3510 d8c0d2855895c343a38c06562cd74324 "pdflatex"
+  "main.aux" 1765394818.90491 3510 91de4ba6551684f403d4ea12443060d5 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1765394072.12087 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765394073.32568 0
-  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765394071.56266 9630 ab8eb7690c2b8e061df820d324c3b00d ""
+["pdflatex"] 1765394818.01443 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765394819.24804 0
+  "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765394162.50777 9630 ab8eb7690c2b8e061df820d324c3b00d ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -241,15 +241,15 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765394072.97732 3510 d8c0d2855895c343a38c06562cd74324 "pdflatex"
-  "main.bbl" 1765394072.1177 394 479a423f5345de6493f01faca1fb736e "bibtex main"
-  "main.tex" 1765394071.56266 9630 ab8eb7690c2b8e061df820d324c3b00d ""
+  "main.aux" 1765394818.90491 3510 91de4ba6551684f403d4ea12443060d5 "pdflatex"
+  "main.bbl" 1765394778.43094 394 479a423f5345de6493f01faca1fb736e "bibtex main"
+  "main.tex" 1765394162.50777 9630 ab8eb7690c2b8e061df820d324c3b00d ""
   "research01.tex" 1765378924.12997 4608 f2b9bdbe4a8a86d755fc6996e14d14b1 ""
   "research02.tex" 1765383402.93597 3896 d2e864e56af623d134dfbb5d7482a91b ""
   "research03.tex" 1765381560.29759 11870 2051efebca85ac77992041d132c2b8e4 ""
   "research04.tex" 1765380138.93013 11999 9a6f90d1add8fc9d997d85fa4a30346d ""
   "resposta01.tex" 1765381573.23088 4366 1af4a2f97e66be1617acb915d4d158b8 ""
-  "resposta02.tex" 1765393937.7612 21617 b0d2848e7b8ca0c950fae81f9d74c6b5 ""
+  "resposta02.tex" 1765394817.92712 24450 0da0dab2e01e56e518bd624b55c66475 ""
   "resposta03.tex" 1765381590.75729 7244 262d4ff29747d240615a5c30360e8112 ""
   "resposta04.tex" 1765381526.28536 5136 b96fcee1c0542d7b4e61e95c0c0b8cef ""
   "student.sty" 1765245097.94527 2462 958c110c9b0b01ab3ed37bfabb65fbc4 ""
