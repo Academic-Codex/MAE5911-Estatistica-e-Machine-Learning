@@ -1,8 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1765346162.91995 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765346163.78461 0
+["pdflatex"] 1765378205.4106 "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" "main.pdf" "main" 1765378206.24279 0
   "/Users/chanahyo/Repository/Academic-Codex/MAE5911-Estatistica-e-Machine-Learning/Exercicio02/main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
-  "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1000.tfm" 1136768653 3584 2d666ecf6d466d8b007246bc2f94d9da ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm" 1136768653 3584 402da0b29eafbad07963b1224b222f18 ""
@@ -12,7 +11,6 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm1000.tfm" 1136768653 3584 adb004a0c8e7c46ee66cad73671f37b4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm1200.tfm" 1136768653 3584 f80ddd985bd00e29e9a6047ebd9d4781 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecti1000.tfm" 1136768653 3072 3bce340d4c075dffe6d4ec732b4c32fe ""
-  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1246382020 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -215,16 +213,16 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1744653953 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1744653842 3345738 d48ec801263aaf5cc343964d44892d36 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "main.aux" 1765346163.69291 2672 64cdf94f8c49418ed8bf514925e13a32 "pdflatex"
+  "main.aux" 1765378206.15334 2549 409cf45ba3126e28e2403a2fb5128f37 "pdflatex"
   "main.tex" 1765316950.5483 5555 8f841e6c3cc58fa8f3c0f81cc87205dd ""
   "research01.tex" 1765336561.84856 4606 84a3af9e6b4e8906fe4fbd0ba4eb2e95 ""
-  "research02.tex" 1765319840.42976 3381 cd17b0a6b9e917e9bcdf648a26f2d2f3 ""
+  "research02.tex" 1765377797.02478 3399 cb6bd0102bc944bb5d7e9e062e2db55e ""
   "research03.tex" 1765344928.61698 11872 14047b95b5234ae736dec3a8ead4d80e ""
-  "research04.tex" 1762815976.83441 8620 69f6a43ff661ccd32b37040d12d9dc5c ""
+  "research04.tex" 1765377930.57408 11997 906ca8d040ec207d71d18844420dd29c ""
   "resposta01.tex" 1765345972.96551 4370 4ac1862a3133776d8a9ee4b1ae3ca9e2 ""
   "resposta02.tex" 1765316368.86819 8805 d099c40e89689efd4c31076c270f571f ""
   "resposta03.tex" 1765346161.81468 7254 08329ff5f18babd0ca1cb86eb17d2784 ""
-  "resposta04.tex" 1762815976.83497 3383 09d701e6d912e0dbca4e37817dd5d6e9 ""
+  "resposta04.tex" 1765378206.1099 4777 41b0259dc4f5952273f87ca284c45874 ""
   "student.sty" 1765245097.94527 2462 958c110c9b0b01ab3ed37bfabb65fbc4 ""
   (generated)
   "main.aux"
