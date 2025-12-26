@@ -1,0 +1,12 @@
+REPO_TAGLINE: Statistical learning • Inference • Statistics Foundations
+ASSETS_DIR: .github/readme
+CTA_TEXT: Access the full course website
+THEME: library
+SITE_URL: https://academic-codex.github.io/MAE5911-Estatistica-e-Machine-Learning
+
+BG_1: "#064E3B"
+BG_2: "#065F46"
+TEXT_MAIN: "#ECFDF5"
+TEXT_MUTED: "#A7F3D0"
+ACCENT: "#34D399"
+CARD_RADIUS: "18"
