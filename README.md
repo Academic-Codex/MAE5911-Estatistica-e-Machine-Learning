@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://academic-codex.github.io/MAE5911-Estatistica-e-Machine-Learning">
-    <img src=".github/readme/hero.svg?v=2025-12-28T18:33:12.797990Z" width="100%" alt="Access the course website" />
+    <img src=".github/readme/hero.svg?v=2025-12-28T18:34:45.813970Z" width="100%" alt="Access the course website" />
   </a>
 </p>
 
