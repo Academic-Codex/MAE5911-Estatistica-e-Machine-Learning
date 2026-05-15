@@ -13243,13 +13243,38 @@ div#notebook {
         .output_subarea.output_stream.output_stderr.output_text {
             display: none !important;
         }
+    
+        .proof-block {
+            margin: 24px 55px;
+            padding: 14px 18px;
+            border-left: 4px solid #555;
+            background: #f7f7f7;
+            border-radius: 6px;
+        }
+
+        .proof-block summary {
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.15em;
+            text-indent: 0 !important;
+        }
+
+        .proof-block p,
+        .proof-block h1,
+        .proof-block h2,
+        .proof-block h3,
+        .proof-block h4,
+        .proof-block h5,
+        .proof-block h6 {
+            text-indent: 0 !important;
+        }
         </style>
 </head>
 <body>
 <main>
 <div class="border-box-sizing" id="notebook" tabindex="-1">
 <div class="container" id="notebook-container">
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=5be008bc"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=d45fdd52"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Aula-25-%E2%80%94-Embeddings-e-Modelo-de-Linguagem-(Resumo)">Aula 25 — <strong>Embeddings</strong> e Modelo de Linguagem (Resumo)<a class="anchor-link" href="#Aula-25-%E2%80%94-Embeddings-e-Modelo-de-Linguagem-(Resumo)">¶</a></h1><p>Este notebook resume a Aula 25 com <strong>Markdown</strong> (teoria) e <strong>R</strong> (código).<br/>
@@ -13257,7 +13282,7 @@ Conectamos o modelo estatístico <strong>multinomial</strong> ao modelo neural c
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=56747c69"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=6a776856"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="1)-Do-modelo-multinomial-ao-modelo-neural">1) Do modelo multinomial ao modelo neural<a class="anchor-link" href="#1)-Do-modelo-multinomial-ao-modelo-neural">¶</a></h2><p>Para uma sequência de tokens $x_{1:k}$ de um vocabulário fixo $V$, o modelo de linguagem é</p>
@@ -13268,7 +13293,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=15045730"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=207778ee"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="2)-Vocabul%C3%A1rio-e-representa%C3%A7%C3%A3o-one-hot">2) Vocabulário e representação one-hot<a class="anchor-link" href="#2)-Vocabul%C3%A1rio-e-representa%C3%A7%C3%A3o-one-hot">¶</a></h2><p>Cada token $t \in \{1,\dots,V\}$ pode ser codificado como vetor <strong>one-hot</strong> $e_t \in \mathbb{R}^V$.
@@ -13276,7 +13301,7 @@ Essa representação é ortogonal e <strong>não contém semelhança</strong> en
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=1ca48cec">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=991c684a">
 <div class="input">
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
@@ -13317,7 +13342,7 @@ Essa representação é ortogonal e <strong>não contém semelhança</strong> en
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=769377bc"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=9c47be14"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="3)-Embeddings:-de-s%C3%ADmbolos-para-geometria">3) Embeddings: de símbolos para geometria<a class="anchor-link" href="#3)-Embeddings:-de-s%C3%ADmbolos-para-geometria">¶</a></h2><p>Definimos uma matriz $A \in \mathbb{R}^{V \times m}$.<br/>
@@ -13329,7 +13354,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=47eb8c70">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=36741bb9">
 <div class="input">
 <div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
@@ -13366,14 +13391,14 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=49cd877c"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=7f581f4b"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Similaridade-entre-embeddings">Similaridade entre embeddings<a class="anchor-link" href="#Similaridade-entre-embeddings">¶</a></h3><p>Usamos a <strong>semelhança cosseno</strong> para medir proximidade no espaço contínuo.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=17486b25">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=9dfc67c1">
 <div class="input">
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
@@ -13414,7 +13439,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=f26ef248">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=3db735b0">
 <div class="input">
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
@@ -13444,7 +13469,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=379f6e54"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=6518c7b7"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="4)-Sequ%C3%AAncia,-posi%C3%A7%C3%A3o-e-tokens-especiais">4) Sequência, posição e tokens especiais<a class="anchor-link" href="#4)-Sequ%C3%AAncia,-posi%C3%A7%C3%A3o-e-tokens-especiais">¶</a></h2><ul>
@@ -13455,7 +13480,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=a6b8d780">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=bc45b343">
 <div class="input">
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
@@ -13509,7 +13534,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=ca01e8db"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=f03d941e"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="5)-Cabe%C3%A7a-multinomial-(regress%C3%A3o-para-o-pr%C3%B3ximo-token)">5) Cabeça multinomial (regressão para o próximo token)<a class="anchor-link" href="#5)-Cabe%C3%A7a-multinomial-(regress%C3%A3o-para-o-pr%C3%B3ximo-token)">¶</a></h2><p>Com embeddings, uma camada linear $B \in \mathbb{R}^{m \times V}$ seguida de <em>softmax</em> modela
@@ -13520,7 +13545,7 @@ onde $h_s$ é uma representação do contexto (aqui usamos a <strong>média dos 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=27596d26">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=8ab0179d">
 <div class="input">
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
@@ -13567,7 +13592,7 @@ onde $h_s$ é uma representação do contexto (aqui usamos a <strong>média dos 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=0af3b0aa"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=41822623"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="6)-Verossimilhan%C3%A7a-da-sequ%C3%AAncia-e-cross-entropy">6) Verossimilhança da sequência e <em>cross-entropy</em><a class="anchor-link" href="#6)-Verossimilhan%C3%A7a-da-sequ%C3%AAncia-e-cross-entropy">¶</a></h2><p>Dada a sequência $x_{1:k}$, a verossimilhança autoregressiva é
@@ -13578,7 +13603,7 @@ No treino, maximizamos $\log \mathcal{L}$ (equivalente a minimizar a <em>cross-e
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered" id="cell-id=a9247bcc">
+<div class="cell border-box-sizing code_cell rendered" id="cell-id=7ce2118f">
 <div class="input">
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
@@ -13605,7 +13630,7 @@ No treino, maximizamos $\log \mathcal{L}$ (equivalente a minimizar a <em>cross-e
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered" id="cell-id=f625ca39"><div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=ce10f4f9"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="7)-Takeaways">7) Takeaways<a class="anchor-link" href="#7)-Takeaways">¶</a></h2><ul>
